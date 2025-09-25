@@ -1,1 +1,2 @@
-# project_web_java
+mvn clean compile
+mvn tomcat7:run
