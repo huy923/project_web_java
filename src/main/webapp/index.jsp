@@ -76,28 +76,112 @@
 </head>
 <body>
     <div class="container">
-        <h1>🚀 My Web Appl</h1>
-        
-        <div class="welcome-text">
-            <p>Chào mừng bạn đến với ứng dụng web Java của tôi!</p>
-            <p class="status">✅ Ứng dụng đang chạy với hot reload</p>
-        </div>
-        
-        <div class="links">
-            <a href="hello" class="btn">📝 Xem Hello Servlet</a>
-            <a href="#" class="btn" onclick="location.reload();">🔄 Refresh trang</a>
-        </div>
-        
-        <div class="info">
-            <h3>📊 Thông tin hệ thống:</h3>
-            <p><strong>Thời gian:</strong> <%= new Date() %></p>
-            <p><strong>Server Info:</strong> <%= application.getServerInfo() %></p>
-            <p><strong>Java Version:</strong> <%= System.getProperty("java.version") %></p>
-        </div>
-        
-        <div style="margin-top: 20px; text-align: center; font-size: 0.9em; opacity: 0.8;">
-            <p>💡 Thử sửa file này và xem trang tự động cập nhật!</p>
+        <div class="main-container p-5">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h1 class="display-4 mb-4">🚀 My Web Application</h1>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <div class="welcome-text text-center mb-4">
+                        <p class="lead">Chào mừng bạn đến với ứng dụng web Java của tôi!</p>
+                        <p class="status">✅ Ứng dụng đang chạy với Bootstrap + Hot reload</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-12 text-center mb-4">
+                    <div class="d-flex justify-content-center gap-3 flex-wrap">
+                        <a href="hello" class="btn btn-custom btn-lg">
+                            <i class="bi bi-file-text"></i> 📝 Xem Hello Servlet
+                        </a>
+                        <a href="form.jsp" class="btn btn-custom btn-lg">
+                            📋 Bootstrap Form Demo
+                        </a>
+                        <a href="components.jsp" class="btn btn-custom btn-lg">
+                            🎨 Bootstrap Components
+                        </a>
+                        <button onclick="location.reload();" class="btn btn-custom btn-lg">
+                            <i class="bi bi-arrow-clockwise"></i> 🔄 Refresh trang
+                        </button>
+                        <button class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#infoModal">
+                            📊 Thông tin hệ thống
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bootstrap Cards -->
+            <div class="row mt-4">
+                <div class="col-md-4 mb-3">
+                    <div class="card info-card text-white">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">⚡ Performance</h5>
+                            <p class="card-text">Hot reload enabled</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card info-card text-white">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">🎨 Bootstrap</h5>
+                            <p class="card-text">v5.3.2 ready!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card info-card text-white">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">☕ Java</h5>
+                            <p class="card-text">Modern web app</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mt-4">
+                <div class="col-12 text-center">
+                    <small class="text-light">💡 Thử sửa file này và xem trang tự động cập nhật!</small>
+                </div>
+            </div>
         </div>
     </div>
+
+    <!-- Bootstrap Modal -->
+    <div class="modal fade" id="infoModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content bg-dark text-white">
+                <div class="modal-header">
+                    <h5 class="modal-title">📊 Thông tin hệ thống</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-dark table-striped">
+                        <tr>
+                            <td><strong>Thời gian:</strong></td>
+                            <td><%= new Date() %></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Server Info:</strong></td>
+                            <td><%= application.getServerInfo() %></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Java Version:</strong></td>
+                            <td><%= System.getProperty("java.version") %></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

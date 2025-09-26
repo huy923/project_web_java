@@ -41,6 +41,34 @@
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
+
+        <!-- Bootstrap WebJar -->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>bootstrap</artifactId>
+            <version>5.3.2</version>
+        </dependency>
+
+        <!-- jQuery WebJar (Bootstrap cần jQuery) -->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>jquery</artifactId>
+            <version>3.7.1</version>
+        </dependency>
+
+        <!-- Bootstrap Icons WebJar -->
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>bootstrap-icons</artifactId>
+            <version>1.10.5</version>
+        </dependency>
+
+        <!-- WebJars Locator  -->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>webjars-locator</artifactId>
+            <version>0.47</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -70,7 +98,7 @@
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <version>2.2</version>
                 <configuration>
-                    <port>8081</port>
+                    <port>8082</port>
                     <path>/</path>
                     <contextReloadable>true</contextReloadable>
                     <backgroundProcessorDelay>1</backgroundProcessorDelay>
