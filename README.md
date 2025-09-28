@@ -4,6 +4,7 @@
 git clone https://github.com/huy923/project_web_java.git
 cd project_web_java
 code .
+# open the terminal and run the command
 mvn clean compile
 mvn tomcat7:run
 ```
@@ -21,27 +22,6 @@ mvn tomcat7:deploy
 ```
 
 Then you can see the result at http://localhost:8082/
-
-
-# How to deploy the project to the server with the command line
-
-```bash
-mvn clean compile
-mvn tomcat7:redeploy
-```
-
-Then you can see the result at http://localhost:8082/
-
-
-# How to deploy the project to the server with the command line
-
-```bash
-mvn clean compile
-mvn package
-```
-
-The result will be in the target folder.
-
 
 # How to deploy the project to the server with the command line
 
