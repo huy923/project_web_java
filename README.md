@@ -9,7 +9,7 @@ mvn tomcat7:run
 ```
 
 Open your browser and go to http://localhost:8082/ to see the result. 
-You can change the port number in the pom.xml file in the last line.
+You can change the port number in the [pom.xml](pom.xml) file.
 And the next time you run the project you just run the command `mvn tomcat7:run` again.
 
 
