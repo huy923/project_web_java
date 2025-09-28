@@ -22,7 +22,6 @@
         .demo-section {
             margin-bottom: 3rem;
         }
-        
         .section-title {
             color: white;
             margin-bottom: 1.5rem;
