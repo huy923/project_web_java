@@ -6,9 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bootstrap WebJars Demo</title>
     
-    <!-- Bootstrap CSS từ WebJars (Local) -->
     <link href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons từ WebJars (Local) -->
     <link href="/webjars/bootstrap-icons/1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     
     <style>
@@ -35,10 +33,10 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-10">
-                <div class="webjar-container p-5">
+                <div class="webjar-container p-5 ">
                     <div class="text-center mb-4">
                         <h1 class="display-4 text-primary">
-                            <i class="bi bi-archive-fill"></i> WebJars Demo
+                            <i class="bi bi-archive-fill "></i> WebJars Demo
                         </h1>
                         <p class="lead text-muted">Bootstrap được tải về local thông qua WebJars</p>
                         <span class="badge status-badge fs-6">
@@ -78,7 +76,7 @@
                     </div>
 
                     <!-- WebJars Info Table -->
-                    <div class="card mb-4">
+                    <div class="card mb-4 ">
                         <div class="card-header bg-primary text-white">
                             <h5 class="mb-0"><i class="bi bi-info-circle"></i> Thông tin WebJars</h5>
                         </div>
