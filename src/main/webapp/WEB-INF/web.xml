@@ -116,4 +116,42 @@
         <servlet-name>SettingsServlet</servlet-name>
         <url-pattern>/settings</url-pattern>
     </servlet-mapping>
+
+    <!-- Check-in/Check-out servlets -->
+    <servlet>
+        <servlet-name>CheckInServlet</servlet-name>
+        <servlet-class>com.example.servlet.CheckInServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CheckInServlet</servlet-name>
+        <url-pattern>/checkin</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CheckOutServlet</servlet-name>
+        <servlet-class>com.example.servlet.CheckOutServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CheckOutServlet</servlet-name>
+        <url-pattern>/checkout</url-pattern>
+    </servlet-mapping>
+
+    <!-- Room and Guest Management servlets -->
+    <servlet>
+        <servlet-name>RoomManagementServlet</servlet-name>
+        <servlet-class>com.example.servlet.RoomManagementServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RoomManagementServlet</servlet-name>
+        <url-pattern>/room-management</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>GuestManagementServlet</servlet-name>
+        <servlet-class>com.example.servlet.GuestManagementServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GuestManagementServlet</servlet-name>
+        <url-pattern>/guest-management</url-pattern>
+    </servlet-mapping>
 </web-app>

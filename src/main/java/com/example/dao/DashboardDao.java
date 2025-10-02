@@ -32,4 +32,36 @@ public class DashboardDao {
             return list;
         }
     }
+
+    public Map<String, Integer> getRoomStatistics() throws SQLException {
+        String sql = "SELECT status, COUNT(*) as count FROM rooms GROUP BY status";
+        Map<String, Integer> stats = new HashMap<>();
+        stats.put("available", 0);
+        stats.put("occupied", 0);
+        stats.put("maintenance", 0);
+        stats.put("cleaning", 0);
+
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                String status = rs.getString("status");
+                int count = rs.getInt("count");
+                stats.put(status, count);
+            }
+        }
+        return stats;
+    }
+
+    public int getTotalBookings() throws SQLException {
+        String sql = "SELECT COUNT(*) as total FROM bookings WHERE status IN ('confirmed', 'checked_in', 'checked_out')";
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+        }
+        return 0;
+    }
 }

@@ -13,23 +13,116 @@
         <h4>Quản lý phòng</h4>
         <a class="btn btn-secondary" href="<%= request.getContextPath() %>/dashboard">Quay lại</a>
     </div>
-    <div class="card bg-secondary bg-opacity-25 p-3">
-        <form class="row g-3">
-            <div class="col-md-3"><input class="form-control" placeholder="Số phòng"></div>
-            <div class="col-md-3"><input class="form-control" placeholder="Loại phòng"></div>
-            <div class="col-md-3"><input class="form-control" placeholder="Giá/đêm"></div>
-            <div class="col-md-3"><button class="btn btn-primary w-100" type="button">Thêm</button></div>
+    <!-- Add Room Form -->
+    <div class="card bg-secondary bg-opacity-25 p-3 mb-4">
+        <h6>Thêm phòng mới</h6>
+        <form action="<%= request.getContextPath() %>/room-management" method="post">
+            <input type="hidden" name="action" value="add">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <input type="text" name="roomNumber" class="form-control bg-dark text-white border-secondary"
+                        placeholder="Số phòng" required>
+                </div>
+                <div class="col-md-3">
+                    <select name="roomTypeId" class="form-select bg-dark text-white border-secondary" required>
+                        <option value="">Chọn loại phòng</option>
+                        <% java.util.List<java.util.Map<String, Object>> roomTypes =
+                            (java.util.List<java.util.Map<String, Object>>) request.getAttribute("roomTypes");
+                                if (roomTypes != null) {
+                                for (java.util.Map<String, Object> type : roomTypes) {
+                                    %>
+                                    <option value="<%= type.get(" room_type_id") %>">
+                                        <%= type.get("type_name") %> - <%= type.get("base_price") %> VNĐ/đêm
+                                    </option>
+                                    <% } } %>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <input type="number" name="floorNumber" class="form-control bg-dark text-white border-secondary"
+                        placeholder="Tầng" min="1" required>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-primary w-100" type="submit">Thêm phòng</button>
+                </div>
+            </div>
         </form>
     </div>
-    <div class="mt-4">
-        <table class="table table-dark table-striped">
-            <thead><tr><th>Phòng</th><th>Loại</th><th>Trạng thái</th><th>Giá</th><th></th></tr></thead>
-            <tbody>
-            <tr><td>101</td><td>Standard</td><td>Trống</td><td>1,200,000</td><td><button class="btn btn-sm btn-outline-light">Sửa</button></td></tr>
-            </tbody>
-        </table>
+    <!-- Rooms Table -->
+    <div class="card bg-secondary bg-opacity-25 p-3">
+        <h6>Danh sách phòng</h6>
+        <div class="table-responsive">
+            <table class="table table-dark table-striped">
+                <thead>
+                    <tr>
+                        <th>Phòng</th>
+                        <th>Loại</th>
+                        <th>Trạng thái</th>
+                        <th>Giá/đêm</th>
+                        <th>Tầng</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% java.util.List<java.util.Map<String, Object>> rooms =
+                        (java.util.List<java.util.Map<String, Object>>) request.getAttribute("rooms");
+                            if (rooms != null && !rooms.isEmpty()) {
+                            for (java.util.Map<String, Object> room : rooms) {
+                                String status = (String) room.get("status");
+                                String statusClass = status.equals("available") ? "bg-success" :
+                                status.equals("occupied") ? "bg-warning" :
+                                status.equals("maintenance") ? "bg-danger" : "bg-secondary";
+                                String statusText = status.equals("available") ? "Trống" :
+                                status.equals("occupied") ? "Có khách" :
+                                status.equals("maintenance") ? "Bảo trì" : "Dọn phòng";
+                                %>
+                                <tr>
+                                    <td>
+                                        <%= room.get("room_number") %>
+                                    </td>
+                                    <td>
+                                        <%= room.get("type_name") %>
+                                    </td>
+                                    <td><span class="badge <%= statusClass %>">
+                                            <%= statusText %>
+                                        </span></td>
+                                    <td>
+                                        <%= room.get("base_price") %> VNĐ
+                                    </td>
+                                    <td>
+                                        <%= room.get("floor_number") %>
+                                    </td>
+                                    <td>
+                                        <form action="<%= request.getContextPath() %>/room-management" method="post" class="d-inline">
+                                            <input type="hidden" name="action" value="updateStatus">
+                                            <input type="hidden" name="roomId" value="<%= room.get(" room_id") %>">
+                                            <select name="status" class="form-select form-select-sm bg-dark text-white border-secondary"
+                                                onchange="this.form.submit()">
+                                                <option value="available" <%=status.equals("available") ? "selected" : "" %>>Trống</option>
+                                                <option value="occupied" <%=status.equals("occupied") ? "selected" : "" %>>Có khách</option>
+                                                <option value="maintenance" <%=status.equals("maintenance") ? "selected" : "" %>>Bảo trì
+                                                </option>
+                                                <option value="cleaning" <%=status.equals("cleaning") ? "selected" : "" %>>Dọn phòng
+                                                </option>
+                                            </select>
+                                        </form>
+                                        <form action="<%= request.getContextPath() %>/room-management" method="post" class="d-inline ms-1">
+                                            <input type="hidden" name="action" value="delete">
+                                            <input type="hidden" name="roomId" value="<%= room.get(" room_id") %>">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger"
+                                                onclick="return confirm('Xóa phòng này?')">Xóa</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <% } } else { %>
+                                    <tr>
+                                        <td colspan="6" class="text-center text-muted">Không có dữ liệu phòng</td>
+                                    </tr>
+                                    <% } %>
+                                        </tbody>
+                                        </table>
+        </div>
     </div>
-    </div>
+</div>
 </body>
 </html>
 

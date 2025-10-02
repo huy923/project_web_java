@@ -1,6 +1,9 @@
 package com.example.servlet;
 
 import com.example.dao.DashboardDao;
+import com.example.dao.BookingDao;
+import com.example.dao.RoomDao;
+import com.example.dao.GuestDao;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,8 +24,18 @@ public class DashboardServlet extends HttpServlet {
             return;
         }
         DashboardDao dao = new DashboardDao();
+        BookingDao bookingDao = new BookingDao();
+        RoomDao roomDao = new RoomDao();
+        GuestDao guestDao = new GuestDao();
         try {
             req.setAttribute("roomStatus", dao.getCurrentRoomStatus());
+            req.setAttribute("roomStats", dao.getRoomStatistics());
+            req.setAttribute("totalBookings", dao.getTotalBookings());
+            req.setAttribute("availableRooms", bookingDao.getAvailableRooms());
+            req.setAttribute("occupiedRooms", bookingDao.getOccupiedRooms());
+            req.setAttribute("rooms", roomDao.getAllRooms());
+            req.setAttribute("roomTypes", roomDao.getRoomTypes());
+            req.setAttribute("guests", guestDao.getAllGuests());
             req.getRequestDispatcher("/index.jsp").forward(req, resp);
         } catch (SQLException e) {
             throw new ServletException(e);
