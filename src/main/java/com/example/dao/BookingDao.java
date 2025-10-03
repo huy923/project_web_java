@@ -135,4 +135,173 @@ public class BookingDao {
         }
         return -1;
     }
+
+    public List<Map<String, Object>> getAllBookings() throws SQLException {
+        String sql = "SELECT b.booking_id, b.guest_id, b.room_id, b.check_in_date, b.check_out_date, " +
+                    "b.total_amount, b.status, b.adults, b.children, b.notes, b.created_at, " +
+                    "g.first_name, g.last_name, g.phone, g.email, g.id_number, " +
+                    "r.room_number, rt.type_name, rt.base_price " +
+                    "FROM bookings b " +
+                    "JOIN guests g ON b.guest_id = g.guest_id " +
+                    "JOIN rooms r ON b.room_id = r.room_id " +
+                    "JOIN room_types rt ON r.room_type_id = rt.room_type_id " +
+                    "ORDER BY b.created_at DESC";
+        
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()) {
+            List<Map<String, Object>> bookings = new ArrayList<>();
+            while (rs.next()) {
+                Map<String, Object> booking = new HashMap<>();
+                booking.put("booking_id", rs.getInt("booking_id"));
+                booking.put("guest_id", rs.getInt("guest_id"));
+                booking.put("room_id", rs.getInt("room_id"));
+                booking.put("check_in_date", rs.getDate("check_in_date"));
+                booking.put("check_out_date", rs.getDate("check_out_date"));
+                booking.put("total_amount", rs.getBigDecimal("total_amount"));
+                booking.put("status", rs.getString("status"));
+                booking.put("adults", rs.getInt("adults"));
+                booking.put("children", rs.getInt("children"));
+                booking.put("notes", rs.getString("notes"));
+                booking.put("created_at", rs.getTimestamp("created_at"));
+                
+                // Guest information
+                booking.put("first_name", rs.getString("first_name"));
+                booking.put("last_name", rs.getString("last_name"));
+                booking.put("phone", rs.getString("phone"));
+                booking.put("email", rs.getString("email"));
+                booking.put("id_number", rs.getString("id_number"));
+                
+                // Room information
+                booking.put("room_number", rs.getString("room_number"));
+                booking.put("type_name", rs.getString("type_name"));
+                booking.put("base_price", rs.getBigDecimal("base_price"));
+                
+                bookings.add(booking);
+            }
+            return bookings;
+        }
+    }
+
+    public boolean createBookingConfirmed(int guestId, int roomId, Date checkInDate, Date checkOutDate,
+            int adults, int children, double totalAmount, String notes, int createdBy) throws SQLException {
+        String sql = "INSERT INTO bookings (guest_id, room_id, check_in_date, check_out_date, " +
+                "adults, children, total_amount, status, notes, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, 'confirmed', ?, ?)";
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, guestId);
+            ps.setInt(2, roomId);
+            ps.setDate(3, checkInDate);
+            ps.setDate(4, checkOutDate);
+            ps.setInt(5, adults);
+            ps.setInt(6, children);
+            ps.setBigDecimal(7, new java.math.BigDecimal(totalAmount));
+            ps.setString(8, notes);
+            ps.setInt(9, createdBy);
+            return ps.executeUpdate() == 1;
+        }
+    }
+
+    public boolean updateBookingStatus(int bookingId, String status) throws SQLException {
+        String sql = "UPDATE bookings SET status = ?, updated_at = NOW() WHERE booking_id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, status);
+            ps.setInt(2, bookingId);
+            return ps.executeUpdate() == 1;
+        }
+    }
+
+    public boolean updateBooking(int bookingId, Date checkInDate, Date checkOutDate, 
+            int adults, int children, String notes) throws SQLException {
+        String sql = "UPDATE bookings SET check_in_date = ?, check_out_date = ?, adults = ?, " +
+                    "children = ?, notes = ?, updated_at = NOW() WHERE booking_id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setDate(1, checkInDate);
+            ps.setDate(2, checkOutDate);
+            ps.setInt(3, adults);
+            ps.setInt(4, children);
+            ps.setString(5, notes);
+            ps.setInt(6, bookingId);
+            return ps.executeUpdate() == 1;
+        }
+    }
+
+    public double calculateTotalAmount(int roomId, Date checkInDate, Date checkOutDate) throws SQLException {
+        // Get room base price
+        String sql = "SELECT rt.base_price FROM rooms r " +
+                    "JOIN room_types rt ON r.room_type_id = rt.room_type_id " +
+                    "WHERE r.room_id = ?";
+        
+        double basePrice;
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, roomId);
+            
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    basePrice = rs.getBigDecimal("base_price").doubleValue();
+                } else {
+                    throw new SQLException("Room not found");
+                }
+            }
+        }
+        
+        // Calculate nights
+        long diffInMillies = checkOutDate.getTime() - checkInDate.getTime();
+        int nights = (int) (diffInMillies / (1000 * 60 * 60 * 24));
+        if (nights <= 0) nights = 1;
+        
+        // Calculate total
+        return basePrice * nights;
+    }
+
+    public Map<String, Object> getBookingById(int bookingId) throws SQLException {
+        String sql = "SELECT b.*, g.first_name, g.last_name, g.phone, g.email, g.id_number, " +
+                    "r.room_number, rt.type_name, rt.base_price " +
+                    "FROM bookings b " +
+                    "JOIN guests g ON b.guest_id = g.guest_id " +
+                    "JOIN rooms r ON b.room_id = r.room_id " +
+                    "JOIN room_types rt ON r.room_type_id = rt.room_type_id " +
+                    "WHERE b.booking_id = ?";
+        
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, bookingId);
+            
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Map<String, Object> booking = new HashMap<>();
+                    booking.put("booking_id", rs.getInt("booking_id"));
+                    booking.put("guest_id", rs.getInt("guest_id"));
+                    booking.put("room_id", rs.getInt("room_id"));
+                    booking.put("check_in_date", rs.getDate("check_in_date"));
+                    booking.put("check_out_date", rs.getDate("check_out_date"));
+                    booking.put("total_amount", rs.getBigDecimal("total_amount"));
+                    booking.put("status", rs.getString("status"));
+                    booking.put("adults", rs.getInt("adults"));
+                    booking.put("children", rs.getInt("children"));
+                    booking.put("notes", rs.getString("notes"));
+                    booking.put("created_at", rs.getTimestamp("created_at"));
+                    booking.put("updated_at", rs.getTimestamp("updated_at"));
+                    
+                    // Guest information
+                    booking.put("first_name", rs.getString("first_name"));
+                    booking.put("last_name", rs.getString("last_name"));
+                    booking.put("phone", rs.getString("phone"));
+                    booking.put("email", rs.getString("email"));
+                    booking.put("id_number", rs.getString("id_number"));
+                    
+                    // Room information
+                    booking.put("room_number", rs.getString("room_number"));
+                    booking.put("type_name", rs.getString("type_name"));
+                    booking.put("base_price", rs.getBigDecimal("base_price"));
+                    
+                    return booking;
+                }
+            }
+        }
+        return null;
+    }
 }

@@ -1003,7 +1003,7 @@
                     alert('Thông tin phòng: ' + roomNumber);
                 });
             });
-
+            
             // Stats card animations
             document.querySelectorAll('.stats-number').forEach(function (element) {
                 const finalNumber = parseInt(element.textContent);
