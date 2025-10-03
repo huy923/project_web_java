@@ -4,16 +4,19 @@
 
 ### **Step 1: Install Database**
 ```bash
-# Use the simplified MariaDB schema (recommended)
-mariadb -u root -p < hotel_database_simple.sql
+# Use the MySQL-compatible database schema (recommended)
+mysql -u root -p < hotel_database_mysql.sql
 
-# Or if you prefer the full version (may have compatibility issues)
-mariadb -u root -p < hotel_database_mariadb.sql
+# Or if you're using MariaDB
+mariadb -u root -p < hotel_database_mysql.sql
 ```
 
 ### **Step 2: Test Database Connection**
 ```bash
-# Connect to the database
+# Connect to the database (MySQL)
+mysql -u hotel_app -p hotel_management
+
+# Or if using MariaDB
 mariadb -u hotel_app -p hotel_management
 
 # Test queries
@@ -25,6 +28,14 @@ SELECT COUNT(*) FROM bookings;
 ### **Step 3: Update Java Dependencies**
 Add to your `pom.xml`:
 ```xml
+<!-- For MySQL -->
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <version>8.0.33</version>
+</dependency>
+
+<!-- Or for MariaDB -->
 <dependency>
     <groupId>org.mariadb.jdbc</groupId>
     <artifactId>mariadb-java-client</artifactId>
@@ -34,8 +45,8 @@ Add to your `pom.xml`:
 
 ### **Step 4: Update Database Configuration**
 Use these connection settings:
-- **Driver**: `org.mariadb.jdbc.Driver`
-- **URL**: `jdbc:mariadb://localhost:3306/hotel_management`
+- **Driver**: `com.mysql.cj.jdbc.Driver` (MySQL) or `org.mariadb.jdbc.Driver` (MariaDB)
+- **URL**: `jdbc:mysql://localhost:3306/hotel_management` (MySQL) or `jdbc:mariadb://localhost:3306/hotel_management` (MariaDB)
 - **Username**: `hotel_app`
 - **Password**: `hotel_password_2024`
 
@@ -56,25 +67,36 @@ mvn tomcat7:run
 - **Reception**: `reception` / `password`
 
 ## 📊 **What's Included**
-- ✅ 18 rooms across 3 floors
-- ✅ 6 sample guests
-- ✅ 6 active bookings
-- ✅ 8 hotel services
-- ✅ Payment records
-- ✅ Maintenance records
-- ✅ Guest reviews
+- ✅ 18 rooms across 3 floors (4 room types: Standard, Deluxe, Suite, Family)
+- ✅ 6 sample guests with Vietnamese names
+- ✅ 6 active bookings with various statuses
+- ✅ 8 hotel services (food, spa, laundry, transportation, entertainment)
+- ✅ Payment records with multiple payment types
+- ✅ Maintenance records with priority levels
+- ✅ Guest reviews and ratings
+- ✅ Inventory management system
+- ✅ Reports generation system
+- ✅ Stored procedures for business logic
+- ✅ Database triggers for automatic updates
+- ✅ Optimized indexes for performance
 
 ## 🆘 **Troubleshooting**
 
 ### **Database Connection Issues**
 ```bash
-# Check MariaDB status
+# Check MySQL/MariaDB status
+sudo systemctl status mysql
+# OR
 sudo systemctl status mariadb
 
-# Start MariaDB if not running
+# Start MySQL/MariaDB if not running
+sudo systemctl start mysql
+# OR
 sudo systemctl start mariadb
 
-# Reset MariaDB root password if needed
+# Reset MySQL/MariaDB root password if needed
+sudo mysql_secure_installation
+# OR
 sudo mariadb-secure-installation
 ```
 
@@ -90,11 +112,9 @@ FLUSH PRIVILEGES;
 ```
 
 ## 📁 **File Summary**
-- `hotel_database_simple.sql` - Simplified MariaDB schema (recommended)
-- `hotel_database_mariadb.sql` - Full MariaDB schema
-- `database_config_mariadb.properties` - MariaDB connection settings
+- `hotel_database_mysql.sql` - Complete MySQL-compatible database schema (recommended)
 - `src/main/webapp/index.jsp` - Hotel management interface
-- `MARIADB_SETUP.md` - Detailed setup guide
+- `QUICK_SETUP.md` - This setup guide
 
 ## 🎉 **Success Indicators**
 - Database installs without errors

@@ -1050,24 +1050,20 @@ DELIMITER;
 -- =====================================================
 
 -- Create a user for the application (change password in production!)
-CREATE
-USER 'hotel_app' @ 'localhost' IDENTIFIED BY 'hotel_password_2024';
+CREATE USER IF NOT EXISTS 'hotel_app'@'localhost' 
+IDENTIFIED BY 'hotel_password';
 
-GRANT
-SELECT,
-INSERT
-,
-UPDATE,
-DELETE ON hotel_management.* TO 'hotel_app' @ 'localhost';
+-- add user to hotel_management database
+GRANT SELECT, INSERT, UPDATE, DELETE 
+ON hotel_management.* TO 'hotel_app'@'localhost';
 
 FLUSH PRIVILEGES;
 
--- Update the last_cleaned timestamp for available rooms
-UPDATE rooms
-SET
-    last_cleaned = CURRENT_TIMESTAMP
-WHERE
-    status = 'available';
+-- Business logic: update timestamp phòng available
+UPDATE hotel_management.rooms
+SET last_cleaned = CURRENT_TIMESTAMP
+WHERE status = 'available';
+
 
 -- =====================================================
 -- DATABASE SCHEMA COMPLETE (MySQL Compatible)
