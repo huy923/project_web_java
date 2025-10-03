@@ -13,7 +13,7 @@
     <body class="bg-dark text-white">
         <div class="container min-vh-100 d-flex align-items-center justify-content-center">
             <div class="card bg-secondary bg-opacity-25 p-4" style="min-width: 360px;">
-                <h4 class="mb-3">Đăng nhập</h4>
+                <h4 class="mb-3 text-center text-white">Đăng nhập</h4>
                 <% String error=(String) request.getAttribute("error"); if (error !=null) { %>
                     <div class="alert alert-danger">
                         <%= error %>
@@ -21,11 +21,11 @@
                     <% } %>
                         <form action="<%= request.getContextPath() %>/login" method="post">
                             <div class="mb-3">
-                                <label class="form-label">Tài khoản</label>
+                                <label class="form-label text-white">Tài khoản</label>
                                 <input class="form-control" name="username" required>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Mật khẩu</label>
+                                <label class="form-label text-white">Mật khẩu</label>
                                 <input type="password" class="form-control" name="password" required>
                             </div>
                             <button class="btn btn-primary w-100" type="submit">Đăng nhập</button>
