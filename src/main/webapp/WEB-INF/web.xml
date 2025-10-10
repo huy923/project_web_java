@@ -15,7 +15,7 @@
     <!-- Servlet mapping example -->
     <servlet>
         <servlet-name>HelloServlet</servlet-name>
-        <servlet-class>com.example.servlet.HelloServlet</servlet-class>
+        <servlet-class>servlet.HelloServlet</servlet-class>
     </servlet>
     
     <servlet-mapping>
@@ -27,7 +27,7 @@
     <!-- Auth servlets -->
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>com.example.servlet.LoginServlet</servlet-class>
+        <servlet-class>servlet.LoginServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
@@ -36,7 +36,7 @@
 
     <servlet>
         <servlet-name>SignupServlet</servlet-name>
-        <servlet-class>com.example.servlet.SignupServlet</servlet-class>
+        <servlet-class>servlet.SignupServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>SignupServlet</servlet-name>
@@ -45,7 +45,7 @@
 
     <servlet>
         <servlet-name>LogoutServlet</servlet-name>
-        <servlet-class>com.example.servlet.LogoutServlet</servlet-class>
+        <servlet-class>servlet.LogoutServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
@@ -55,7 +55,7 @@
     <!-- Dashboard servlet -->
     <servlet>
         <servlet-name>DashboardServlet</servlet-name>
-        <servlet-class>com.example.servlet.DashboardServlet</servlet-class>
+        <servlet-class>servlet.DashboardServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>DashboardServlet</servlet-name>
@@ -65,7 +65,7 @@
     <!-- Section servlets -->
     <servlet>
         <servlet-name>RoomsServlet</servlet-name>
-        <servlet-class>com.example.servlet.RoomsServlet</servlet-class>
+        <servlet-class>servlet.RoomsServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>RoomsServlet</servlet-name>
@@ -74,7 +74,7 @@
 
     <servlet>
         <servlet-name>BookingsServlet</servlet-name>
-        <servlet-class>com.example.servlet.BookingsServlet</servlet-class>
+        <servlet-class>servlet.BookingsServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>BookingsServlet</servlet-name>
@@ -83,7 +83,7 @@
 
     <servlet>
         <servlet-name>GuestsServlet</servlet-name>
-        <servlet-class>com.example.servlet.GuestsServlet</servlet-class>
+        <servlet-class>servlet.GuestsServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>GuestsServlet</servlet-name>
@@ -92,7 +92,7 @@
 
     <servlet>
         <servlet-name>PaymentsServlet</servlet-name>
-        <servlet-class>com.example.servlet.PaymentsServlet</servlet-class>
+        <servlet-class>servlet.PaymentsServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>PaymentsServlet</servlet-name>
@@ -101,7 +101,7 @@
 
     <servlet>
         <servlet-name>ReportsServlet</servlet-name>
-        <servlet-class>com.example.servlet.ReportsServlet</servlet-class>
+        <servlet-class>servlet.ReportsServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ReportsServlet</servlet-name>
@@ -110,7 +110,7 @@
 
     <servlet>
         <servlet-name>SettingsServlet</servlet-name>
-        <servlet-class>com.example.servlet.SettingsServlet</servlet-class>
+        <servlet-class>servlet.SettingsServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>SettingsServlet</servlet-name>
@@ -120,7 +120,7 @@
     <!-- Check-in/Check-out servlets -->
     <servlet>
         <servlet-name>CheckInServlet</servlet-name>
-        <servlet-class>com.example.servlet.CheckInServlet</servlet-class>
+        <servlet-class>servlet.CheckInServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>CheckInServlet</servlet-name>
@@ -129,7 +129,7 @@
 
     <servlet>
         <servlet-name>CheckOutServlet</servlet-name>
-        <servlet-class>com.example.servlet.CheckOutServlet</servlet-class>
+        <servlet-class>servlet.CheckOutServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>CheckOutServlet</servlet-name>
@@ -139,7 +139,7 @@
     <!-- Room and Guest Management servlets -->
     <servlet>
         <servlet-name>RoomManagementServlet</servlet-name>
-        <servlet-class>com.example.servlet.RoomManagementServlet</servlet-class>
+        <servlet-class>servlet.RoomManagementServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>RoomManagementServlet</servlet-name>
@@ -148,7 +148,7 @@
 
     <servlet>
         <servlet-name>GuestManagementServlet</servlet-name>
-        <servlet-class>com.example.servlet.GuestManagementServlet</servlet-class>
+        <servlet-class>servlet.GuestManagementServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>GuestManagementServlet</servlet-name>

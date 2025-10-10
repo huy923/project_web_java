@@ -1,6 +1,6 @@
 # 🏨 Hotel Management System
 
-<div align="center">
+<div animate="fadeInUp" style="animation-duration: 1s;" align="center">
 
 ![Hotel Management System](https://img.shields.io/badge/Hotel-Management%20System-blue?style=for-the-badge&logo=hotel)
 ![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=white)
@@ -167,7 +167,7 @@ Add to your `pom.xml`:
 driver=com.mysql.cj.jdbc.Driver
 url=jdbc:mysql://localhost:3306/hotel_management
 username=hotel_app
-password=hotel_password_2024
+password=hotel_password
 ```
 
 ---

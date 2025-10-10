@@ -341,7 +341,7 @@
                                 </div>
                                 </div>
                                 <div class="row">
-                                    <!-- Room Status -->
+                                   <!-- Room Status -->
                                     <div class="col-lg-8 mb-4">
                                         <div class="dashboard-card p-4">
                                             <h5 class="mb-3">

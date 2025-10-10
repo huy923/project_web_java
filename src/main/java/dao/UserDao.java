@@ -1,7 +1,7 @@
-package com.example.dao;
+package dao;
 
-import com.example.model.User;
-import com.example.util.DatabaseConnection;
+import model.User;
+import util.DatabaseConnection;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.*;

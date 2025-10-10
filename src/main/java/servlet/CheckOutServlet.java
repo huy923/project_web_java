@@ -1,6 +1,6 @@
-package com.example.servlet;
+package servlet;
 
-import com.example.dao.BookingDao;
+import dao.BookingDao;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

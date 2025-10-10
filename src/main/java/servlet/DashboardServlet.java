@@ -1,9 +1,9 @@
-package com.example.servlet;
+package servlet;
 
-import com.example.dao.DashboardDao;
-import com.example.dao.BookingDao;
-import com.example.dao.RoomDao;
-import com.example.dao.GuestDao;
+import dao.DashboardDao;
+import dao.BookingDao;
+import dao.RoomDao;
+import dao.GuestDao;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

@@ -1,7 +1,7 @@
-package com.example.servlet;
+package servlet;
 
-import com.example.dao.PaymentDao;
-import com.example.model.User;
+import dao.PaymentDao;
+import model.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -96,5 +96,3 @@ public class PaymentsServlet extends HttpServlet {
         resp.sendRedirect(req.getContextPath() + "/payments");
     }
 }
-
-

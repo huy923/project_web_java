@@ -1,6 +1,6 @@
-package com.example.servlet;
+package servlet;
 
-import com.example.dao.RoomDao;
+import dao.RoomDao;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet(name = "RoomManagementServlet", urlPatterns = {"/room-management"})
+@WebServlet(name = "RoomManagementServlet", urlPatterns = { "/room-management" })
 public class RoomManagementServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

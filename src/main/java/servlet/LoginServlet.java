@@ -1,7 +1,7 @@
-package com.example.servlet;
+package servlet;
 
-import com.example.dao.UserDao;
-import com.example.model.User;
+import dao.UserDao;
+import model.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

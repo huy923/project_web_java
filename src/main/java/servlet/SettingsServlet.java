@@ -1,4 +1,4 @@
-package com.example.servlet;
+package servlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet(name = "SettingsServlet", urlPatterns = {"/settings"})
+@WebServlet(name = "SettingsServlet", urlPatterns = { "/settings" })
 public class SettingsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -20,5 +20,3 @@ public class SettingsServlet extends HttpServlet {
         req.getRequestDispatcher("/sections/settings.jsp").forward(req, resp);
     }
 }
-
-

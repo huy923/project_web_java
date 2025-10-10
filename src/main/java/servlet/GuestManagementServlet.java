@@ -1,6 +1,6 @@
-package com.example.servlet;
+package servlet;
 
-import com.example.dao.GuestDao;
+import dao.GuestDao;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet(name = "GuestManagementServlet", urlPatterns = {"/guest-management"})
+@WebServlet(name = "GuestManagementServlet", urlPatterns = { "/guest-management" })
 public class GuestManagementServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

@@ -1,4 +1,4 @@
-package com.example.util;
+package util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,7 +11,6 @@ public class DatabaseConnection {
 
     private DatabaseConnection() {
     }
-
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }

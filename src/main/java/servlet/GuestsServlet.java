@@ -1,4 +1,4 @@
-package com.example.servlet;
+package servlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet(name = "RoomsServlet", urlPatterns = {"/rooms"})
-public class RoomsServlet extends HttpServlet {
+@WebServlet(name = "GuestsServlet", urlPatterns = { "/guests" })
+public class GuestsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(false);
@@ -17,8 +17,6 @@ public class RoomsServlet extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/login");
             return;
         }
-        req.getRequestDispatcher("/sections/rooms.jsp").forward(req, resp);
+        req.getRequestDispatcher("/sections/guests.jsp").forward(req, resp);
     }
 }
-
-
