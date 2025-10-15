@@ -28,7 +28,7 @@ public class DashboardServlet extends HttpServlet {
         RoomDao roomDao = new RoomDao();
         GuestDao guestDao = new GuestDao();
         try {
-            req.setAttribute("roomStatus", dao.getCurrentRoomStatus());
+            // Room status is now loaded via AJAX, so we don't need to load it here
             req.setAttribute("roomStats", dao.getRoomStatistics());
             req.setAttribute("totalBookings", dao.getTotalBookings());
             req.setAttribute("availableRooms", bookingDao.getAvailableRooms());

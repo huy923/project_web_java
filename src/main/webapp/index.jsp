@@ -1,5 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="java.util.Date" %>
 <%@ page import="java.util.List" %>
     <%@ page import="java.util.ArrayList" %>
         <%@ page import="java.util.HashMap" %>
@@ -10,10 +9,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hotel Management System - Dashboard</title>
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"> -->
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet"> -->
-         <link href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="/webjars/bootstrap-icons/1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="shortcut icon" href="#">
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -210,6 +208,26 @@
         .sidebar-menu a.active {
             background: rgba(255, 255, 255, 0.2);
         }
+        
+        /* Loading animation */
+        .spin {
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Room card hover effect */
+        .room-card {
+            transition: all 0.3s ease;
+        }
+        
+        .room-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
     </style>
 </head>
 <body>
@@ -346,42 +364,17 @@
                                         <div class="dashboard-card p-4">
                                             <h5 class="mb-3">
                                                 <i class="bi bi-grid-3x3"></i> Trạng thái phòng
+                                                <button class="btn btn-sm btn-outline-light ms-2" onclick="refreshRoomStatus()" id="refreshBtn">
+                                                    <i class="bi bi-arrow-clockwise"></i> Làm mới
+                                                </button>
                                             </h5>
-                                            <div class="row">
-                                                <% java.util.List<java.util.Map<String, Object>> roomStatus = (java.util.List<java.util.Map<String,
-                                                        Object>>) request.getAttribute("roomStatus");
-                                                        if (roomStatus != null) {
-                                                        for (java.util.Map<String, Object> row : roomStatus) {
-                                                            String roomNumber = String.valueOf(row.get("room_number"));
-                                                            String status = String.valueOf(row.get("status"));
-                                                            String statusClass = "status-" + status;
-                                                            String statusText = status.equals("available") ? "Trống" :
-                                                            status.equals("occupied") ? "Có khách" :
-                                                            status.equals("maintenance") ? "Bảo trì" : "Dọn phòng";
-                                                            String statusIcon = status.equals("available") ? "bi-check-circle" :
-                                                            status.equals("occupied") ? "bi-person-fill" :
-                                                            status.equals("maintenance") ? "bi-tools" : "bi-brush";
-                                %>
-                                <div class="col-md-3 col-sm-4 col-6 mb-3">
-                                    <div class="room-card text-center" style="cursor: pointer;" onclick="showRoomDetails(<%= row.get(" room_id") %>, '<%=
-                                            roomNumber %>', '<%= row.get("type_name") %>',
-                                                '<%= row.get("base_price") %>', '<%= status %>',
-                                                        '<%= row.get("first_name") !=null ? row.get("first_name") : "" %>',
-                                                            '<%= row.get("last_name") !=null ? row.get("last_name") : "" %>',
-                                                                '<%= row.get("phone") !=null ? row.get("phone") : "" %>',
-                                                                    '<%= row.get("check_in_date") !=null ? row.get("check_in_date") : "" %>',
-                                                                        '<%= row.get("check_out_date") !=null ? row.get("check_out_date") : "" %>')">
-                                                                            <h6 class="mb-2">Phòng <%= roomNumber %>
-                                                                            </h6>
-                                                                            <span class="room-status <%= statusClass %>">
-                                                                                <i class="bi <%= statusIcon %>"></i>
-                                                                                <%= statusText %>
-                                                                            </span>
-                                    </div>
-                                    </div>
-                                                            <% } } else { %>
-                                                                <div class="text-muted">Không có dữ liệu phòng. Hãy đăng nhập.</div>
-                                                                <% } %>
+                                            <div class="row" id="roomStatusContainer">
+                                                <div class="col-12 text-center">
+                                                    <div class="spinner-border text-light" role="status">
+                                                        <span class="visually-hidden">Đang tải...</span>
+                                                    </div>
+                                                    <p class="mt-2">Đang tải dữ liệu phòng...</p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -432,62 +425,6 @@
                                     </div>
                                     </div>
                                     </div>
-
-                <!-- System Info -->
-                <div class="row">
-                    <div class="col-12">
-                        <div class="dashboard-card p-4">
-                            <div class="row align-items-center">
-                                <div class="col-md-8">
-                                    <h6 class="mb-1">
-                                        <i class="bi bi-info-circle"></i> Thông tin hệ thống
-                                    </h6>
-                                    <small class="text-muted">
-                                        Server: <%= application.getServerInfo() %> |
-                                            Java: <%= System.getProperty("java.version") %> |
-                                                Thời gian: <%= new Date() %>
-                                    </small>
-                                </div>
-                                <div class="col-md-4 text-end">
-                                    <button class="btn-hotel-outline btn-sm" data-bs-toggle="modal" data-bs-target="#systemInfoModal">
-                                        <i class="bi bi-gear"></i> Chi tiết
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- System Info Modal -->
-    <div class="modal fade" id="systemInfoModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content bg-dark text-white">
-                <div class="modal-header">
-                    <h5 class="modal-title">📊 Thông tin hệ thống</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <table class="table table-dark table-striped">
-                        <tr>
-                            <td><strong>Thời gian:</strong></td>
-                            <td><%= new Date() %></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Server Info:</strong></td>
-                            <td><%= application.getServerInfo() %></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Java Version:</strong></td>
-                            <td><%= System.getProperty("java.version") %></td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                </div>
             </div>
         </div>
     </div>
@@ -990,20 +927,173 @@
     <!-- Bootstrap JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Auto-refresh dashboard every 30 seconds
+        // Auto-refresh room status every 30 seconds
         setInterval(function () {
-            // You can add AJAX calls here to refresh data
-            console.log('Dashboard auto-refresh...');
+            refreshRoomStatus();
         }, 30000);
+
+        // Room Status AJAX Functions
+        function refreshRoomStatus() {
+            const container = document.getElementById('roomStatusContainer');
+            const refreshBtn = document.getElementById('refreshBtn');
+            
+            
+            // Show loading state
+            if (refreshBtn) {
+                refreshBtn.innerHTML = '<i class="bi bi-arrow-clockwise spin"></i> Đang tải...';
+                refreshBtn.disabled = true;
+            }
+            
+            const apiUrl = '<%= request.getContextPath() %>/api/room-status';
+            
+            fetch(apiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok: ' + response.status);
+                    }
+                    return response.text(); 
+                })
+                .then(text => {
+                    try {
+                        const data = JSON.parse(text);
+                        if (data.success) {
+                            renderRoomStatus(data.data);
+                        } else {
+                            showError('Lỗi: ' + data.message);
+                        }
+                    } catch (e) {
+                        console.error('JSON parse error:', e);
+                        showError('Lỗi phân tích dữ liệu: ' + e.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error);
+                    console.error('Error details:', error.message);
+                    showError('Không thể tải dữ liệu phòng. Vui lòng thử lại. Chi tiết: ' + error.message);
+                })
+                .finally(() => {
+                    // Reset button state
+                    if (refreshBtn) {
+                        refreshBtn.innerHTML = '<i class="bi bi-arrow-clockwise"></i> Làm mới';
+                        refreshBtn.disabled = false;
+                    }
+                });
+        }
+        
+        function renderRoomStatus(roomData) {
+            const container = document.getElementById('roomStatusContainer');
+            
+            if (!roomData || roomData.length === 0) {
+                if (container) {
+                    container.innerHTML = '<div class="col-12 text-center text-muted">Không có dữ liệu phòng</div>';
+                } else {
+                    console.error('Container not found for no data message');
+                }
+                return;
+            }
+            
+            let html = '';
+            roomData.forEach((room, index) => {
+                
+                const roomNumber = room.room_number || '';
+                const status = room.status || 'available';
+                const statusClass = 'status-' + status;
+                const statusText = getStatusText(status);
+                const statusIcon = getStatusIcon(status);
+                const typeName = room.type_name || '';
+                const basePrice = room.base_price || 0;
+                const firstName = room.first_name || '';
+                const lastName = room.last_name || '';
+                const phone = room.phone || '';
+                const checkInDate = room.check_in_date || '';
+                const checkOutDate = room.check_out_date || '';
+                      
+                // Tạo HTML string trực tiếp với escape ký tự đặc biệt
+                const escapedRoomId = String(room.room_id || '').replace(/'/g, "\\'");
+                const escapedRoomNumber = String(roomNumber).replace(/'/g, "\\'");
+                const escapedTypeName = String(typeName).replace(/'/g, "\\'");
+                const escapedFirstName = String(firstName).replace(/'/g, "\\'");
+                const escapedLastName = String(lastName).replace(/'/g, "\\'");
+                const escapedPhone = String(phone).replace(/'/g, "\\'");
+                const escapedCheckInDate = String(checkInDate).replace(/'/g, "\\'");
+                const escapedCheckOutDate = String(checkOutDate).replace(/'/g, "\\'");
+                
+                const roomHtml = `
+                    <div class="col-md-3 col-sm-4 col-6 mb-3">
+                        <div class="room-card text-center" style="cursor: pointer;" onclick="showRoomDetails('${escapedRoomId}', '${escapedRoomNumber}', '${escapedTypeName}', '${basePrice}', '${status}', '${escapedFirstName}', '${escapedLastName}', '${escapedPhone}', '${escapedCheckInDate}', '${escapedCheckOutDate}')">
+                            <h6 class="mb-2">Phòng ${roomNumber}</h6>
+                            <span class="room-status ${statusClass}">
+                                <i class="bi ${statusIcon}"></i>
+                                ${statusText}
+                            </span>
+                        </div>
+                    </div>
+                `;
+                
+                html += roomHtml;
+            });
+            
+            if (container) {
+                container.innerHTML = html;
+            } else {
+                console.error('Container not found when setting HTML');
+            }
+        }
+        
+        function getStatusText(status) {
+            switch(status) {
+                case 'available': return 'Trống';
+                case 'occupied': return 'Có khách';
+                case 'maintenance': return 'Bảo trì';
+                case 'cleaning': return 'Dọn phòng';
+                default: return status;
+            }
+        }
+        
+        function getStatusIcon(status) {
+            switch(status) {
+                case 'available': return 'bi-check-circle';
+                case 'occupied': return 'bi-person-fill';
+                case 'maintenance': return 'bi-tools';
+                case 'cleaning': return 'bi-brush';
+                default: return 'bi-question-circle';
+            }
+        }
+        
+        function showError(message) {
+            const container = document.getElementById('roomStatusContainer');
+            if (container) {
+                container.innerHTML = `
+                    <div class="col-12 text-center">
+                        <div class="alert alert-warning" role="alert">
+                            <i class="bi bi-exclamation-triangle"></i> ${message}
+                        </div>
+                    </div>
+                `;
+            } else {
+                console.error('Container not found for error display');
+            }
+        }
 
         // Add some interactive functionality
         document.addEventListener('DOMContentLoaded', function () {
-            // Room status click handlers
-            document.querySelectorAll('.room-card').forEach(function (card) {
-                card.addEventListener('click', function () {
-                    const roomNumber = this.querySelector('h6').textContent;
-                    alert('Thông tin phòng: ' + roomNumber);
-                });
+            // Load room status on page load
+            
+            // Kiểm tra xem các element có tồn tại không
+            const container = document.getElementById('roomStatusContainer');
+            const refreshBtn = document.getElementById('refreshBtn');
+            
+            if (container) {
+                refreshRoomStatus();
+            } else {
+                console.error('roomStatusContainer not found!');
+            }
+            
+            // Room status click handlers (will be added dynamically)
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.room-card')) {
+                    const roomNumber = e.target.closest('.room-card').querySelector('h6').textContent;
+                }
             });
             
             // Stats card animations
@@ -1029,7 +1119,6 @@
                     if (this.getAttribute('href') === '#') {
                         e.preventDefault();
                         // Add your functionality here
-                        console.log('Button clicked: ' + this.textContent.trim());
                     }
                 });
             });
@@ -1045,7 +1134,6 @@
                         l.classList.remove('active');
                     });
                     this.classList.add('active');
-                    console.log('Menu clicked: ' + this.textContent.trim());
                     }
                     // Otherwise, allow navigation to proceed
                 });
@@ -1161,13 +1249,14 @@
             document.getElementById('editLastName').value = lastName;
             document.getElementById('editIdNumber').value = idNumber;
             document.getElementById('editPhone').value = phone;
-            document.getElementById('editEmail').value = ''; // Email not shown in table
-            document.getElementById('editNationality').value = 'Việt Nam'; // Default value
+            document.getElementById('editEmail').value = ''; 
+            document.getElementById('editNationality').value = 'Việt Nam'; 
             
             // Show the edit modal
             const modal = new bootstrap.Modal(document.getElementById('editGuestModal'));
             modal.show();
         }
+        
     </script>
 </body>
 </html>

@@ -154,4 +154,14 @@
         <servlet-name>GuestManagementServlet</servlet-name>
         <url-pattern>/guest-management</url-pattern>
     </servlet-mapping>
+
+    <!-- API servlets -->
+    <servlet>
+        <servlet-name>RoomStatusApiServlet</servlet-name>
+        <servlet-class>api.RoomStatusApiServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RoomStatusApiServlet</servlet-name>
+        <url-pattern>/api/room-status</url-pattern>
+    </servlet-mapping>
 </web-app>
