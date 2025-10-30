@@ -137,15 +137,16 @@ public class BookingDao {
     }
 
     public List<Map<String, Object>> getAllBookings() throws SQLException {
-        String sql = "SELECT b.booking_id, b.guest_id, b.room_id, b.check_in_date, b.check_out_date, " +
-                    "b.total_amount, b.status, b.adults, b.children, b.notes, b.created_at, " +
-                    "g.first_name, g.last_name, g.phone, g.email, g.id_number, " +
-                    "r.room_number, rt.type_name, rt.base_price " +
-                    "FROM bookings b " +
-                    "JOIN guests g ON b.guest_id = g.guest_id " +
-                    "JOIN rooms r ON b.room_id = r.room_id " +
-                    "JOIN room_types rt ON r.room_type_id = rt.room_type_id " +
-                    "ORDER BY b.created_at DESC";
+        String sql = """
+                SELECT b.booking_id, b.guest_id, b.room_id, b.check_in_date, b.check_out_date,
+                       b.total_amount, b.status, b.adults, b.children, b.created_at,
+                       g.first_name, g.last_name, g.phone, g.email, g.id_number,
+                       r.room_number, rt.type_name, rt.base_price
+                FROM bookings b
+                JOIN guests g ON b.guest_id = g.guest_id
+                JOIN rooms r ON b.room_id = r.room_id
+                JOIN room_types rt ON r.room_type_id = rt.room_type_id
+                ORDER BY b.created_at DESC;""";
         
         try (Connection conn = DatabaseConnection.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql);
@@ -162,7 +163,6 @@ public class BookingDao {
                 booking.put("status", rs.getString("status"));
                 booking.put("adults", rs.getInt("adults"));
                 booking.put("children", rs.getInt("children"));
-                booking.put("notes", rs.getString("notes"));
                 booking.put("created_at", rs.getTimestamp("created_at"));
                 
                 // Guest information
@@ -184,9 +184,9 @@ public class BookingDao {
     }
 
     public boolean createBookingConfirmed(int guestId, int roomId, Date checkInDate, Date checkOutDate,
-            int adults, int children, double totalAmount, String notes, int createdBy) throws SQLException {
+            int adults, int children, double totalAmount, int createdBy) throws SQLException {
         String sql = "INSERT INTO bookings (guest_id, room_id, check_in_date, check_out_date, " +
-                "adults, children, total_amount, status, notes, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, 'confirmed', ?, ?)";
+                "adults, children, total_amount, status, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, 'confirmed', ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, guestId);
@@ -196,7 +196,6 @@ public class BookingDao {
             ps.setInt(5, adults);
             ps.setInt(6, children);
             ps.setBigDecimal(7, new java.math.BigDecimal(totalAmount));
-            ps.setString(8, notes);
             ps.setInt(9, createdBy);
             return ps.executeUpdate() == 1;
         }
@@ -213,16 +212,15 @@ public class BookingDao {
     }
 
     public boolean updateBooking(int bookingId, Date checkInDate, Date checkOutDate, 
-            int adults, int children, String notes) throws SQLException {
+            int adults, int children) throws SQLException {
         String sql = "UPDATE bookings SET check_in_date = ?, check_out_date = ?, adults = ?, " +
-                    "children = ?, notes = ?, updated_at = NOW() WHERE booking_id = ?";
+                    "children = ?, updated_at = NOW() WHERE booking_id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setDate(1, checkInDate);
             ps.setDate(2, checkOutDate);
             ps.setInt(3, adults);
             ps.setInt(4, children);
-            ps.setString(5, notes);
             ps.setInt(6, bookingId);
             return ps.executeUpdate() == 1;
         }
@@ -282,7 +280,6 @@ public class BookingDao {
                     booking.put("status", rs.getString("status"));
                     booking.put("adults", rs.getInt("adults"));
                     booking.put("children", rs.getInt("children"));
-                    booking.put("notes", rs.getString("notes"));
                     booking.put("created_at", rs.getTimestamp("created_at"));
                     booking.put("updated_at", rs.getTimestamp("updated_at"));
                     

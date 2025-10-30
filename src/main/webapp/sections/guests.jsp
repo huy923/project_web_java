@@ -323,9 +323,9 @@
                             <label class="form-label">Số điện thoại</label>
                             <input type="tel" name="phone" class="form-control" placeholder="Nhập SĐT" required>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-5">
                             <label class="form-label">&nbsp;</label>
-                            <button class="btn-hotel w-100" type="submit">
+                            <button class="btn-hotel" type="submit">
                                 <i class="bi bi-plus"></i> Thêm khách
                             </button>
                         </div>
@@ -360,12 +360,12 @@
                                 <option value="inactive">Không có phòng</option>
                             </select>
                         </div>
-                        <div class="col-md-3">
-                            <button class="btn-hotel" onclick="filterGuests()">
-                                <i class="bi bi-funnel"></i> Lọc
+                        <div class="col-md-3 d-flex">
+                            <button class="btn btn-hotel d-flex" onclick="filterGuests()">
+                                <i class="bi bi-funnel mr-2"></i> Lọc
                             </button>
-                            <button class="btn-hotel-outline" onclick="clearFilters()">
-                                <i class="bi bi-x-circle"></i> Xóa bộ lọc
+                            <button class="btn-hotel-outline d-flex" onclick="clearFilters()">
+                                <i class="bi bi-x-circle pr-2"></i> Xóa bộ lọc
                             </button>
                         </div>
                     </div>

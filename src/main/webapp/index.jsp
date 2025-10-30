@@ -768,7 +768,7 @@
                         </div>
                         <div class="col-md-8">
                             <h6>Danh sách khách hàng</h6>
-                    <div class="table-responsive">
+                    <div class="table-responsive" id="show">
                         <table class="table table-dark table-striped">
                             <thead>
                                 <tr>
@@ -916,7 +916,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer" >
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
                     <button type="submit" form="editGuestForm" class="btn-hotel">Cập nhật</button>
                 </div>
@@ -982,7 +982,6 @@
         
         function renderRoomStatus(roomData) {
             const container = document.getElementById('roomStatusContainer');
-            
             if (!roomData || roomData.length === 0) {
                 if (container) {
                     container.innerHTML = '<div class="col-12 text-center text-muted">Không có dữ liệu phòng</div>';
@@ -991,40 +990,16 @@
                 }
                 return;
             }
-            
             let html = '';
             roomData.forEach((room, index) => {
                 
-                const roomNumber = room.room_number || '';
                 const status = room.status || 'available';
-                const statusClass = 'status-' + status;
-                const statusText = getStatusText(status);
-                const statusIcon = getStatusIcon(status);
-                const typeName = room.type_name || '';
-                const basePrice = room.base_price || 0;
-                const firstName = room.first_name || '';
-                const lastName = room.last_name || '';
-                const phone = room.phone || '';
-                const checkInDate = room.check_in_date || '';
-                const checkOutDate = room.check_out_date || '';
-                      
-                // Tạo HTML string trực tiếp với escape ký tự đặc biệt
-                const escapedRoomId = String(room.room_id || '').replace(/'/g, "\\'");
-                const escapedRoomNumber = String(roomNumber).replace(/'/g, "\\'");
-                const escapedTypeName = String(typeName).replace(/'/g, "\\'");
-                const escapedFirstName = String(firstName).replace(/'/g, "\\'");
-                const escapedLastName = String(lastName).replace(/'/g, "\\'");
-                const escapedPhone = String(phone).replace(/'/g, "\\'");
-                const escapedCheckInDate = String(checkInDate).replace(/'/g, "\\'");
-                const escapedCheckOutDate = String(checkOutDate).replace(/'/g, "\\'");
-                
+                const showRoomDetail = `<div class="room-card text-center" style="cursor: pointer;" onclick="showRoomDetails(` + room.room_id +`,`+ room.room_number + `,`+ room.type_name +`,`+ room.base_price +`,`+room.status+`,`+ room.firstName +`,`+ room.lastName+`,`+ room.phone+`,` + room.check_in_date+`,`+room.check_out_date+`)">`;
                 const roomHtml = `
-                    <div class="col-md-3 col-sm-4 col-6 mb-3">
-                        <div class="room-card text-center" style="cursor: pointer;" onclick="showRoomDetails('${escapedRoomId}', '${escapedRoomNumber}', '${escapedTypeName}', '${basePrice}', '${status}', '${escapedFirstName}', '${escapedLastName}', '${escapedPhone}', '${escapedCheckInDate}', '${escapedCheckOutDate}')">
-                            <h6 class="mb-2">Phòng ${roomNumber}</h6>
-                            <span class="room-status ${statusClass}">
-                                <i class="bi ${statusIcon}"></i>
-                                ${statusText}
+                    <div class="col-md-3 col-sm-4 col-6 mb-3 d-flex" style="width: px;">`+showRoomDetail+`
+                            <h6 class="mb-2">Phòng `+room.room_number+`</h6>
+                            <span class="status-`+status+`">
+                                `+getStatusText(status)+`
                             </span>
                         </div>
                     </div>
@@ -1047,16 +1022,6 @@
                 case 'maintenance': return 'Bảo trì';
                 case 'cleaning': return 'Dọn phòng';
                 default: return status;
-            }
-        }
-        
-        function getStatusIcon(status) {
-            switch(status) {
-                case 'available': return 'bi-check-circle';
-                case 'occupied': return 'bi-person-fill';
-                case 'maintenance': return 'bi-tools';
-                case 'cleaning': return 'bi-brush';
-                default: return 'bi-question-circle';
             }
         }
         

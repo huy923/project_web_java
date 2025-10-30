@@ -304,12 +304,12 @@
                     <div class="row align-items-end">
                         <div class="col-md-3 mb-3">
                             <label class="form-label">Tìm kiếm khách hàng</label>
-                            <input type="text" class="form-control bg-dark text-white border-secondary" 
+                            <input type="text" class="form-control text-white border-secondary" 
                                    placeholder="Nhập tên khách hàng" id="guestSearch">
                         </div>
                         <div class="col-md-2 mb-3">
                             <label class="form-label">Trạng thái</label>
-                            <select class="form-select bg-dark text-white border-secondary" id="statusFilter">
+                            <select class="form-select text-white border-secondary" id="statusFilter">
                                 <option value="">Tất cả</option>
                                 <option value="confirmed">Chờ nhận phòng</option>
                                 <option value="checked_in">Đang ở</option>
@@ -319,11 +319,11 @@
                         </div>
                         <div class="col-md-2 mb-3">
                             <label class="form-label">Từ ngày</label>
-                            <input type="date" class="form-control bg-dark text-white border-secondary" id="fromDate">
+                            <input type="date" class="form-control text-white border-secondary" id="fromDate">
                         </div>
                         <div class="col-md-2 mb-3">
                             <label class="form-label">Đến ngày</label>
-                            <input type="date" class="form-control bg-dark text-white border-secondary" id="toDate">
+                            <input type="date" class="form-control text-white border-secondary" id="toDate">
                         </div>
                         <div class="col-md-3 mb-3">
                             <button class="btn-hotel me-2" onclick="filterBookings()">
@@ -472,7 +472,7 @@
     <!-- New Booking Modal -->
     <div class="modal fade" id="newBookingModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
-            <div class="modal-content bg-dark text-white">
+            <div class="modal-content text-white">
                 <div class="modal-header">
                     <h5 class="modal-title">
                         <i class="bi bi-calendar-plus"></i> Đặt phòng mới
@@ -485,27 +485,27 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Họ tên khách hàng</label>
-                                <input type="text" name="firstName" class="form-control bg-dark text-white border-secondary" required>
+                                <input type="text" name="firstName" class="form-control text-white border-secondary" required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Họ</label>
-                                <input type="text" name="lastName" class="form-control bg-dark text-white border-secondary" required>
+                                <input type="text" name="lastName" class="form-control text-white border-secondary" required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Số điện thoại</label>
-                                <input type="tel" name="phone" class="form-control bg-dark text-white border-secondary" required>
+                                <input type="tel" name="phone" class="form-control text-white border-secondary" required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Email</label>
-                                <input type="email" name="email" class="form-control bg-dark text-white border-secondary">
+                                <input type="email" name="email" class="form-control text-white border-secondary">
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">CMND/CCCD</label>
-                                <input type="text" name="idNumber" class="form-control bg-dark text-white border-secondary" required>
+                                <input type="text" name="idNumber" class="form-control text-white border-secondary" required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Phòng</label>
-                                <select name="roomId" class="form-select bg-dark text-white border-secondary" required>
+                                <select name="roomId" class="form-select text-white border-secondary" required>
                                     <option value="">Chọn phòng</option>
                                     <% 
                                     List<Map<String, Object>> availableRooms = (List<Map<String, Object>>) request.getAttribute("availableRooms");
@@ -524,23 +524,23 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Ngày nhận phòng</label>
-                                <input type="date" name="checkInDate" class="form-control bg-dark text-white border-secondary" required>
+                                <input type="date" name="checkInDate" class="form-control text-white border-secondary" required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Ngày trả phòng</label>
-                                <input type="date" name="checkOutDate" class="form-control bg-dark text-white border-secondary" required>
+                                <input type="date" name="checkOutDate" class="form-control text-white border-secondary" required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Số người lớn</label>
-                                <input type="number" name="adults" class="form-control bg-dark text-white border-secondary" value="1" min="1" required>
+                                <input type="number" name="adults" class="form-control text-white border-secondary" value="1" min="1" required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Số trẻ em</label>
-                                <input type="number" name="children" class="form-control bg-dark text-white border-secondary" value="0" min="0">
+                                <input type="number" name="children" class="form-control text-white border-secondary" value="0" min="0">
                             </div>
                             <div class="col-md-12 mb-3">
                                 <label class="form-label">Ghi chú</label>
-                                <textarea name="notes" class="form-control bg-dark text-white border-secondary" rows="3"></textarea>
+                                <textarea name="notes" class="form-control text-white border-secondary" rows="3"></textarea>
                             </div>
                         </div>
                     </form>
@@ -556,7 +556,7 @@
     <!-- Booking Details Modal -->
     <div class="modal fade" id="bookingDetailsModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
-            <div class="modal-content bg-dark text-white">
+            <div class="modal-content text-white">
                 <div class="modal-header">
                     <h5 class="modal-title">
                         <i class="bi bi-calendar-check"></i> Chi tiết đặt phòng

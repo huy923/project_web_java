@@ -6,6 +6,7 @@
 -- =====================================================
 
 -- Drop existing database if exists (for fresh installation)
+
 DROP DATABASE IF EXISTS hotel_management;
 
 CREATE DATABASE hotel_management;
@@ -414,6 +415,18 @@ VALUES
     ('304', 4, 3, 'available'),
     ('305', 4, 3, 'available'),
     ('306', 4, 3, 'available');
+SET NAMES utf8mb4;
+ALTER DATABASE hotel_management CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+SELECT CONCAT(
+    'ALTER TABLE `', TABLE_NAME,
+    '` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;'
+)
+FROM INFORMATION_SCHEMA.TABLES
+WHERE TABLE_SCHEMA = 'hotel_management';
+ALTER TABLE `guests` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+ALTER TABLE `rooms` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+ALTER TABLE `room_types` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+ALTER TABLE `users` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Insert Guests
 INSERT INTO
@@ -886,7 +899,7 @@ FROM rooms r
     JOIN room_types rt ON r.room_type_id = rt.room_type_id
     LEFT JOIN bookings b ON r.room_id = b.room_id
         AND b.status IN ('confirmed', 'checked_in')
-        AND DATE(NOW()) BETWEEN b.check_in_date AND b.check_out_date
+        -- AND DATE(NOW()) BETWEEN b.check_in_date AND b.check_out_date
     LEFT JOIN guests g ON b.guest_id = g.guest_id;
 
 -- View for daily occupancy report

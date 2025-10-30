@@ -362,8 +362,8 @@
                     <h5 class="mb-3">
                         <i class="bi bi-table"></i> Danh sách phòng
                     </h5>
-                    <div class="table-responsive">
-                        <table class="table table-dark table-striped">
+                    <div class="table-responsive border-radius-5">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th><i class="bi bi-hash"></i> Số phòng</th>

@@ -1,12 +1,14 @@
 package dao;
 
-import util.DatabaseConnection;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import util.DatabaseConnection;
 
 public class DashboardDao {
     public List<Map<String, Object>> getCurrentRoomStatus() throws SQLException {
@@ -52,7 +54,6 @@ public class DashboardDao {
         }
         return stats;
     }
-
     public int getTotalBookings() throws SQLException {
         String sql = "SELECT COUNT(*) as total FROM bookings WHERE status IN ('confirmed', 'checked_in', 'checked_out')";
         try (Connection conn = DatabaseConnection.getConnection();
