@@ -189,7 +189,7 @@
         </div>
     </nav>
     
-    <div class="container main-container">
+    <div class="px-2 main-container">
         <div class="row">
             <!-- Sidebar -->
             <div class="col-lg-3 col-md-4 mb-4">
@@ -309,7 +309,7 @@
                         </div>
                         <div class="col-md-2 mb-3">
                             <label class="form-label">Trạng thái</label>
-                            <select class="form-select text-white border-secondary" id="statusFilter">
+                            <select class="form-select border-secondary" id="statusFilter">
                                 <option value="">Tất cả</option>
                                 <option value="confirmed">Chờ nhận phòng</option>
                                 <option value="checked_in">Đang ở</option>
@@ -319,11 +319,11 @@
                         </div>
                         <div class="col-md-2 mb-3">
                             <label class="form-label">Từ ngày</label>
-                            <input type="date" class="form-control text-white border-secondary" id="fromDate">
+                            <input type="date" class="form-control border-secondary" id="fromDate">
                         </div>
                         <div class="col-md-2 mb-3">
                             <label class="form-label">Đến ngày</label>
-                            <input type="date" class="form-control text-white border-secondary" id="toDate">
+                            <input type="date" class="form-control border-secondary" id="toDate">
                         </div>
                         <div class="col-md-3 mb-3">
                             <button class="btn-hotel me-2" onclick="filterBookings()">
@@ -352,7 +352,7 @@
                         </div>
                     </div>
                     
-                    <div class="table-responsive">
+                    <div class="table-responsive overflow-x-auto" style="max-height: 500px;">
                         <table class="table table-dark table-striped table-hover" id="bookingsTable">
                             <thead>
                                 <tr>
@@ -424,7 +424,7 @@
                                     <td><%= checkInDate %></td>
                                     <td><%= checkOutDate %></td>
                                     <td><%= nights %> đêm</td>
-                                    <td><strong><%= String.format("%,d", Long.parseLong(totalAmount)) %> VNĐ</strong></td>
+                                    <td><strong><%= String.format("%,.0f", Double.parseDouble(totalAmount)) %> VNĐ</strong></td>
                                     <td>
                                         <span class="status-badge <%= statusClass %>">
                                             <i class="bi <%= statusIcon %>"></i> <%= statusText %>
@@ -537,10 +537,6 @@
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Số trẻ em</label>
                                 <input type="number" name="children" class="form-control text-white border-secondary" value="0" min="0">
-                            </div>
-                            <div class="col-md-12 mb-3">
-                                <label class="form-label">Ghi chú</label>
-                                <textarea name="notes" class="form-control text-white border-secondary" rows="3"></textarea>
                             </div>
                         </div>
                     </form>

@@ -33,24 +33,28 @@ Welcome to the **Hotel Management System** - a modern, feature-rich web applicat
 ## 🚀 Quick Start
 
 ### Prerequisites
+
 - Java 8 or higher
 - Maven 3.6+
 - MySQL 5.7+ or MariaDB 10.3+
 - Tomcat 7+
 
 ### 1️⃣ Clone the Repository
+
 ```bash
 git clone https://github.com/huy923/project_web_java.git
 cd project_web_java
 ```
 
 ### 2️⃣ Database Setup
+
 ```bash
 # Install the database schema
 mysql -u root -p < hotel_database_mysql.sql
 ```
 
 ### 3️⃣ Run the Application
+
 ```bash
 # Clean and compile
 mvn clean compile
@@ -60,6 +64,7 @@ mvn tomcat7:run
 ```
 
 ### 4️⃣ Access the System
+
 🌐 Open your browser and navigate to: **http://localhost:8082/**
 
 ---
@@ -67,17 +72,20 @@ mvn tomcat7:run
 ## 📋 Features
 
 ### 🏨 Core Hotel Operations
+
 - **Room Management**: Real-time room status tracking (Available, Occupied, Maintenance, Cleaning)
 - **Guest Registration**: Complete guest profiles with ID verification and contact information
 - **Booking System**: Advanced reservation management with check-in/check-out workflows
 - **Payment Processing**: Support for cash, credit cards, bank transfers, and online payments
 
 ### 👥 User Management
+
 - **Role-Based Access**: Different permission levels for various staff roles
 - **Staff Profiles**: Complete employee management with contact details and role assignments
 - **Authentication**: Secure login system with password protection
 
 ### 🛠️ Advanced Features
+
 - **Service Management**: Track additional services like spa, laundry, transportation
 - **Maintenance System**: Issue reporting and tracking with priority levels
 - **Inventory Control**: Monitor hotel supplies and amenities
@@ -85,6 +93,7 @@ mvn tomcat7:run
 - **Reporting Dashboard**: Generate comprehensive business reports
 
 ### 📊 Sample Data Included
+
 - ✅ **18 Rooms** across 3 floors (Standard, Deluxe, Suite, Family types)
 - ✅ **6 Sample Guests** with Vietnamese names and realistic data
 - ✅ **6 Active Bookings** with various statuses and payment records
@@ -175,11 +184,13 @@ password=hotel_password
 ## 🚀 Deployment
 
 ### Local Development
+
 ```bash
 mvn tomcat7:run
 ```
 
 ### Production Deployment
+
 ```bash
 # Build the application
 mvn clean package
@@ -189,6 +200,7 @@ mvn tomcat7:deploy
 ```
 
 ### Server Deployment
+
 ```bash
 # Copy WAR file to server
 scp -P 2222 target/my-web-app.war root@localhost:/var/www/html
@@ -201,6 +213,7 @@ scp -P 2222 target/my-web-app.war root@localhost:/var/www/html
 ### Common Issues
 
 **Database Connection Problems**
+
 ```bash
 # Check MySQL/MariaDB status
 sudo systemctl status mysql
@@ -208,12 +221,14 @@ sudo systemctl start mysql
 ```
 
 **Port Already in Use**
+
 ```bash
 # Kill process using port 8080
 sudo lsof -ti:8080 | xargs kill -9
 ```
 
 **JSP Compilation Errors**
+
 ```bash
 # Clear Tomcat work directory
 rm -rf target/tomcat/work/
@@ -244,6 +259,7 @@ my-web-app/
 We welcome contributions! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
 
 ### Development Workflow
+
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
@@ -261,6 +277,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 👨‍💻 Author
 
 **Huy**
+
 - GitHub: [@huy923](https://github.com/huy923)
 - Project: [Hotel Management System](https://github.com/huy923/project_web_java)
 
@@ -274,10 +291,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-<div align="center">
+## Error 
 
-**⭐ Star this repository if you found it helpful!**
-
-![Made with Love](https://img.shields.io/badge/Made%20with-❤️-red?style=for-the-badge)
-
-</div>
+- if you see some error like `HTTP Status 500 - java.sql.SQLException: Access denied for user 'hotel_app'@'localhost' (using password: YES)` mabe you did't create user try to run code in file `hotel_database_mysql.sql` line 1059 to 1079.

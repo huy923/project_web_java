@@ -207,7 +207,7 @@
         </div>
     </nav>
     
-    <div class="container main-container">
+    <div class="px-2 main-container">
         <div class="row">
             <!-- Sidebar -->
             <div class="col-lg-3 col-md-4 mb-4">
@@ -362,7 +362,15 @@
                     <h5 class="mb-3">
                         <i class="bi bi-table"></i> Danh sách phòng
                     </h5>
-                    <div class="table-responsive border-radius-5">
+                    <div class="row" id="roomStatusContainer">
+                        <div class="col-12 text-center">
+                            <div class="spinner-border text-light" role="status">
+                                    <span class="visually-hidden">Đang tải...</span>
+                            </div>
+                            <p class="mt-2">Đang tải dữ liệu phòng...</p>
+                        </div>
+                    </div>
+                    <!-- <div class="table-responsive border-radius-5">
                         <table class="table table-striped">
                             <thead>
                                 <tr>
@@ -457,7 +465,7 @@
                                 <% } %>
                             </tbody>
                         </table>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -485,6 +493,45 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        refreshRoomStatus();
+        function refreshRoomStatus() {
+            const container = document.getElementById('roomStatusContainer');
+            const apiUrl = '<%= request.getContextPath() %>/api/room-status';
+            fetch(apiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data);
+                    console.log('Đã tải lại trạng thái phòng thành công');
+                    container.innerHTML = '';
+                    data.forEach((room,index) => {
+                        const status = room.status;
+                        const statusClass = room.statusClass;
+                        const statusIcon = room.statusIcon;
+                        const statusText = room.statusText;
+                        const roomId = room.roomId;
+                        const roomNumber = room.roomNumber;
+                        const roomCard = document.createElement('div');
+                        roomCard.className = 'col-lg-3 col-md-4 col-sm-6 mb-3 d-flex';
+                        roomCard.innerHTML = `
+                            <div class="room-card text-center" style="cursor: pointer;" onclick="viewRoomDetails('${roomId}')">
+                                <h6 class="mb-2">Phòng ${roomNumber}</h6>
+                                <span class="status-${statusClass}">
+                                    <i class="bi ${statusIcon}"></i> ${statusText}
+                                </span>
+                            </div>
+                        `;
+                        container.appendChild(roomCard);
+                    });
+                })
+                .catch(error => {
+                    console.error('Lỗi khi tải lại trạng thái phòng:', error);
+                });
+        }
         function viewRoomDetails(roomId) {
             const modal = new bootstrap.Modal(document.getElementById('roomDetailsModal'));
             document.getElementById('roomDetailsContent').innerHTML = `

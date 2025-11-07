@@ -245,7 +245,7 @@
             </div>
             </nav>
             
-            <div class="container main-container">
+            <div class="px-2 main-container">
             <div class="row">
             <!-- Sidebar -->
             <div class="col-lg-3 col-md-4 mb-4">
@@ -996,7 +996,7 @@
                 const status = room.status || 'available';
                 const showRoomDetail = `<div class="room-card text-center" style="cursor: pointer;" onclick="showRoomDetails(` + room.room_id +`,`+ room.room_number + `,`+ room.type_name +`,`+ room.base_price +`,`+room.status+`,`+ room.firstName +`,`+ room.lastName+`,`+ room.phone+`,` + room.check_in_date+`,`+room.check_out_date+`)">`;
                 const roomHtml = `
-                    <div class="col-md-3 col-sm-4 col-6 mb-3 d-flex" style="width: px;">`+showRoomDetail+`
+                    <div class="col-lg-3 col-md-4 col-sm-6 mb-3 d-flex">`+showRoomDetail+`
                             <h6 class="mb-2">Phòng `+room.room_number+`</h6>
                             <span class="status-`+status+`">
                                 `+getStatusText(status)+`

@@ -108,7 +108,6 @@ public class BookingsServlet extends HttpServlet {
         Date checkOutDate = Date.valueOf(req.getParameter("checkOutDate"));
         int adults = Integer.parseInt(req.getParameter("adults"));
         int children = Integer.parseInt(req.getParameter("children"));
-        String notes = req.getParameter("notes");
 
         // Check if guest exists by phone
         int guestId = bookingDao.getGuestId(phone);
@@ -122,8 +121,7 @@ public class BookingsServlet extends HttpServlet {
         double totalAmount = bookingDao.calculateTotalAmount(roomId, checkInDate, checkOutDate);
 
         // Create booking with confirmed status
-        boolean success = bookingDao.createBookingConfirmed(guestId, roomId, checkInDate, checkOutDate,
-                adults, children, totalAmount, notes, user.getUserId());
+        boolean success = bookingDao.createBookingConfirmed(guestId, roomId, checkInDate, checkOutDate,adults, children, totalAmount, user.getUserId());
 
         if (success) {
             // Update room status to occupied
@@ -172,8 +170,7 @@ public class BookingsServlet extends HttpServlet {
         Date checkOutDate = Date.valueOf(req.getParameter("checkOutDate"));
         int adults = Integer.parseInt(req.getParameter("adults"));
         int children = Integer.parseInt(req.getParameter("children"));
-        String notes = req.getParameter("notes");
 
-        bookingDao.updateBooking(bookingId, checkInDate, checkOutDate, adults, children, notes);
+        bookingDao.updateBooking(bookingId, checkInDate, checkOutDate, adults, children);
     }
 }

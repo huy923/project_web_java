@@ -218,7 +218,7 @@
         </div>
     </nav>
     
-    <div class="container main-container">
+    <div class="px-2 main-container">
         <div class="row">
             <!-- Sidebar -->
             <div class="col-lg-3 col-md-4 mb-4">
