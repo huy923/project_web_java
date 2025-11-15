@@ -2,11 +2,11 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotel Management System - Quản lý phòng</title>
+    <title>Hotel Management System - Room Management</title>
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"> -->
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet"> -->
         <link href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
@@ -211,20 +211,7 @@
         <div class="row">
             <!-- Sidebar -->
             <div class="col-lg-3 col-md-4 mb-4">
-                <div class="sidebar">
-                    <h5 class="mb-3">
-                        <i class="bi bi-list-ul"></i> Menu
-                    </h5>
-                    <ul class="sidebar-menu">
-                        <li><a href="<%= request.getContextPath() %>/dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
-                        <li><a href="<%= request.getContextPath() %>/rooms" class="active"><i class="bi bi-door-open"></i> Room Management</a></li>
-                        <li><a href="<%= request.getContextPath() %>/bookings"><i class="bi bi-calendar-check"></i> Bookings</a></li>
-                        <li><a href="<%= request.getContextPath() %>/guests"><i class="bi bi-people"></i> Guests</a></li>
-                        <li><a href="<%= request.getContextPath() %>/payments"><i class="bi bi-credit-card"></i> Payments</a></li>
-                        <li><a href="<%= request.getContextPath() %>/reports"><i class="bi bi-graph-up"></i> Reports</a></li>
-                        <li><a href="<%= request.getContextPath() %>/settings"><i class="bi bi-gear"></i> Settings</a></li>
-                    </ul>
-                </div>
+                <jsp:include page="/includes/sidebar.jsp" />
             </div>
             
             <!-- Main Content -->
@@ -233,9 +220,9 @@
                 <div class="row mb-4">
                     <div class="col-12">
                         <h1 class="display-6 mb-3">
-                            <i class="bi bi-door-open"></i> Quản lý phòng
+                            <i class="bi bi-door-open"></i> Room Management
                         </h1>
-                        <p class="lead">Quản lý thông tin phòng và theo dõi trạng thái sử dụng</p>
+                        <p class="lead">Manage room information and track usage status</p>
                     </div>
                 </div>
 
@@ -258,7 +245,7 @@
                                 <%= availableRooms %>
                             </div>
                             <div class="stats-label">
-                                <i class="bi bi-check-circle"></i> Phòng trống
+                                <i class="bi bi-check-circle"></i> Available Rooms
                             </div>
                         </div>
                     </div>
@@ -278,7 +265,7 @@
                                 <%= occupiedRooms %>
                             </div>
                             <div class="stats-label">
-                                <i class="bi bi-person-fill"></i> Có khách
+                                <i class="bi bi-person-fill"></i> Occupied
                             </div>
                         </div>
                     </div>
@@ -298,7 +285,7 @@
                                 <%= maintenanceRooms %>
                             </div>
                             <div class="stats-label">
-                                <i class="bi bi-tools"></i> Bảo trì
+                                <i class="bi bi-tools"></i> Maintenance
                             </div>
                         </div>
                     </div>
@@ -311,7 +298,7 @@
                                 <%= totalRooms %>
                             </div>
                             <div class="stats-label">
-                                <i class="bi bi-door-open"></i> Tổng phòng
+                                <i class="bi bi-door-open"></i> Total Rooms
                             </div>
                         </div>
                     </div>
@@ -319,19 +306,19 @@
                 <!-- Add Room Form -->
                 <div class="dashboard-card p-4 mb-4">
                     <h5 class="mb-3">
-                        <i class="bi bi-plus-circle"></i> Thêm phòng mới
+                        <i class="bi bi-plus-circle"></i> Add New Room
                     </h5>
                     <form action="<%= request.getContextPath() %>/room-management" method="post">
                         <input type="hidden" name="action" value="add">
                         <div class="row g-3">
                             <div class="col-md-3">
-                                <label class="form-label">Số phòng</label>
-                                <input type="text" name="roomNumber" class="form-control" placeholder="Nhập số phòng" required>
+                                <label class="form-label">Room Number</label>
+                                <input type="text" name="roomNumber" class="form-control" placeholder="Enter room number" required>
                             </div>
                             <div class="col-md-3">
-                                <label class="form-label">Loại phòng</label>
+                                <label class="form-label">Room Type</label>
                                 <select name="roomTypeId" class="form-select" required>
-                                    <option value="">Chọn loại phòng</option>
+                                    <option value="">Select Room Type</option>
                                     <% 
                                     List<Map<String, Object>> roomTypes = (List<Map<String, Object>>) request.getAttribute("roomTypes");
                                     if (roomTypes != null) {
@@ -344,13 +331,13 @@
                                 </select>
                             </div>
                             <div class="col-md-3">
-                                <label class="form-label">Tầng</label>
-                                <input type="number" name="floorNumber" class="form-control" placeholder="Nhập tầng" min="1" required>
+                                <label class="form-label">Floor</label>
+                                <input type="number" name="floorNumber" class="form-control" placeholder="Enter floor number" min="1" required>
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label">&nbsp;</label>
                                 <button class="btn-hotel w-100" type="submit">
-                                    <i class="bi bi-plus"></i> Thêm phòng
+                                    <i class="bi bi-plus"></i> Add Room
                                 </button>
                             </div>
                         </div>
@@ -360,14 +347,14 @@
                 <!-- Rooms Table -->
                 <div class="dashboard-card p-4">
                     <h5 class="mb-3">
-                        <i class="bi bi-table"></i> Danh sách phòng
+                        <i class="bi bi-table"></i> Room List
                     </h5>
                     <div class="row" id="roomStatusContainer">
                         <div class="col-12 text-center">
                             <div class="spinner-border text-light" role="status">
-                                    <span class="visually-hidden">Đang tải...</span>
+                                    <span class="visually-hidden">Loading...</span>
                             </div>
-                            <p class="mt-2">Đang tải dữ liệu phòng...</p>
+                            <p class="mt-2">Loading room data...</p>
                         </div>
                     </div>
                     <!-- <div class="table-responsive border-radius-5">
@@ -433,19 +420,19 @@
                                                 <input type="hidden" name="action" value="updateStatus">
                                                 <input type="hidden" name="roomId" value="<%= room.get("room_id") %>">
                                                 <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
-                                                    <option value="available" <%=status.equals("available") ? "selected" : "" %>>Trống</option>
-                                                    <option value="occupied" <%=status.equals("occupied") ? "selected" : "" %>>Có khách</option>
-                                                    <option value="maintenance" <%=status.equals("maintenance") ? "selected" : "" %>>Bảo trì</option>
-                                                    <option value="cleaning" <%=status.equals("cleaning") ? "selected" : "" %>>Dọn phòng</option>
+                                                    <option value="available" <%=status.equals("available") ? "selected" : "" %>>Available</option>
+                                    <option value="occupied" <%=status.equals("occupied") ? "selected" : "" %>>Occupied</option>
+                                    <option value="maintenance" <%=status.equals("maintenance") ? "selected" : "" %>>Maintenance</option>
+                                    <option value="cleaning" <%=status.equals("cleaning") ? "selected" : "" %>>Cleaning</option>
                                                 </select>
                                             </form>
-                                            <button class="btn btn-sm btn-hotel-outline ms-2" onclick="viewRoomDetails('<%= room.get("room_id") %>')" title="Xem chi tiết">
+                                            <button class="btn btn-sm btn-hotel-outline ms-2" onclick="viewRoomDetails('<%= room.get("room_id") %>')" title="View Details">
                                                 <i class="bi bi-eye"></i>
                                             </button>
                                             <form action="<%= request.getContextPath() %>/room-management" method="post" class="d-inline ms-1">
                                                 <input type="hidden" name="action" value="delete">
                                                 <input type="hidden" name="roomId" value="<%= room.get("room_id") %>">
-                                                <button type="submit" class="btn btn-sm btn-hotel-outline" onclick="return confirm('Xóa phòng này?')" title="Xóa phòng">
+                                                <button type="submit" class="btn btn-sm btn-hotel-outline" onclick="return confirm('Delete this room?')" title="Delete Room">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </form>
@@ -459,7 +446,7 @@
                                 <tr>
                                     <td colspan="6" class="text-center py-4">
                                         <i class="bi bi-inbox display-4 text-muted"></i>
-                                        <p class="text-muted mt-2">Không có dữ liệu phòng</p>
+                                        <p class="text-muted mt-2">No room data available</p>
                                     </td>
                                 </tr>
                                 <% } %>
@@ -477,7 +464,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        <i class="bi bi-door-open"></i> Chi tiết phòng
+                        <i class="bi bi-door-open"></i> Room Details
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
@@ -485,7 +472,7 @@
                     <!-- Content will be loaded here -->
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn-hotel-outline" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn-hotel-outline" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -506,7 +493,7 @@
                 })
                 .then(data => {
                     console.log(data);
-                    console.log('Đã tải lại trạng thái phòng thành công');
+                    console.log('Room status reloaded successfully');
                     container.innerHTML = '';
                     data.forEach((room,index) => {
                         const status = room.status;
@@ -519,7 +506,7 @@
                         roomCard.className = 'col-lg-3 col-md-4 col-sm-6 mb-3 d-flex';
                         roomCard.innerHTML = `
                             <div class="room-card text-center" style="cursor: pointer;" onclick="viewRoomDetails('${roomId}')">
-                                <h6 class="mb-2">Phòng ${roomNumber}</h6>
+                                <h6 class="mb-2">Room ${roomNumber}</h6>
                                 <span class="status-${statusClass}">
                                     <i class="bi ${statusIcon}"></i> ${statusText}
                                 </span>
@@ -529,7 +516,7 @@
                     });
                 })
                 .catch(error => {
-                    console.error('Lỗi khi tải lại trạng thái phòng:', error);
+                    console.error('Error loading room status:', error);
                 });
         }
         function viewRoomDetails(roomId) {
@@ -537,7 +524,7 @@
             document.getElementById('roomDetailsContent').innerHTML = `
                 <div class="text-center">
                     <i class="bi bi-hourglass-split" style="font-size: 3rem;"></i>
-                    <p class="mt-3">Đang tải thông tin phòng...</p>
+                    <p class="mt-3">Loading room information...</p>
                 </div>
             `;
             modal.show();
@@ -546,20 +533,20 @@
                 document.getElementById('roomDetailsContent').innerHTML = `
                     <div class="row">
                         <div class="col-md-6">
-                            <h6>Thông tin phòng</h6>
+                            <h6>Room Information</h6>
                             <table class="table table-dark table-sm">
-                                <tr><td><strong>Số phòng:</strong></td><td>${roomId}</td></tr>
-                                <tr><td><strong>Loại:</strong></td><td>Standard</td></tr>
-                                <tr><td><strong>Tầng:</strong></td><td>1</td></tr>
-                                <tr><td><strong>Giá/đêm:</strong></td><td>1,200,000 VNĐ</td></tr>
+                                <tr><td><strong>Room Number:</strong></td><td>${roomId}</td></tr>
+                                <tr><td><strong>Type:</strong></td><td>Standard</td></tr>
+                                <tr><td><strong>Floor:</strong></td><td>1</td></tr>
+                                <tr><td><strong>Price/Night:</strong></td><td>1,200,000 VND</td></tr>
                             </table>
                         </div>
                         <div class="col-md-6">
-                            <h6>Trạng thái hiện tại</h6>
+                            <h6>Current Status</h6>
                             <table class="table table-dark table-sm">
-                                <tr><td><strong>Trạng thái:</strong></td><td><span class="badge bg-success">Trống</span></td></tr>
-                                <tr><td><strong>Lần dọn cuối:</strong></td><td>2024-01-15 10:30</td></tr>
-                                <tr><td><strong>Ghi chú:</strong></td><td>Phòng sạch sẽ, sẵn sàng đón khách</td></tr>
+                                <tr><td><strong>Status:</strong></td><td><span class="badge bg-success">Available</span></td></tr>
+                                <tr><td><strong>Last Cleaned:</strong></td><td>2024-01-15 10:30</td></tr>
+                                <tr><td><strong>Notes:</strong></td><td>Room is clean and ready for guests</td></tr>
                             </table>
                         </div>
                     </div>

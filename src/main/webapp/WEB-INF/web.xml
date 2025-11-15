@@ -166,13 +166,14 @@
     </servlet-mapping>
 
     <!-- Error page mappings -->
-    <error-page>
+    <!-- f*ck this sh*t is so annoying -->
+    <!-- <error-page>
         <error-code>404</error-code>
         <location>/error404.jsp</location>
-    </error-page>
+    </error-page> -->
 
-    <error-page>
+    <!-- <error-page>
         <error-code>500</error-code>
         <location>/error500.jsp</location>
-    </error-page>
+    </error-page>  -->
 </web-app>

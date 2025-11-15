@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -222,20 +222,7 @@
         <div class="row">
             <!-- Sidebar -->
             <div class="col-lg-3 col-md-4 mb-4">
-                <div class="sidebar">
-                    <h5 class="mb-3">
-                        <i class="bi bi-list-ul"></i> Menu
-                    </h5>
-                    <ul class="sidebar-menu">
-                        <li><a href="<%= request.getContextPath() %>/dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
-                        <li><a href="<%= request.getContextPath() %>/rooms"><i class="bi bi-door-open"></i> Room Management</a></li>
-                        <li><a href="<%= request.getContextPath() %>/bookings"><i class="bi bi-calendar-check"></i> Bookings</a></li>
-                        <li><a href="<%= request.getContextPath() %>/guests"><i class="bi bi-people"></i> Guests</a></li>
-                        <li><a href="<%= request.getContextPath() %>/payments"><i class="bi bi-credit-card"></i> Payments</a></li>
-                        <li><a href="<%= request.getContextPath() %>/reports"><i class="bi bi-graph-up"></i> Reports</a></li>
-                        <li><a href="<%= request.getContextPath() %>/settings" class="active"><i class="bi bi-gear"></i> Settings</a></li>
-                    </ul>
-                </div>
+                <jsp:include page="/includes/sidebar.jsp" />
             </div>
             
             <!-- Main Content -->

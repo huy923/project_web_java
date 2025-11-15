@@ -1,270 +1,9 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="java.util.List" %>
-    <%@ page import="java.util.ArrayList" %>
-        <%@ page import="java.util.HashMap" %>
-            <%@ page import="java.util.Map" %>
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotel Management System - Dashboard</title>
-    <link href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/webjars/bootstrap-icons/1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="shortcut icon" href="#">
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: white;
-            min-height: 100vh;
-        }
-        
-        .navbar {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .navbar-brand {
-            font-weight: bold;
-            font-size: 1.5rem;
-        }
-        
-        .main-container {
-            padding: 2rem 0;
-        }
-        
-        .dashboard-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 15px;
-            transition: transform 0.3s ease;
-        }
-        
-        .dashboard-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .stats-card {
-            text-align: center;
-            padding: 2rem;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .stats-number {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-        
-        .stats-label {
-            font-size: 1rem;
-            opacity: 0.9;
-        }
-        
-        .btn-hotel {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-            border: none;
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 25px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-        
-        .btn-hotel:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(238, 90, 36, 0.4);
-            color: white;
-        }
-        
-        .btn-hotel-outline {
-            background: transparent;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 25px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-        
-        .btn-hotel-outline:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.5);
-            color: white;
-        }
-        
-        .room-card {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .room-status {
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-        
-        .status-available {
-            background: rgba(46, 204, 113, 0.2);
-            color: #2ecc71;
-        }
-        
-        .status-occupied {
-            background: rgba(231, 76, 60, 0.2);
-            color: #e74c3c;
-        }
-        
-        .status-maintenance {
-            background: rgba(241, 196, 15, 0.2);
-            color: #f1c40f;
-        }
-        
-        .recent-activity {
-            max-height: 300px;
-            overflow-y: auto;
-        }
-        
-        .activity-item {
-            padding: 0.75rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        
-        .activity-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-        }
-        
-        .icon-checkin {
-            background: rgba(46, 204, 113, 0.2);
-            color: #2ecc71;
-        }
-        
-        .icon-checkout {
-            background: rgba(231, 76, 60, 0.2);
-            color: #e74c3c;
-        }
-        
-        .icon-booking {
-            background: rgba(52, 152, 219, 0.2);
-            color: #3498db;
-        }
-        
-        .icon-maintenance {
-            background: rgba(241, 196, 15, 0.2);
-            color: #f1c40f;
-        }
-        
-        .sidebar {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 1.5rem;
-            height: fit-content;
-        }
-        
-        .sidebar-menu {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        
-        .sidebar-menu li {
-            margin-bottom: 0.5rem;
-        }
-        
-        .sidebar-menu a {
-            color: white;
-            text-decoration: none;
-            padding: 0.75rem 1rem;
-            display: block;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-        
-        .sidebar-menu a:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-        }
-        
-        .sidebar-menu a.active {
-            background: rgba(255, 255, 255, 0.2);
-        }
-        
-        /* Loading animation */
-        .spin {
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        
-        /* Room card hover effect */
-        .room-card {
-            transition: all 0.3s ease;
-        }
-        
-        .room-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-    </style>
-</head>
-<body>
-    <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-    <div class="container">
-            <a class="navbar-brand" href="#">
-                <i class="bi bi-building"></i> Hotel Management System
-            </a>
-            <div class="navbar-nav ms-auto">
-                <span class="navbar-text">
-                    <i class="bi bi-person-circle"></i> Admin Dashboard
-                </span>
-                </div>
-            </div>
-            </nav>
-            
+<jsp:include page="/includes/header.jsp" />
             <div class="px-2 main-container">
             <div class="row">
             <!-- Sidebar -->
             <div class="col-lg-3 col-md-4 mb-4">
-                <div class="sidebar">
-                    <h5 class="mb-3">
-                        <i class="bi bi-list-ul"></i> Menu
-                    </h5>
-                    <ul class="sidebar-menu">
-                        <li><a href="<%= request.getContextPath() %>/dashboard" class="active"><i class="bi bi-speedometer2"></i>
-                                Dashboard</a></li>
-                        <li><a href="<%= request.getContextPath() %>/rooms"><i class="bi bi-door-open"></i> Room Management</a></li>
-                        <li><a href="<%= request.getContextPath() %>/bookings"><i class="bi bi-calendar-check"></i> Bookings</a>
-                        </li>
-                        <li><a href="<%= request.getContextPath() %>/guests"><i class="bi bi-people"></i> Guests</a></li>
-                        <li><a href="<%= request.getContextPath() %>/payments"><i class="bi bi-credit-card"></i> Payments</a></li>
-                        <li><a href="<%= request.getContextPath() %>/reports"><i class="bi bi-graph-up"></i> Reports</a></li>
-                        <li><a href="<%= request.getContextPath() %>/settings"><i class="bi bi-gear"></i> Settings</a></li>
-                    </ul>
-                </div>
+                <jsp:include page="/includes/sidebar.jsp" />
             </div>
             <!-- Main Content -->
             <div class="col-lg-9 col-md-8">
@@ -274,7 +13,7 @@
                         <h1 class="display-6 mb-3">
                             <i class="bi bi-house-door"></i> Hotel Dashboard
                         </h1>
-                        <p class="lead">Chào mừng đến với hệ thống quản lý khách sạn</p>
+                        <p class="lead">Welcome to the Hotel Management System</p>
                     </div>
                 </div>
 
@@ -290,7 +29,7 @@
                                 <%= roomStats.get("available") %>
                             </div>
                             <div class="stats-label">
-                                <i class="bi bi-door-open"></i> Phòng trống
+                                <i class="bi bi-door-open"></i> Available Rooms
                             </div>
                         </div>
                     </div>
@@ -300,7 +39,7 @@
                                 <%= roomStats.get("occupied") %>
                             </div>
                             <div class="stats-label">
-                                <i class="bi bi-person-fill"></i> Đang ở
+                                <i class="bi bi-person-fill"></i> Occupied
                             </div>
                         </div>
                     </div>
@@ -310,7 +49,7 @@
                                 <%= totalBookings !=null ? totalBookings : 0 %>
                             </div>
                             <div class="stats-label">
-                                <i class="bi bi-calendar-plus"></i> Tổng đặt phòng
+                                <i class="bi bi-calendar-plus"></i> Total Bookings
                             </div>
                         </div>
                     </div>
@@ -320,13 +59,13 @@
                                 <%= roomStats.get("maintenance") %>
                             </div>
                             <div class="stats-label">
-                                <i class="bi bi-tools"></i> Bảo trì
+                                <i class="bi bi-tools"></i> Maintenance
                             </div>
                         </div>
                     </div>
                     <% } else { %>
                         <div class="col-12">
-                            <div class="alert alert-warning">Không thể tải thống kê phòng</div>
+                            <div class="alert alert-warning">Failed to load room statistics</div>
                         </div>
                         <% } %>
                 </div>
@@ -336,7 +75,7 @@
                     <div class="col-12">
                         <div class="dashboard-card p-4">
                             <h5 class="mb-3">
-                                <i class="bi bi-lightning"></i> Thao tác nhanh
+                                <i class="bi bi-lightning"></i> Quick Actions
                             </h5>
                             <div class="d-flex gap-3 flex-wrap">
                                 <a href="#" class="btn-hotel" data-bs-toggle="modal" data-bs-target="#checkInModal">
@@ -346,13 +85,13 @@
                                     <i class="bi bi-person-dash"></i> Check-out
                                 </a>
                                 <a href="#" class="btn-hotel-outline" data-bs-toggle="modal" data-bs-target="#bookingModal">
-                                    <i class="bi bi-calendar-plus"></i> Đặt phòng
+                                    <i class="bi bi-calendar-plus"></i> Book Room
                                 </a>
                                 <a href="#" class="btn-hotel-outline" data-bs-toggle="modal" data-bs-target="#roomModal">
-                                    <i class="bi bi-door-open"></i> Quản lý phòng
+                                    <i class="bi bi-door-open"></i> Manage Rooms
                                 </a>
                                 <a href="#" class="btn-hotel-outline" data-bs-toggle="modal" data-bs-target="#guestModal">
-                                    <i class="bi bi-people"></i> Khách hàng
+                                    <i class="bi bi-people"></i> Guests
                                 </a>
                                 </div>
                                 </div>
@@ -363,17 +102,17 @@
                                     <div class="col-lg-8 mb-4">
                                         <div class="dashboard-card p-4">
                                             <h5 class="mb-3">
-                                                <i class="bi bi-grid-3x3"></i> Trạng thái phòng
+                                                <i class="bi bi-grid-3x3"></i> Room Status
                                                 <button class="btn btn-sm btn-outline-light ms-2" onclick="refreshRoomStatus()" id="refreshBtn">
-                                                    <i class="bi bi-arrow-clockwise"></i> Làm mới
+                                                    <i class="bi bi-arrow-clockwise"></i> Refresh
                                                 </button>
                                             </h5>
                                             <div class="row" id="roomStatusContainer">
                                                 <div class="col-12 text-center">
                                                     <div class="spinner-border text-light" role="status">
-                                                        <span class="visually-hidden">Đang tải...</span>
+                                                        <span class="visually-hidden">Loading...</span>
                                                     </div>
-                                                    <p class="mt-2">Đang tải dữ liệu phòng...</p>
+                                                    <p class="mt-2">Loading room data...</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -382,7 +121,7 @@
                                 <div class="col-lg-4 mb-4">
                                     <div class="dashboard-card p-4">
                                         <h5 class="mb-3">
-                                            <i class="bi bi-clock-history"></i> Hoạt động gần đây
+                                            <i class="bi bi-clock-history"></i> Recent Activities
                                         </h5>
                                         <div class="recent-activity">
                                             <div class="activity-item">
@@ -390,8 +129,8 @@
                                                     <i class="bi bi-person-plus"></i>
                                                 </div>
                                                 <div>
-                                                    <div class="fw-bold">Check-in Phòng 205</div>
-                                                    <small class="text-muted">Nguyễn Văn A - 10:30</small>
+                                                    <div class="fw-bold">Check-in Room 205</div>
+                                                    <small class="text-muted">Guest A - 10:30</small>
                                                 </div>
                                             </div>
                                             <div class="activity-item">
@@ -399,8 +138,8 @@
                                                     <i class="bi bi-person-dash"></i>
                                                 </div>
                                                 <div>
-                                                    <div class="fw-bold">Check-out Phòng 103</div>
-                                                    <small class="text-muted">Trần Thị B - 09:15</small>
+                                                    <div class="fw-bold">Check-out Room 103</div>
+                                                    <small class="text-muted">Guest B - 09:15</small>
                                                 </div>
                                             </div>
                                             <div class="activity-item">
@@ -408,7 +147,7 @@
                                                     <i class="bi bi-calendar-plus"></i>
                                                 </div>
                                     <div>
-                                        <div class="fw-bold">Đặt phòng 201</div>
+                                        <div class="fw-bold">Booked Room 201</div>
                                         <small class="text-muted">Lê Văn C - 08:45</small>
                                     </div>
                                     </div>
@@ -417,8 +156,10 @@
                                         <i class="bi bi-tools"></i>
                                     </div>
                                     <div>
-                                        <div class="fw-bold">Bảo trì Phòng 105</div>
-                                        <small class="text-muted">Nhân viên kỹ thuật - 07:20</small>
+                                        <div class="fw-bold">Maintenance Room 105</div>
+                                        <small class="text-muted">Staff - 07:20</small>
+                                    </div>
+                                    </div>
                                     </div>
                                     </div>
                                     </div>
@@ -435,7 +176,7 @@
             <div class="modal-content bg-dark text-white">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        <i class="bi bi-person-plus"></i> Check-in khách hàng
+                        <i class="bi bi-person-plus"></i> Guest Check-in
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
@@ -443,27 +184,27 @@
                     <form action="<%= request.getContextPath() %>/checkin" method="post" id="checkinForm">
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Họ tên khách</label>
-                                <input type="text" name="firstName" class="form-control bg-dark text-white border-secondary" placeholder="Nhập họ tên"
+                                <label class="form-label">Guest Name</label>
+                                <input type="text" name="firstName" class="form-control bg-dark text-white border-secondary" placeholder="Enter full name"
                                     required>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">CMND/CCCD</label>
-                                <input type="text" name="idNumber" class="form-control bg-dark text-white border-secondary" placeholder="Nhập số CMND"
+                                <label class="form-label">ID/Passport Number</label>
+                                <input type="text" name="idNumber" class="form-control bg-dark text-white border-secondary" placeholder="Enter ID/Passport number"
                                     required>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Email</label>
-                                    <input type="email" name="email" class="form-control bg-dark text-white border-secondary" placeholder="Nhập email">
+                                    <input type="email" name="email" class="form-control bg-dark text-white border-secondary" placeholder="Enter email">
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Số điện thoại</label>
-                                <input type="tel" name="phone" class="form-control bg-dark text-white border-secondary" placeholder="Nhập SĐT" required>
+                                <label class="form-label">Phone Number</label>
+                                <input type="tel" name="phone" class="form-control bg-dark text-white border-secondary" placeholder="Enter phone number" required>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Phòng</label>
+                                <label class="form-label">Room</label>
                                 <select name="roomId" class="form-select bg-dark text-white border-secondary" required>
-                                    <option value="">Chọn phòng</option>
+                                    <option value="">Select Room</option>
                                     <% java.util.List<java.util.Map<String, Object>> availableRooms =
                                         (java.util.List<java.util.Map<String, Object>>) request.getAttribute("availableRooms");
                                             if (availableRooms != null) {
@@ -477,11 +218,11 @@
                                 </select>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Số người lớn</label>
+                                <label class="form-label">Adults</label>
                                 <input type="number" name="adults" class="form-control bg-dark text-white border-secondary" value="1" min="1" required>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">Số trẻ em</label>
+                                    <label class="form-label">Children</label>
                                     <input type="number" name="children" class="form-control bg-dark text-white border-secondary" value="0" min="0">
                                 </div>
                                 <div class="col-md-6 mb-3">
@@ -489,13 +230,13 @@
                                 <input type="date" name="checkInDate" class="form-control bg-dark text-white border-secondary" required>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Ngày trả phòng</label>
+                                <label class="form-label">Check-out Date</label>
                                 <input type="date" name="checkOutDate" class="form-control bg-dark text-white border-secondary" required>
                                 </div>
                                 <div class="col-md-12 mb-3">
-                                    <label class="form-label">Tổng tiền (VNĐ)</label>
+                                    <label class="form-label">Total Amount (VND)</label>
                                     <input type="number" name="totalAmount" class="form-control bg-dark text-white border-secondary"
-                                        placeholder="Tự động tính" readonly>
+                                        placeholder="Auto-calculated" readonly>
                             </div>
                         </div>
                     </form>
@@ -514,16 +255,16 @@
             <div class="modal-content bg-dark text-white">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        <i class="bi bi-person-dash"></i> Check-out khách hàng
+                        <i class="bi bi-person-dash"></i> Guest Check-out
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form action="<%= request.getContextPath() %>/checkout" method="post" id="checkoutForm">
                     <div class="mb-3">
-                        <label class="form-label">Chọn phòng</label>
+                        <label class="form-label">Select Room</label>
                             <select name="bookingId" class="form-select bg-dark text-white border-secondary" required>
-                                <option value="">Chọn phòng</option>
+                                <option value="">Select Room</option>
                                 <% java.util.List<java.util.Map<String, Object>> occupiedRooms =
                                     (java.util.List<java.util.Map<String, Object>>) request.getAttribute("occupiedRooms");
                                         if (occupiedRooms != null) {
@@ -609,53 +350,53 @@
             <div class="modal-content bg-dark text-white">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        <i class="bi bi-door-open"></i> Quản lý phòng
+                        <i class="bi bi-door-open"></i> Room Management
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-4">
-                            <h6>Thêm phòng mới</h6>
+                            <h6>Add New Room</h6>
                             <form action="<%= request.getContextPath() %>/room-management" method="post">
                                 <input type="hidden" name="action" value="add">
                                 <div class="mb-3">
-                                    <label class="form-label">Số phòng</label>
+                                    <label class="form-label">Room Number</label>
                                     <input type="text" name="roomNumber" class="form-control bg-dark text-white border-secondary" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">Loại phòng</label>
+                                    <label class="form-label">Room Type</label>
                                     <select name="roomTypeId" class="form-select bg-dark text-white border-secondary" required>
-                                        <option value="">Chọn loại phòng</option>
+                                        <option value="">Select Room Type</option>
                                         <% java.util.List<java.util.Map<String, Object>> roomTypes =
                                             (java.util.List<java.util.Map<String, Object>>) request.getAttribute("roomTypes");
                                                 if (roomTypes != null) {
                                                 for (java.util.Map<String, Object> type : roomTypes) {
                                                     %>
                                                     <option value="<%= type.get(" room_type_id") %>">
-                                                        <%= type.get("type_name") %> - <%= type.get("base_price") %> VNĐ/đêm
+                                                        <%= type.get("type_name") %> - <%= type.get("base_price") %> VNĐ/night
                                                     </option>
                                                     <% } } %>
                                     </select>
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">Tầng</label>
+                                    <label class="form-label">Floor Number</label>
                                     <input type="number" name="floorNumber" class="form-control bg-dark text-white border-secondary" min="1" required>
                                 </div>
-                                <button type="submit" class="btn-hotel">Thêm phòng</button>
+                                <button type="submit" class="btn-hotel">Add Room</button>
                             </form>
                         </div>
                         <div class="col-md-8">
-                            <h6>Danh sách phòng</h6>
+                            <h6>Room List</h6>
                             <div class="table-responsive">
                                 <table class="table table-dark table-striped">
                                     <thead>
                                         <tr>
-                                            <th>Phòng</th>
-                                            <th>Loại</th>
-                                            <th>Giá/đêm</th>
-                                            <th>Trạng thái</th>
-                                            <th>Thao tác</th>
+                                            <th>Room</th>
+                                            <th>Type</th>
+                                            <th>Status</th>
+                                            <th>Price (VND/night)</th>
+                                            <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -728,22 +469,22 @@
             <div class="modal-content bg-dark text-white">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        <i class="bi bi-people"></i> Quản lý khách hàng
+                        <i class="bi bi-people"></i> Guest Management
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-4">
-                            <h6>Thêm khách hàng mới</h6>
+                            <h6>Add New Guest</h6>
                             <form action="<%= request.getContextPath() %>/guest-management" method="post">
                                 <input type="hidden" name="action" value="add">
                                 <div class="mb-3">
-                                    <label class="form-label">Họ tên</label>
+                                    <label class="form-label">Full Name</label>
                                     <input type="text" name="firstName" class="form-control bg-dark text-white border-secondary" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">Họ</label>
+                                    <label class="form-label">Last Name</label>
                                     <input type="text" name="lastName" class="form-control bg-dark text-white border-secondary" required>
                                 </div>
                                 <div class="mb-3">
@@ -751,33 +492,33 @@
                                     <input type="email" name="email" class="form-control bg-dark text-white border-secondary">
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">Số điện thoại</label>
+                                    <label class="form-label">Phone Number</label>
                                     <input type="tel" name="phone" class="form-control bg-dark text-white border-secondary" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">CMND/CCCD</label>
+                                    <label class="form-label">ID/Passport Number</label>
                                     <input type="text" name="idNumber" class="form-control bg-dark text-white border-secondary" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">Quốc tịch</label>
+                                    <label class="form-label">Nationality</label>
                                     <input type="text" name="nationality" class="form-control bg-dark text-white border-secondary"
-                                        value="Việt Nam">
+                                        value="Vietnam">
                                 </div>
-                                <button type="submit" class="btn-hotel">Thêm khách</button>
+                                <button type="submit" class="btn-hotel">Add Guest</button>
                             </form>
                         </div>
                         <div class="col-md-8">
-                            <h6>Danh sách khách hàng</h6>
+                            <h6>Guest List</h6>
                     <div class="table-responsive" id="show">
                         <table class="table table-dark table-striped">
                             <thead>
                                 <tr>
-                                    <th>Họ tên</th>
-                                    <th>CMND</th>
-                                    <th>SĐT</th>
-                                    <th>Phòng</th>
-                                    <th>Trạng thái</th>
-                                    <th>Thao tác</th>
+                                    <th>Full Name</th>
+                                    <th>ID/Passport Number</th>
+                                    <th>Phone Number</th>
+                                    <th>Room Number</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -787,7 +528,7 @@
                                                 for (java.util.Map<String, Object> guest : guests) {
                                                     String bookingStatus = (String) guest.get("booking_status");
                                                     String statusClass = bookingStatus != null ? "bg-warning" : "bg-secondary";
-                                                    String statusText = bookingStatus != null ? "Đang ở" : "Không có phòng";
+                                                    String statusText = bookingStatus != null ? "Checked-in" : "Not checked-in";
                                                     String roomNumber = (String) guest.get("room_number");
                                                     %>
                                         <tr>
@@ -808,12 +549,12 @@
                                                     <%= statusText %>
                                                 </span></td>
                                             <td>
-                                                <button class="btn btn-sm btn-outline-primary" onclick="editGuest(<%= guest.get(" guest_id") %>)">Sửa</button>
+                                                <button class="btn btn-sm btn-outline-primary" onclick="editGuest(<%= guest.get("guest_id") %>)">Edit</button>
                                                 <form action="<%= request.getContextPath() %>/guest-management" method="post" class="d-inline">
                                                     <input type="hidden" name="action" value="delete">
-                                                    <input type="hidden" name="guestId" value="<%= guest.get(" guest_id") %>">
+                                                    <input type="hidden" name="guestId" value="<%= guest.get("guest_id") %>">
                                                     <button type="submit" class="btn btn-sm btn-outline-danger"
-                                                        onclick="return confirm('Xóa khách hàng này?')">Xóa</button>
+                                                        onclick="return confirm('Delete this guest?')">Delete</button>
                                                 </form>
                                     </td>
                                 </tr>
@@ -882,7 +623,7 @@
             <div class="modal-content bg-dark text-white">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        <i class="bi bi-person-gear"></i> Sửa thông tin khách hàng
+                        <i class="bi bi-person-gear"></i> Edit Guest Information
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
@@ -891,11 +632,11 @@
                         <input type="hidden" name="action" value="update">
                         <input type="hidden" name="guestId" id="editGuestId">
                         <div class="mb-3">
-                            <label class="form-label">Họ tên</label>
+                            <label class="form-label">First Name</label>
                             <input type="text" name="firstName" id="editFirstName" class="form-control bg-dark text-white border-secondary" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Họ</label>
+                            <label class="form-label">Last Name</label>
                             <input type="text" name="lastName" id="editLastName" class="form-control bg-dark text-white border-secondary" required>
                         </div>
                         <div class="mb-3">
@@ -907,18 +648,18 @@
                             <input type="tel" name="phone" id="editPhone" class="form-control bg-dark text-white border-secondary" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">CMND/CCCD</label>
+                            <label class="form-label">ID/Passport Number</label>
                             <input type="text" name="idNumber" id="editIdNumber" class="form-control bg-dark text-white border-secondary" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Quốc tịch</label>
+                            <label class="form-label">Nationality</label>
                             <input type="text" name="nationality" id="editNationality" class="form-control bg-dark text-white border-secondary">
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer" >
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="submit" form="editGuestForm" class="btn-hotel">Cập nhật</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" form="editGuestForm" class="btn-hotel">Update</button>
                 </div>
             </div>
         </div>
@@ -940,7 +681,7 @@
             
             // Show loading state
             if (refreshBtn) {
-                refreshBtn.innerHTML = '<i class="bi bi-arrow-clockwise spin"></i> Đang tải...';
+                refreshBtn.innerHTML = '<i class="bi bi-arrow-clockwise spin"></i> Loading...';
                 refreshBtn.disabled = true;
             }
             
@@ -959,22 +700,22 @@
                         if (data.success) {
                             renderRoomStatus(data.data);
                         } else {
-                            showError('Lỗi: ' + data.message);
+                            showError('Error: ' + data.message);
                         }
                     } catch (e) {
                         console.error('JSON parse error:', e);
-                        showError('Lỗi phân tích dữ liệu: ' + e.message);
+                        showError('Error parsing data: ' + e.message);
                     }
                 })
                 .catch(error => {
                     console.error('Fetch error:', error);
                     console.error('Error details:', error.message);
-                    showError('Không thể tải dữ liệu phòng. Vui lòng thử lại. Chi tiết: ' + error.message);
+                    showError('Unable to load room data. Please try again. Details: ' + error.message);
                 })
                 .finally(() => {
                     // Reset button state
                     if (refreshBtn) {
-                        refreshBtn.innerHTML = '<i class="bi bi-arrow-clockwise"></i> Làm mới';
+                        refreshBtn.innerHTML = '<i class="bi bi-arrow-clockwise"></i> Refresh';
                         refreshBtn.disabled = false;
                     }
                 });
@@ -984,7 +725,7 @@
             const container = document.getElementById('roomStatusContainer');
             if (!roomData || roomData.length === 0) {
                 if (container) {
-                    container.innerHTML = '<div class="col-12 text-center text-muted">Không có dữ liệu phòng</div>';
+                    container.innerHTML = '<div class="col-12 text-center text-muted">No room data available</div>';
                 } else {
                     console.error('Container not found for no data message');
                 }
@@ -997,7 +738,7 @@
                 const showRoomDetail = `<div class="room-card text-center" style="cursor: pointer;" onclick="showRoomDetails(` + room.room_id +`,`+ room.room_number + `,`+ room.type_name +`,`+ room.base_price +`,`+room.status+`,`+ room.firstName +`,`+ room.lastName+`,`+ room.phone+`,` + room.check_in_date+`,`+room.check_out_date+`)">`;
                 const roomHtml = `
                     <div class="col-lg-3 col-md-4 col-sm-6 mb-3 d-flex">`+showRoomDetail+`
-                            <h6 class="mb-2">Phòng `+room.room_number+`</h6>
+                            <h6 class="mb-2">Room `+room.room_number+`</h6>
                             <span class="status-`+status+`">
                                 `+getStatusText(status)+`
                             </span>
@@ -1017,10 +758,10 @@
         
         function getStatusText(status) {
             switch(status) {
-                case 'available': return 'Trống';
-                case 'occupied': return 'Có khách';
-                case 'maintenance': return 'Bảo trì';
-                case 'cleaning': return 'Dọn phòng';
+                case 'available': return 'Available';
+                case 'occupied': return 'Occupied';
+                case 'maintenance': return 'Maintenance';
+                case 'cleaning': return 'Cleaning';
                 default: return status;
             }
         }
@@ -1044,7 +785,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             // Load room status on page load
             
-            // Kiểm tra xem các element có tồn tại không
+            // Check if elements exist
             const container = document.getElementById('roomStatusContainer');
             const refreshBtn = document.getElementById('refreshBtn');
             

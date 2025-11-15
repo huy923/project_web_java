@@ -1,5 +1,5 @@
 <%-- Sidebar Component --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <div class="sidebar">
     <h5 class="mb-3">
         <i class="bi bi-list-ul"></i> Menu
