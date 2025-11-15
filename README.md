@@ -53,6 +53,8 @@ cd project_web_java
 mysql -u root -p < hotel_database_mysql.sql
 ```
 
+If you have some error mysql is not found you just copy all code in file `hotel_database_mysql.sql` and then open xampp and then click on tap `sql` 
+
 ### 3️⃣ Run the Application
 
 ```bash

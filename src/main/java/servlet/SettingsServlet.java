@@ -19,4 +19,15 @@ public class SettingsServlet extends HttpServlet {
         }
         req.getRequestDispatcher("/sections/settings.jsp").forward(req, resp);
     }
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // Handle settings update logic here (e.g., change password, update profile)
+        HttpSession session = req.getSession(false);
+        if (session == null || session.getAttribute("user") == null) {
+            resp.sendRedirect(req.getContextPath() + "/login");
+            return;
+        }
+        // For now, just redirect back to settings page
+        resp.sendRedirect(req.getContextPath() + "/settings");
+    }
 }
