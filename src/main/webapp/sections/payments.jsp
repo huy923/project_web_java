@@ -1,5 +1,11 @@
-
-    <isp:include page="/includes/header.jsp" />    
+<%-- Payments Management Page --%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="java.text.NumberFormat" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.util.Locale" %>
+    <jsp:include page="/includes/header.jsp" />    
     <div class="px-2 main-container">
         <div class="row">
             <!-- Sidebar -->
