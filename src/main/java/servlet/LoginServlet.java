@@ -31,7 +31,7 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("user", user);
                 resp.sendRedirect(req.getContextPath() + "/dashboard");
             } else {
-                req.setAttribute("error", "Sai tài khoản hoặc mật khẩu");
+                req.setAttribute("error", "Invalid username or password");
                 req.getRequestDispatcher("/login.jsp").forward(req, resp);
             }
         } catch (SQLException e) {

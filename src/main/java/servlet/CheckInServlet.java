@@ -22,13 +22,8 @@ public class CheckInServlet extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/login");
             return;
         }
-        BookingDao dao = new BookingDao();
-        try {
-            req.setAttribute("availableRooms", dao.getAvailableRooms());
-            req.getRequestDispatcher("/modals/checkin.jsp").forward(req, resp);
-        } catch (SQLException e) {
-            throw new ServletException(e);
-        }
+        // Redirect to dashboard - check-in is done via modal on dashboard
+        resp.sendRedirect(req.getContextPath() + "/dashboard");
     }
 
     @Override
@@ -39,27 +34,56 @@ public class CheckInServlet extends HttpServlet {
             return;
         }
 
-        String firstName = req.getParameter("firstName");
-        String lastName = req.getParameter("lastName");
-        String email = req.getParameter("email");
-        String phone = req.getParameter("phone");
-        String idNumber = req.getParameter("idNumber");
-        int roomId = Integer.parseInt(req.getParameter("roomId"));
-        Date checkInDate = Date.valueOf(req.getParameter("checkInDate"));
-        Date checkOutDate = Date.valueOf(req.getParameter("checkOutDate"));
-        int adults = Integer.parseInt(req.getParameter("adults"));
-        int children = Integer.parseInt(req.getParameter("children"));
-        double totalAmount = Double.parseDouble(req.getParameter("totalAmount"));
-
-        User user = (User) session.getAttribute("user");
-        BookingDao dao = new BookingDao();
-
         try {
+            String firstName = req.getParameter("firstName");
+            String lastName = req.getParameter("lastName");
+            String email = req.getParameter("email");
+            String phone = req.getParameter("phone");
+            String idNumber = req.getParameter("idNumber");
+
+            // Validate required parameters
+            if (firstName == null || firstName.trim().isEmpty() ||
+                    lastName == null || lastName.trim().isEmpty() ||
+                    phone == null || phone.trim().isEmpty() ||
+                    idNumber == null || idNumber.trim().isEmpty()) {
+                req.setAttribute("errorMessage", "All fields are required");
+                doGet(req, resp);
+                return;
+            }
+
+            String roomIdStr = req.getParameter("roomId");
+            String checkInDateStr = req.getParameter("checkInDate");
+            String checkOutDateStr = req.getParameter("checkOutDate");
+            String adultsStr = req.getParameter("adults");
+            String childrenStr = req.getParameter("children");
+            String totalAmountStr = req.getParameter("totalAmount");
+
+            // Validate numeric parameters
+            if (roomIdStr == null || roomIdStr.trim().isEmpty() ||
+                    checkInDateStr == null || checkInDateStr.trim().isEmpty() ||
+                    checkOutDateStr == null || checkOutDateStr.trim().isEmpty() ||
+                    adultsStr == null || adultsStr.trim().isEmpty() ||
+                    totalAmountStr == null || totalAmountStr.trim().isEmpty()) {
+                req.setAttribute("errorMessage", "Please fill in all required fields");
+                doGet(req, resp);
+                return;
+            }
+
+            int roomId = Integer.parseInt(roomIdStr);
+            Date checkInDate = Date.valueOf(checkInDateStr);
+            Date checkOutDate = Date.valueOf(checkOutDateStr);
+            int adults = Integer.parseInt(adultsStr);
+            int children = Integer.parseInt(childrenStr == null || childrenStr.isEmpty() ? "0" : childrenStr);
+            double totalAmount = Double.parseDouble(totalAmountStr);
+
+            User user = (User) session.getAttribute("user");
+            BookingDao dao = new BookingDao();
+
             // Check if guest exists by phone
             int guestId = dao.getGuestId(phone);
             if (guestId == -1) {
                 // Create new guest
-                dao.createGuest(firstName, lastName, email, phone, idNumber);
+                dao.createGuest(firstName, lastName, email == null ? "" : email, phone, idNumber);
                 guestId = dao.getGuestId(phone);
             }
 
@@ -74,8 +98,12 @@ public class CheckInServlet extends HttpServlet {
             } else {
                 resp.sendRedirect(req.getContextPath() + "/dashboard?error=checkin");
             }
+        } catch (IllegalArgumentException e) {
+            req.setAttribute("errorMessage", "Invalid date format. Please use YYYY-MM-DD");
+            doGet(req, resp);
         } catch (SQLException e) {
-            throw new ServletException(e);
+            req.setAttribute("errorMessage", "Database error: " + e.getMessage());
+            doGet(req, resp);
         }
     }
 }

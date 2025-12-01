@@ -1,6 +1,6 @@
 package api;
 
-import dao.BookingDao;
+import dao.GuestDao;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -16,8 +16,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet(name = "BookingApi", urlPatterns = { "/api/bookings", "/api/booking/*" })
-public class BookingApi extends HttpServlet {
+@WebServlet(name = "GuestApi", urlPatterns = {"/api/guests", "/api/guest/*"})
+public class GuestApi extends HttpServlet {
     private Gson gson = new Gson();
 
     @Override
@@ -31,24 +31,70 @@ public class BookingApi extends HttpServlet {
 
         try {
             String pathInfo = req.getPathInfo();
-
+            
             if (pathInfo == null || pathInfo.equals("/")) {
-                // GET /api/bookings - Get all bookings
-                getAllBookings(req, resp);
+                // GET /api/guests - Get all guests
+                getAllGuests(req, resp);
             } else {
-                // GET /api/booking/{id} - Get booking by ID
+                // GET /api/guest/{id} - Get guest by ID
                 String[] parts = pathInfo.split("/");
                 if (parts.length > 1 && !parts[1].isEmpty()) {
-                    int bookingId = Integer.parseInt(parts[1]);
-                    getBookingById(req, resp, bookingId);
+                    int guestId = Integer.parseInt(parts[1]);
+                    getGuestById(req, resp, guestId);
                 } else {
-                    sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Invalid booking ID");
+                    sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Invalid guest ID");
                 }
             }
         } catch (NumberFormatException e) {
-            sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Invalid booking ID format");
+            sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Invalid guest ID format");
         } catch (SQLException e) {
             sendErrorResponse(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error: " + e.getMessage());
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // Check login
+        HttpSession session = req.getSession(false);
+        if (session == null || session.getAttribute("user") == null) {
+            sendErrorResponse(resp, HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized access");
+            return;
+        }
+
+        try {
+            // Parse JSON body
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = req.getReader().readLine()) != null) {
+                sb.append(line);
+            }
+            
+            JsonObject json = gson.fromJson(sb.toString(), JsonObject.class);
+            
+            String firstName = json.has("first_name") ? json.get("first_name").getAsString() : "";
+            String lastName = json.has("last_name") ? json.get("last_name").getAsString() : "";
+            String email = json.has("email") ? json.get("email").getAsString() : "";
+            String phone = json.has("phone") ? json.get("phone").getAsString() : "";
+            String idNumber = json.has("id_number") ? json.get("id_number").getAsString() : "";
+            String nationality = json.has("nationality") ? json.get("nationality").getAsString() : "";
+
+            if (firstName.isEmpty() || lastName.isEmpty() || phone.isEmpty()) {
+                sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Missing required fields");
+                return;
+            }
+
+            GuestDao dao = new GuestDao();
+            boolean success = dao.addGuest(firstName, lastName, email, phone, idNumber, nationality);
+
+            if (success) {
+                sendSuccessResponse(resp, "Guest added successfully");
+            } else {
+                sendErrorResponse(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to add guest");
+            }
+        } catch (SQLException e) {
+            sendErrorResponse(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error: " + e.getMessage());
+        } catch (Exception e) {
+            sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Invalid request: " + e.getMessage());
         }
     }
 
@@ -64,13 +110,13 @@ public class BookingApi extends HttpServlet {
         try {
             String pathInfo = req.getPathInfo();
             String[] parts = pathInfo.split("/");
-
+            
             if (parts.length <= 1 || parts[1].isEmpty()) {
-                sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Booking ID required");
+                sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Guest ID required");
                 return;
             }
 
-            int bookingId = Integer.parseInt(parts[1]);
+            int guestId = Integer.parseInt(parts[1]);
 
             // Parse JSON body
             StringBuilder sb = new StringBuilder();
@@ -78,38 +124,31 @@ public class BookingApi extends HttpServlet {
             while ((line = req.getReader().readLine()) != null) {
                 sb.append(line);
             }
-
+            
             JsonObject json = gson.fromJson(sb.toString(), JsonObject.class);
+            
+            String firstName = json.has("first_name") ? json.get("first_name").getAsString() : "";
+            String lastName = json.has("last_name") ? json.get("last_name").getAsString() : "";
+            String email = json.has("email") ? json.get("email").getAsString() : "";
+            String phone = json.has("phone") ? json.get("phone").getAsString() : "";
+            String idNumber = json.has("id_number") ? json.get("id_number").getAsString() : "";
+            String nationality = json.has("nationality") ? json.get("nationality").getAsString() : "";
 
-            String status = json.has("status") ? json.get("status").getAsString() : "";
-            String checkInDate = json.has("check_in_date") ? json.get("check_in_date").getAsString() : "";
-            String checkOutDate = json.has("check_out_date") ? json.get("check_out_date").getAsString() : "";
-            Integer adults = json.has("adults") ? json.get("adults").getAsInt() : null;
-            Integer children = json.has("children") ? json.get("children").getAsInt() : null;
-
-            BookingDao dao = new BookingDao();
-            boolean success = false;
-
-            if (!status.isEmpty()) {
-                // Update booking status
-                success = dao.updateBookingStatus(bookingId, status);
-            } else if (!checkInDate.isEmpty() && !checkOutDate.isEmpty() && adults != null && children != null) {
-                // Update booking details
-                java.sql.Date sqlCheckIn = java.sql.Date.valueOf(checkInDate);
-                java.sql.Date sqlCheckOut = java.sql.Date.valueOf(checkOutDate);
-                success = dao.updateBooking(bookingId, sqlCheckIn, sqlCheckOut, adults, children);
-            } else {
-                sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Invalid update parameters");
+            if (firstName.isEmpty() || lastName.isEmpty() || phone.isEmpty()) {
+                sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Missing required fields");
                 return;
             }
 
+            GuestDao dao = new GuestDao();
+            boolean success = dao.updateGuest(guestId, firstName, lastName, email, phone, idNumber, nationality);
+
             if (success) {
-                sendSuccessResponse(resp, "Booking updated successfully");
+                sendSuccessResponse(resp, "Guest updated successfully");
             } else {
-                sendErrorResponse(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to update booking");
+                sendErrorResponse(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to update guest");
             }
         } catch (NumberFormatException e) {
-            sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Invalid booking ID format");
+            sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Invalid guest ID format");
         } catch (SQLException e) {
             sendErrorResponse(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error: " + e.getMessage());
         } catch (Exception e) {
@@ -129,59 +168,57 @@ public class BookingApi extends HttpServlet {
         try {
             String pathInfo = req.getPathInfo();
             String[] parts = pathInfo.split("/");
-
+            
             if (parts.length <= 1 || parts[1].isEmpty()) {
-                sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Booking ID required");
+                sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Guest ID required");
                 return;
             }
 
-            int bookingId = Integer.parseInt(parts[1]);
+            int guestId = Integer.parseInt(parts[1]);
 
-            BookingDao dao = new BookingDao();
-            // Mark booking as cancelled instead of hard delete
-            boolean success = dao.updateBookingStatus(bookingId, "cancelled");
+            GuestDao dao = new GuestDao();
+            boolean success = dao.deleteGuest(guestId);
 
             if (success) {
-                sendSuccessResponse(resp, "Booking deleted successfully");
+                sendSuccessResponse(resp, "Guest deleted successfully");
             } else {
-                sendErrorResponse(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to delete booking");
+                sendErrorResponse(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to delete guest");
             }
         } catch (NumberFormatException e) {
-            sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Invalid booking ID format");
+            sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Invalid guest ID format");
         } catch (SQLException e) {
             sendErrorResponse(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error: " + e.getMessage());
         }
     }
 
-    private void getAllBookings(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
-        BookingDao dao = new BookingDao();
-        List<Map<String, Object>> bookings = dao.getAllBookings();
+    private void getAllGuests(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
+        GuestDao dao = new GuestDao();
+        List<Map<String, Object>> guests = dao.getAllGuests();
 
         setResponseHeaders(resp);
         JsonObject response = new JsonObject();
         response.addProperty("success", true);
         response.addProperty("timestamp", System.currentTimeMillis());
-        response.add("data", gson.toJsonTree(bookings));
+        response.add("data", gson.toJsonTree(guests));
 
         PrintWriter out = resp.getWriter();
         out.print(gson.toJson(response));
         out.flush();
     }
 
-    private void getBookingById(HttpServletRequest req, HttpServletResponse resp, int bookingId)
-            throws SQLException, IOException {
-        BookingDao dao = new BookingDao();
-        Map<String, Object> booking = dao.getBookingById(bookingId);
+    private void getGuestById(HttpServletRequest req, HttpServletResponse resp, int guestId) throws SQLException, IOException {
+        GuestDao dao = new GuestDao();
+        Map<String, Object> guest = dao.getGuestById(guestId);
 
         setResponseHeaders(resp);
         JsonObject response = new JsonObject();
-        response.addProperty("success", booking != null);
+        response.addProperty("success", guest != null);
         response.addProperty("timestamp", System.currentTimeMillis());
-
-        if (booking != null) {
-            response.add("data", gson.toJsonTree(booking));
+        
+        if (guest != null) {
+            response.add("data", gson.toJsonTree(guest));
         } else {
-            response.addProperty("message", "Booking not found");
+            response.addProperty("message", "Guest not found");
         }
 
         PrintWriter out = resp.getWriter();

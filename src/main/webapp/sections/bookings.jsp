@@ -15,6 +15,24 @@
             
             <!-- Main Content -->
             <div class="col-lg-9 col-md-8">
+                <!-- Messages -->
+                <% String successMessage=(String) request.getAttribute("successMessage"); String errorMessage=(String)
+                    request.getAttribute("errorMessage"); %>
+                    <% if (successMessage !=null) { %>
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>Success!</strong>
+                            <%= successMessage %>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                        <% } %>
+                            <% if (errorMessage !=null) { %>
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>Error!</strong>
+                                    <%= errorMessage %>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                                <% } %>
+
                 <!-- Header -->
                 <div class="row mb-4">
                     <div class="col-12">
@@ -26,9 +44,9 @@
                 </div>
 
                 <!-- Statistics Cards -->
-                <div class="row stats-row">
+                <div class="row mb-4">
                     <div class="col-lg-3 col-md-6 mb-3">
-                        <div class="stat-card">
+                        <div class="stats-card">
                             <div class="stat-number text-info">
                                 <% 
                                 List<Map<String, Object>> bookings = (List<Map<String, Object>>) request.getAttribute("bookings");
@@ -42,7 +60,7 @@
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 mb-3">
-                        <div class="stat-card">
+                        <div class="stats-card">
                             <div class="stat-number text-warning">
                                 <% 
                                 int confirmedCount = 0;
@@ -62,7 +80,7 @@
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 mb-3">
-                        <div class="stat-card">
+                        <div class="stats-card">
                             <div class="stat-number text-success">
                                 <% 
                                 int checkedInCount = 0;
@@ -82,7 +100,7 @@
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 mb-3">
-                        <div class="stat-card">
+                        <div class="stats-card">
                             <div class="stat-number text-secondary">
                                 <% 
                                 int checkedOutCount = 0;

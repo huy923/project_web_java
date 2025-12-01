@@ -1,3 +1,7 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+    <%@ page import="java.util.List" %>
+        <%@ page import="java.util.Map" %>
+
 <jsp:include page="/includes/header.jsp" />
     <div class="px-2 main-container">
         <div class="row">
@@ -8,6 +12,24 @@
             
             <!-- Main Content -->
             <div class="col-lg-9 col-md-8">
+                <!-- Messages -->
+                <% String successMessage=(String) request.getAttribute("successMessage"); String errorMessage=(String)
+                    request.getAttribute("errorMessage"); %>
+                    <% if (successMessage !=null) { %>
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>Success!</strong>
+                            <%= successMessage %>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                        <% } %>
+                            <% if (errorMessage !=null) { %>
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>Error!</strong>
+                                    <%= errorMessage %>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                                <% } %>
+
                 <!-- Header -->
                 <div class="row mb-4">
                     <div class="col-12">
@@ -19,28 +41,50 @@
                 </div>
 
                 <!-- Statistics -->
+                <% List<Map<String, Object>> items = (List<Map<String, Object>>) request.getAttribute("items");
+                        Integer lowStockCount = (Integer) request.getAttribute("lowStockCount");
+                        if (lowStockCount == null) lowStockCount = 0;
+                
+                        int totalItems = items != null ? items.size() : 0;
+                        int inStock = 0, outOfStock = 0;
+                        if (items != null) {
+                        for (Map<String, Object> item : items) {
+                            int stock = Integer.parseInt(item.get("current_stock").toString());
+                            if (stock > 0) inStock++;
+                            else outOfStock++;
+                            }
+                            }
+                            %>
                 <div class="row mb-4">
                     <div class="col-lg-3 col-md-6 mb-3">
                         <div class="stats-card">
-                            <div class="stat-number text-info">0</div>
+                            <div class="stat-number text-info">
+                                <%= totalItems %>
+                            </div>
                             <div class="stats-label"><i class="bi bi-box-seam"></i> Total Items</div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 mb-3">
                         <div class="stats-card">
-                            <div class="stat-number text-warning">0</div>
+                            <div class="stat-number text-warning">
+                                <%= lowStockCount %>
+                            </div>
                             <div class="stats-label"><i class="bi bi-exclamation-circle"></i> Low Stock</div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 mb-3">
                         <div class="stats-card">
-                            <div class="stat-number text-success">0</div>
+                            <div class="stat-number text-success">
+                                <%= inStock %>
+                            </div>
                             <div class="stats-label"><i class="bi bi-check-circle"></i> In Stock</div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 mb-3">
                         <div class="stats-card">
-                            <div class="stat-number text-danger">0</div>
+                            <div class="stat-number text-danger">
+                                <%= outOfStock %>
+                            </div>
                             <div class="stats-label"><i class="bi bi-x-circle"></i> Out of Stock</div>
                         </div>
                     </div>
@@ -96,9 +140,12 @@
                 </div>
 
                 <!-- Low Stock Alert -->
+                <% if (lowStockCount> 0) { %>
                 <div class="stock-warning mb-4">
-                    <i class="bi bi-exclamation-triangle"></i> <strong>Alert:</strong> You have 0 items below minimum stock level
+                    <i class="bi bi-exclamation-triangle"></i> <strong>Alert:</strong> You have <%= lowStockCount %> items below minimum
+                        stock level
                 </div>
+                <% } %>
 
                 <!-- Inventory Table -->
                 <div class="dashboard-card p-4">
@@ -118,12 +165,49 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <% if (items !=null && !items.isEmpty()) { for (Map<String, Object> item : items) {
+                                    %>
+                                    <tr>
+                                        <td>
+                                            <%= item.get("inventory_id") %>
+                                        </td>
+                                        <td>
+                                            <%= item.get("item_name") %>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-secondary">
+                                                <%= item.get("category") %>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <% int stock=Integer.parseInt(item.get("current_stock").toString()); int
+                                                minStock=Integer.parseInt(item.get("minimum_stock").toString()); String stockClass=stock> minStock ?
+                                                "text-success" : stock > 0 ? "text-warning" : "text-danger";
+                                                %>
+                                                <span class="<%= stockClass %>"><strong>
+                                                        <%= stock %>
+                                                    </strong></span>
+                                        </td>
+                                        <td>$<%= String.format("%.2f", item.get("unit_price")) %>
+                                        </td>
+                                        <td>
+                                            <form method="post" action="<%= request.getContextPath() %>/inventory" style="display:inline;">
+                                                <input type="hidden" name="action" value="delete">
+                                                <input type="hidden" name="inventoryId" value="<%= item.get(" inventory_id") %>">
+                                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">
+                                                    <i class="bi bi-trash"></i> Delete
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    <% } } else { %>
                                 <tr>
                                     <td colspan="6" class="text-center py-4">
                                         <i class="bi bi-inbox display-4 text-muted"></i>
                                         <p class="text-muted mt-2">No inventory items</p>
                                     </td>
                                 </tr>
+                                <% } %>
                             </tbody>
                         </table>
                     </div>

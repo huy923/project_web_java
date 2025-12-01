@@ -1,6 +1,6 @@
 package api;
 
-import dao.BookingDao;
+import dao.RoomDao;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -16,8 +16,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet(name = "BookingApi", urlPatterns = { "/api/bookings", "/api/booking/*" })
-public class BookingApi extends HttpServlet {
+@WebServlet(name = "RoomApi", urlPatterns = {"/api/rooms", "/api/room/*"})
+public class RoomApi extends HttpServlet {
     private Gson gson = new Gson();
 
     @Override
@@ -31,24 +31,67 @@ public class BookingApi extends HttpServlet {
 
         try {
             String pathInfo = req.getPathInfo();
-
+            
             if (pathInfo == null || pathInfo.equals("/")) {
-                // GET /api/bookings - Get all bookings
-                getAllBookings(req, resp);
+                // GET /api/rooms - Get all rooms
+                getAllRooms(req, resp);
             } else {
-                // GET /api/booking/{id} - Get booking by ID
+                // GET /api/room/{id} - Get room by ID
                 String[] parts = pathInfo.split("/");
                 if (parts.length > 1 && !parts[1].isEmpty()) {
-                    int bookingId = Integer.parseInt(parts[1]);
-                    getBookingById(req, resp, bookingId);
+                    int roomId = Integer.parseInt(parts[1]);
+                    getRoomById(req, resp, roomId);
                 } else {
-                    sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Invalid booking ID");
+                    sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Invalid room ID");
                 }
             }
         } catch (NumberFormatException e) {
-            sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Invalid booking ID format");
+            sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Invalid room ID format");
         } catch (SQLException e) {
             sendErrorResponse(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error: " + e.getMessage());
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // Check login
+        HttpSession session = req.getSession(false);
+        if (session == null || session.getAttribute("user") == null) {
+            sendErrorResponse(resp, HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized access");
+            return;
+        }
+
+        try {
+            // Parse JSON body
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = req.getReader().readLine()) != null) {
+                sb.append(line);
+            }
+            
+            JsonObject json = gson.fromJson(sb.toString(), JsonObject.class);
+            
+            String roomNumber = json.has("room_number") ? json.get("room_number").getAsString() : "";
+            int roomTypeId = json.has("room_type_id") ? json.get("room_type_id").getAsInt() : 0;
+            int floorNumber = json.has("floor_number") ? json.get("floor_number").getAsInt() : 0;
+
+            if (roomNumber.isEmpty() || roomTypeId == 0 || floorNumber == 0) {
+                sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Missing required fields");
+                return;
+            }
+
+            RoomDao dao = new RoomDao();
+            boolean success = dao.addRoom(roomNumber, roomTypeId, floorNumber);
+
+            if (success) {
+                sendSuccessResponse(resp, "Room added successfully");
+            } else {
+                sendErrorResponse(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to add room");
+            }
+        } catch (SQLException e) {
+            sendErrorResponse(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error: " + e.getMessage());
+        } catch (Exception e) {
+            sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Invalid request: " + e.getMessage());
         }
     }
 
@@ -64,13 +107,13 @@ public class BookingApi extends HttpServlet {
         try {
             String pathInfo = req.getPathInfo();
             String[] parts = pathInfo.split("/");
-
+            
             if (parts.length <= 1 || parts[1].isEmpty()) {
-                sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Booking ID required");
+                sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Room ID required");
                 return;
             }
 
-            int bookingId = Integer.parseInt(parts[1]);
+            int roomId = Integer.parseInt(parts[1]);
 
             // Parse JSON body
             StringBuilder sb = new StringBuilder();
@@ -78,38 +121,26 @@ public class BookingApi extends HttpServlet {
             while ((line = req.getReader().readLine()) != null) {
                 sb.append(line);
             }
-
+            
             JsonObject json = gson.fromJson(sb.toString(), JsonObject.class);
-
+            
             String status = json.has("status") ? json.get("status").getAsString() : "";
-            String checkInDate = json.has("check_in_date") ? json.get("check_in_date").getAsString() : "";
-            String checkOutDate = json.has("check_out_date") ? json.get("check_out_date").getAsString() : "";
-            Integer adults = json.has("adults") ? json.get("adults").getAsInt() : null;
-            Integer children = json.has("children") ? json.get("children").getAsInt() : null;
 
-            BookingDao dao = new BookingDao();
-            boolean success = false;
-
-            if (!status.isEmpty()) {
-                // Update booking status
-                success = dao.updateBookingStatus(bookingId, status);
-            } else if (!checkInDate.isEmpty() && !checkOutDate.isEmpty() && adults != null && children != null) {
-                // Update booking details
-                java.sql.Date sqlCheckIn = java.sql.Date.valueOf(checkInDate);
-                java.sql.Date sqlCheckOut = java.sql.Date.valueOf(checkOutDate);
-                success = dao.updateBooking(bookingId, sqlCheckIn, sqlCheckOut, adults, children);
-            } else {
-                sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Invalid update parameters");
+            if (status.isEmpty()) {
+                sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Status is required");
                 return;
             }
 
+            RoomDao dao = new RoomDao();
+            boolean success = dao.updateRoomStatus(roomId, status);
+
             if (success) {
-                sendSuccessResponse(resp, "Booking updated successfully");
+                sendSuccessResponse(resp, "Room updated successfully");
             } else {
-                sendErrorResponse(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to update booking");
+                sendErrorResponse(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to update room");
             }
         } catch (NumberFormatException e) {
-            sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Invalid booking ID format");
+            sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Invalid room ID format");
         } catch (SQLException e) {
             sendErrorResponse(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error: " + e.getMessage());
         } catch (Exception e) {
@@ -129,59 +160,62 @@ public class BookingApi extends HttpServlet {
         try {
             String pathInfo = req.getPathInfo();
             String[] parts = pathInfo.split("/");
-
+            
             if (parts.length <= 1 || parts[1].isEmpty()) {
-                sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Booking ID required");
+                sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Room ID required");
                 return;
             }
 
-            int bookingId = Integer.parseInt(parts[1]);
+            int roomId = Integer.parseInt(parts[1]);
 
-            BookingDao dao = new BookingDao();
-            // Mark booking as cancelled instead of hard delete
-            boolean success = dao.updateBookingStatus(bookingId, "cancelled");
+            RoomDao dao = new RoomDao();
+            boolean success = dao.deleteRoom(roomId);
 
             if (success) {
-                sendSuccessResponse(resp, "Booking deleted successfully");
+                sendSuccessResponse(resp, "Room deleted successfully");
             } else {
-                sendErrorResponse(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to delete booking");
+                sendErrorResponse(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to delete room");
             }
         } catch (NumberFormatException e) {
-            sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Invalid booking ID format");
+            sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Invalid room ID format");
         } catch (SQLException e) {
             sendErrorResponse(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error: " + e.getMessage());
         }
     }
 
-    private void getAllBookings(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
-        BookingDao dao = new BookingDao();
-        List<Map<String, Object>> bookings = dao.getAllBookings();
+    private void getAllRooms(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
+        RoomDao dao = new RoomDao();
+        List<Map<String, Object>> rooms = dao.getAllRooms();
 
         setResponseHeaders(resp);
         JsonObject response = new JsonObject();
         response.addProperty("success", true);
         response.addProperty("timestamp", System.currentTimeMillis());
-        response.add("data", gson.toJsonTree(bookings));
+        response.add("data", gson.toJsonTree(rooms));
 
         PrintWriter out = resp.getWriter();
         out.print(gson.toJson(response));
         out.flush();
     }
 
-    private void getBookingById(HttpServletRequest req, HttpServletResponse resp, int bookingId)
-            throws SQLException, IOException {
-        BookingDao dao = new BookingDao();
-        Map<String, Object> booking = dao.getBookingById(bookingId);
+    private void getRoomById(HttpServletRequest req, HttpServletResponse resp, int roomId) throws SQLException, IOException {
+        RoomDao dao = new RoomDao();
+        List<Map<String, Object>> rooms = dao.getAllRooms();
+        
+        Map<String, Object> room = rooms.stream()
+            .filter(r -> (Integer) r.get("room_id") == roomId)
+            .findFirst()
+            .orElse(null);
 
         setResponseHeaders(resp);
         JsonObject response = new JsonObject();
-        response.addProperty("success", booking != null);
+        response.addProperty("success", room != null);
         response.addProperty("timestamp", System.currentTimeMillis());
-
-        if (booking != null) {
-            response.add("data", gson.toJsonTree(booking));
+        
+        if (room != null) {
+            response.add("data", gson.toJsonTree(room));
         } else {
-            response.addProperty("message", "Booking not found");
+            response.addProperty("message", "Room not found");
         }
 
         PrintWriter out = resp.getWriter();

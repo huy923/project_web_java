@@ -15,6 +15,24 @@
             
             <!-- Main Content -->
             <div class="col-lg-9 col-md-8">
+                <!-- Messages -->
+                <% String successMessage=(String) request.getAttribute("successMessage"); String errorMessage=(String)
+                    request.getAttribute("errorMessage"); %>
+                    <% if (successMessage !=null) { %>
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>Success!</strong>
+                            <%= successMessage %>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                        <% } %>
+                            <% if (errorMessage !=null) { %>
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>Error!</strong>
+                                    <%= errorMessage %>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                                <% } %>
+
                 <!-- Header -->
                 <div class="row mb-4">
                     <div class="col-12">
@@ -26,28 +44,50 @@
                 </div>
 
                 <!-- Statistics -->
+                <% List<Map<String, Object>> reviews = (List<Map<String, Object>>) request.getAttribute("reviews");
+                        Double avgRating = (Double) request.getAttribute("avgRating");
+                        if (avgRating == null) avgRating = 0.0;
+                
+                        int totalReviews = reviews != null ? reviews.size() : 0;
+                        int publicReviews = 0, hiddenReviews = 0;
+                        if (reviews != null) {
+                        for (Map<String, Object> review : reviews) {
+                            Boolean isPublic = (Boolean) review.get("is_public");
+                            if (isPublic != null && isPublic) publicReviews++;
+                            else hiddenReviews++;
+                            }
+                            }
+                            %>
                 <div class="row mb-4">
                     <div class="col-lg-3 col-md-6 mb-3">
                         <div class="stats-card">
-                            <div class="stat-number text-warning">0.0</div>
+                            <div class="stat-number text-warning">
+                                <%= String.format("%.1f", avgRating) %>
+                            </div>
                             <div class="stats-label"><i class="bi bi-star-fill"></i> Average Rating</div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 mb-3">
                         <div class="stats-card">
-                            <div class="stat-number text-success">0</div>
+                            <div class="stat-number text-success">
+                                <%= totalReviews %>
+                            </div>
                             <div class="stats-label"><i class="bi bi-chat-square"></i> Total Reviews</div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 mb-3">
                         <div class="stats-card">
-                            <div class="stat-number text-info">0</div>
+                            <div class="stat-number text-info">
+                                <%= publicReviews %>
+                            </div>
                             <div class="stats-label"><i class="bi bi-check-circle"></i> Public Reviews</div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 mb-3">
                         <div class="stats-card">
-                            <div class="stat-number text-danger">0</div>
+                            <div class="stat-number text-danger">
+                                <%= hiddenReviews %>
+                            </div>
                             <div class="stats-label"><i class="bi bi-eye-slash"></i> Hidden Reviews</div>
                         </div>
                     </div>
@@ -102,48 +142,66 @@
                         <i class="bi bi-list-check"></i> All Reviews
                     </h5>
                     
-                    <!-- Sample Review Card -->
+                    <% if (reviews !=null && !reviews.isEmpty()) { for (Map<String, Object> review : reviews) {
+                        Integer rating = Integer.parseInt(review.get("rating").toString());
+                        %>
+                        <!-- Review Card -->
                     <div class="review-card">
                         <div class="review-header">
                             <div>
-                                <strong>Guest Name</strong> - Booking ID: #12345
-                                <br><small class="text-muted">Posted on 2024-01-15</small>
+                                <strong>
+                                    <%= review.get("guest_name") %>
+                                </strong> - Booking ID: #<%= review.get("booking_id") %>
+                                    <br><small class="text-muted">Posted on <%= review.get("review_date") %></small>
                             </div>
                             <div>
                                 <span class="review-stars">
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
+                                    <% for (int i=0; i < 5; i++) { if (i < rating) { %>
+                                        <i class="bi bi-star-fill" style="color: gold;"></i>
+                                        <% } else { %>
+                                            <i class="bi bi-star"></i>
+                                            <% } } %>
                                 </span>
                             </div>
                         </div>
-                        <h6>Great stay!</h6>
+                        <h6>
+                            <%= review.get("title") %>
+                        </h6>
                         <p class="review-body">
-                            The room was clean and comfortable. The staff was very helpful and friendly. I would definitely recommend this hotel to my friends and family.
+                            <%= review.get("review_text") %>
                         </p>
                         <div class="mt-3">
-                            <small class="text-muted">Status: <span class="badge bg-success">Public</span></small>
+                            <small class="text-muted">Status:
+                                <span class="badge <%= (Boolean) review.get(" is_public") ? "bg-success" : "bg-secondary" %>">
+                                    <%= (Boolean) review.get("is_public") ? "Public" : "Private" %>
+                                </span>
+                            </small>
                             <div class="mt-2">
-                                <button class="btn btn-sm btn-hotel-outline" title="Edit">
-                                    <i class="bi bi-pencil"></i> Edit
-                                </button>
-                                <button class="btn btn-sm btn-hotel-outline" title="Delete">
-                                    <i class="bi bi-trash"></i> Delete
-                                </button>
-                                <button class="btn btn-sm btn-hotel-outline" title="Toggle Visibility">
-                                    <i class="bi bi-eye-slash"></i> Hide
-                                </button>
+                                <form method="post" action="<%= request.getContextPath() %>/reviews" style="display:inline;">
+                                    <input type="hidden" name="action" value="toggleVisibility">
+                                    <input type="hidden" name="reviewId" value="<%= review.get(" review_id") %>">
+                                    <button type="submit" class="btn btn-sm btn-hotel-outline" title="Toggle Visibility">
+                                        <i class="bi <%= (Boolean) review.get(" is_public") ? "bi-eye-slash" : "bi-eye" %>"></i>
+                                        <%= (Boolean) review.get("is_public") ? "Hide" : "Show" %>
+                                    </button>
+                                </form>
+                                <form method="post" action="<%= request.getContextPath() %>/reviews" style="display:inline;">
+                                    <input type="hidden" name="action" value="delete">
+                                    <input type="hidden" name="reviewId" value="<%= review.get(" review_id") %>">
+                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">
+                                        <i class="bi bi-trash"></i> Delete
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
-
+                    <% } } else { %>
                     <!-- Empty State -->
                     <div class="text-center py-4">
                         <i class="bi bi-inbox display-4 text-muted"></i>
                         <p class="text-muted mt-2">No reviews available</p>
                     </div>
+                    <% } %>
                 </div>
             </div>
         </div>

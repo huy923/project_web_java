@@ -82,7 +82,8 @@ public class MaintenanceServlet extends HttpServlet {
                 int roomId = Integer.parseInt(request.getParameter("roomId"));
                 String issueDescription = request.getParameter("issueDescription");
                 String priority = request.getParameter("priority");
-                int reportedBy = (Integer) session.getAttribute("userId");
+                model.User user = (model.User) session.getAttribute("user");
+                int reportedBy = user != null ? user.getUserId() : 1;
 
                 boolean success = maintenanceDao.addMaintenanceRecord(roomId, issueDescription, reportedBy, priority);
 

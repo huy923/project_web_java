@@ -1,5 +1,8 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+    <%@ page import="java.util.List" %>
+        <%@ page import="java.util.Map" %>
+
 <jsp:include page="/includes/header.jsp" />
-    
     <div class="px-2 main-container">
         <div class="row">
             <!-- Sidebar -->
@@ -9,6 +12,24 @@
             
             <!-- Main Content -->
             <div class="col-lg-9 col-md-8">
+                <!-- Messages -->
+                <% String successMessage=(String) request.getAttribute("successMessage"); String errorMessage=(String)
+                    request.getAttribute("errorMessage"); %>
+                    <% if (successMessage !=null) { %>
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>Success!</strong>
+                            <%= successMessage %>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                        <% } %>
+                            <% if (errorMessage !=null) { %>
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>Error!</strong>
+                                    <%= errorMessage %>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                                <% } %>
+
                 <!-- Header -->
                 <div class="row mb-4">
                     <div class="col-12">
@@ -20,22 +41,39 @@
                 </div>
 
                 <!-- Statistics -->
+                <% List<Map<String, Object>> services = (List<Map<String, Object>>) request.getAttribute("services");
+                        int totalServices = services != null ? services.size() : 0;
+                        double totalRevenue = 0;
+                        java.util.Set<String> categories = new java.util.HashSet<>();
+                                if (services != null) {
+                                for (Map<String, Object> service : services) {
+                                    Double price = Double.parseDouble(service.get("price").toString());
+                                    totalRevenue += price;
+                                    categories.add((String) service.get("category"));
+                                    }
+                                    }
+                                    %>
                 <div class="row mb-4">
                     <div class="col-lg-4 col-md-6 mb-3">
                         <div class="stats-card">
-                            <div class="stat-number text-success">0</div>
+                            <div class="stat-number text-success">
+                                <%= totalServices %>
+                            </div>
                             <div class="stats-label"><i class="bi bi-check-circle"></i> Active Services</div>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-6 mb-3">
                         <div class="stats-card">
-                            <div class="stat-number text-info">0</div>
+                            <div class="stat-number text-info">
+                                <%= categories.size() %>
+                            </div>
                             <div class="stats-label"><i class="bi bi-bar-chart"></i> Total Categories</div>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-6 mb-3">
                         <div class="stats-card">
-                            <div class="stat-number text-warning">0</div>
+                            <div class="stat-number text-warning">$<%= String.format("%.2f", totalRevenue) %>
+                            </div>
                             <div class="stats-label"><i class="bi bi-coin"></i> Total Revenue</div>
                         </div>
                     </div>
@@ -99,12 +137,40 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <% if (services !=null && !services.isEmpty()) { for (Map<String, Object> service : services) {
+                                    %>
+                                    <tr>
+                                        <td>
+                                            <%= service.get("service_id") %>
+                                        </td>
+                                        <td>
+                                            <%= service.get("service_name") %>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-info">
+                                                <%= service.get("category") %>
+                                            </span>
+                                        </td>
+                                        <td>$<%= String.format("%.2f", service.get("price")) %>
+                                        </td>
+                                        <td>
+                                            <form method="post" action="<%= request.getContextPath() %>/services" style="display:inline;">
+                                                <input type="hidden" name="action" value="delete">
+                                                <input type="hidden" name="serviceId" value="<%= service.get(" service_id") %>">
+                                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">
+                                                    <i class="bi bi-trash"></i> Delete
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    <% } } else { %>
                                 <tr>
                                     <td colspan="5" class="text-center py-4">
                                         <i class="bi bi-inbox display-4 text-muted"></i>
                                         <p class="text-muted mt-2">No services added</p>
                                     </td>
                                 </tr>
+                                <% } %>
                             </tbody>
                         </table>
                     </div>

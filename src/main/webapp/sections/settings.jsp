@@ -19,9 +19,9 @@
                 <div class="row mb-4">
                     <div class="col-12">
                         <h1 class="display-6 mb-3">
-                            <i class="bi bi-gear"></i> Cài đặt hệ thống
+                            <i class="bi bi-gear"></i> System Settings
                         </h1>
-                        <p class="lead">Quản lý cấu hình và thiết lập hệ thống khách sạn</p>
+                        <p class="lead">Manage configuration and hotel system settings</p>
                     </div>
                 </div>
 
@@ -35,36 +35,36 @@
                             <i class="bi bi-building"></i>
                         </div>
                         <div class="ms-3">
-                            <h4 class="mb-1">Thông tin khách sạn</h4>
-                            <p class="text-muted mb-0">Cấu hình thông tin cơ bản của khách sạn</p>
+                            <h4 class="mb-1">Hotel Information</h4>
+                            <p class="text-muted mb-0">Configure basic hotel information</p>
                         </div>
                     </div>
                     
                     <form id="hotelInfoForm">
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <label class="form-label">Tên khách sạn</label>
-                                <input type="text" class="form-control" placeholder="Nhập tên khách sạn" value="Hotel Paradise">
+                                <label class="form-label">Hotel Name</label>
+                                <input type="text" class="form-control" placeholder="Enter hotel name" value="Hotel Paradise">
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Email liên hệ</label>
-                                <input type="email" class="form-control" placeholder="Nhập email liên hệ" value="contact@hotelparadise.com">
+                                <label class="form-label">Contact Email</label>
+                                <input type="email" class="form-control" placeholder="Enter contact email" value="contact@hotelparadise.com">
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Số điện thoại</label>
-                                <input type="tel" class="form-control" placeholder="Nhập số điện thoại" value="+84 123 456 789">
+                                <label class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" placeholder="Enter phone number" value="+84 123 456 789">
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Địa chỉ</label>
-                                <input type="text" class="form-control" placeholder="Nhập địa chỉ" value="123 Đường ABC, Quận 1, TP.HCM">
+                                <label class="form-label">Address</label>
+                                <input type="text" class="form-control" placeholder="Enter address" value="123 ABC Street, District 1, HCMC">
                             </div>
                             <div class="col-md-12">
-                                <label class="form-label">Mô tả</label>
-                                <textarea class="form-control" rows="3" placeholder="Nhập mô tả khách sạn">Khách sạn sang trọng với dịch vụ chuyên nghiệp, tọa lạc tại trung tâm thành phố.</textarea>
+                                <label class="form-label">Description</label>
+                                <textarea class="form-control" rows="3" placeholder="Enter hotel description">A luxury hotel with professional services, located in the city center.</textarea>
                             </div>
                             <div class="col-12">
                                 <button type="submit" class="btn-hotel">
-                                    <i class="bi bi-check-circle"></i> Lưu thông tin
+                                    <i class="bi bi-check-circle"></i> Save Information
                                 </button>
                             </div>
                         </div>
@@ -78,15 +78,15 @@
                             <i class="bi bi-sliders"></i>
                         </div>
                         <div class="ms-3">
-                            <h4 class="mb-1">Cài đặt hệ thống</h4>
-                            <p class="text-muted mb-0">Cấu hình các tham số hoạt động của hệ thống</p>
+                            <h4 class="mb-1">System Settings</h4>
+                            <p class="text-muted mb-0">Configure system operation parameters</p>
                         </div>
                     </div>
                     
                     <form id="systemSettingsForm">
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <label class="form-label">Múi giờ</label>
+                                <label class="form-label">Timezone</label>
                                 <select class="form-select">
                                     <option value="Asia/Ho_Chi_Minh" selected>Asia/Ho_Chi_Minh (GMT+7)</option>
                                     <option value="UTC">UTC (GMT+0)</option>
@@ -94,23 +94,23 @@
                                 </select>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Ngôn ngữ</label>
+                                <label class="form-label">Language</label>
                                 <select class="form-select">
-                                    <option value="vi" selected>Tiếng Việt</option>
-                                    <option value="en">English</option>
+                                    <option value="en" selected>English</option>
+                                    <option value="vi">Tiếng Việt</option>
                                     <option value="zh">中文</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Đơn vị tiền tệ</label>
+                                <label class="form-label">Currency</label>
                                 <select class="form-select">
-                                    <option value="VND" selected>Việt Nam Đồng (VNĐ)</option>
+                                    <option value="VND" selected>Vietnamese Dong (VNĐ)</option>
                                     <option value="USD">US Dollar ($)</option>
                                     <option value="EUR">Euro (€)</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Định dạng ngày</label>
+                                <label class="form-label">Date Format</label>
                                 <select class="form-select">
                                     <option value="dd/MM/yyyy" selected>dd/MM/yyyy</option>
                                     <option value="MM/dd/yyyy">MM/dd/yyyy</option>
@@ -119,7 +119,7 @@
                             </div>
                             <div class="col-12">
                                 <button type="submit" class="btn-hotel">
-                                    <i class="bi bi-check-circle"></i> Lưu cài đặt
+                                    <i class="bi bi-check-circle"></i> Save Settings
                                 </button>
                             </div>
                         </div>
@@ -133,8 +133,8 @@
                             <i class="bi bi-bell"></i>
                         </div>
                         <div class="ms-3">
-                            <h4 class="mb-1">Cài đặt thông báo</h4>
-                            <p class="text-muted mb-0">Quản lý các thông báo và cảnh báo hệ thống</p>
+                            <h4 class="mb-1">Notification Settings</h4>
+                            <p class="text-muted mb-0">Manage system notifications and alerts</p>
                         </div>
                     </div>
                     
@@ -142,8 +142,8 @@
                         <div class="col-md-6">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <label class="form-label mb-1">Thông báo email</label>
-                                    <p class="text-muted small mb-0">Nhận thông báo qua email</p>
+                                    <label class="form-label mb-1">Email Notifications</label>
+                                    <p class="text-muted small mb-0">Receive notifications via email</p>
                                 </div>
                                 <label class="toggle-switch">
                                     <input type="checkbox" checked>
@@ -154,8 +154,8 @@
                         <div class="col-md-6">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <label class="form-label mb-1">Thông báo SMS</label>
-                                    <p class="text-muted small mb-0">Nhận thông báo qua tin nhắn</p>
+                                    <label class="form-label mb-1">SMS Notifications</label>
+                                    <p class="text-muted small mb-0">Receive notifications via SMS</p>
                                 </div>
                                 <label class="toggle-switch">
                                     <input type="checkbox">
@@ -166,8 +166,8 @@
                         <div class="col-md-6">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <label class="form-label mb-1">Cảnh báo bảo trì</label>
-                                    <p class="text-muted small mb-0">Thông báo khi phòng cần bảo trì</p>
+                                    <label class="form-label mb-1">Maintenance Alerts</label>
+                                    <p class="text-muted small mb-0">Alert when room needs maintenance</p>
                                 </div>
                                 <label class="toggle-switch">
                                     <input type="checkbox" checked>
@@ -178,8 +178,8 @@
                         <div class="col-md-6">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <label class="form-label mb-1">Cảnh báo thanh toán</label>
-                                    <p class="text-muted small mb-0">Thông báo khi có giao dịch mới</p>
+                                    <label class="form-label mb-1">Payment Alerts</label>
+                                    <p class="text-muted small mb-0">Alert when new transaction occurs</p>
                                 </div>
                                 <label class="toggle-switch">
                                     <input type="checkbox" checked>
@@ -197,28 +197,28 @@
                             <i class="bi bi-shield-lock"></i>
                         </div>
                         <div class="ms-3">
-                            <h4 class="mb-1">Bảo mật</h4>
-                            <p class="text-muted mb-0">Cài đặt bảo mật và quyền truy cập</p>
+                            <h4 class="mb-1">Security</h4>
+                            <p class="text-muted mb-0">Security settings and access permissions</p>
                         </div>
                     </div>
                     
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <label class="form-label">Thay đổi mật khẩu</label>
-                            <input type="password" class="form-control" placeholder="Nhập mật khẩu hiện tại">
+                            <label class="form-label">Change Password</label>
+                            <input type="password" class="form-control" placeholder="Enter current password">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Mật khẩu mới</label>
-                            <input type="password" class="form-control" placeholder="Nhập mật khẩu mới">
+                            <label class="form-label">New Password</label>
+                            <input type="password" class="form-control" placeholder="Enter new password">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Xác nhận mật khẩu</label>
-                            <input type="password" class="form-control" placeholder="Nhập lại mật khẩu mới">
+                            <label class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" placeholder="Re-enter new password">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">&nbsp;</label>
                             <button class="btn-hotel-outline w-100" onclick="changePassword()">
-                                <i class="bi bi-key"></i> Đổi mật khẩu
+                                <i class="bi bi-key"></i> Change Password
                             </button>
                         </div>
                     </div>
@@ -231,25 +231,25 @@
                             <i class="bi bi-database"></i>
                         </div>
                         <div class="ms-3">
-                            <h4 class="mb-1">Cài đặt cơ sở dữ liệu</h4>
-                            <p class="text-muted mb-0">Quản lý và sao lưu dữ liệu hệ thống</p>
+                            <h4 class="mb-1">Database Settings</h4>
+                            <p class="text-muted mb-0">Manage and backup system data</p>
                         </div>
                     </div>
                     
                     <div class="row g-3">
                         <div class="col-md-4">
                             <button class="btn-hotel-outline w-100" onclick="backupDatabase()">
-                                <i class="bi bi-download"></i> Sao lưu dữ liệu
+                                <i class="bi bi-download"></i> Backup Data
                             </button>
                         </div>
                         <div class="col-md-4">
                             <button class="btn-hotel-outline w-100" onclick="restoreDatabase()">
-                                <i class="bi bi-upload"></i> Khôi phục dữ liệu
+                                <i class="bi bi-upload"></i> Restore Data
                             </button>
                         </div>
                         <div class="col-md-4">
                             <button class="btn-hotel-outline w-100" onclick="optimizeDatabase()">
-                                <i class="bi bi-gear"></i> Tối ưu hóa
+                                <i class="bi bi-gear"></i> Optimize
                             </button>
                         </div>
                     </div>
@@ -283,39 +283,39 @@
         // Hotel Info Form
         document.getElementById('hotelInfoForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            showAlert('Thông tin khách sạn đã được cập nhật thành công!');
+            showAlert('Hotel information updated successfully!');
         });
 
         // System Settings Form
         document.getElementById('systemSettingsForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            showAlert('Cài đặt hệ thống đã được lưu thành công!');
+            showAlert('System settings saved successfully!');
         });
 
         function changePassword() {
-            showAlert('Mật khẩu đã được thay đổi thành công!');
+            showAlert('Password changed successfully!');
         }
 
         function backupDatabase() {
-            showAlert('Đang tạo bản sao lưu dữ liệu...', 'info');
+            showAlert('Creating data backup...', 'info');
             setTimeout(() => {
-                showAlert('Sao lưu dữ liệu hoàn tất!');
+                showAlert('Data backup completed!');
             }, 2000);
         }
 
         function restoreDatabase() {
-            if (confirm('Bạn có chắc chắn muốn khôi phục dữ liệu? Thao tác này sẽ ghi đè dữ liệu hiện tại.')) {
-                showAlert('Đang khôi phục dữ liệu...', 'info');
+            if (confirm('Are you sure you want to restore data? This will overwrite current data.')) {
+                showAlert('Restoring data...', 'info');
                 setTimeout(() => {
-                    showAlert('Khôi phục dữ liệu hoàn tất!');
+                    showAlert('Data restore completed!');
                 }, 2000);
             }
         }
 
         function optimizeDatabase() {
-            showAlert('Đang tối ưu hóa cơ sở dữ liệu...', 'info');
+            showAlert('Optimizing database...', 'info');
             setTimeout(() => {
-                showAlert('Tối ưu hóa cơ sở dữ liệu hoàn tất!');
+                showAlert('Database optimization completed!');
             }, 2000);
         }
 
@@ -323,8 +323,8 @@
         document.querySelectorAll('.toggle-switch input').forEach(toggle => {
             toggle.addEventListener('change', function() {
                 const setting = this.closest('.col-md-6').querySelector('.form-label').textContent;
-                const status = this.checked ? 'bật' : 'tắt';
-                showAlert(`Đã ${status} ${setting.toLowerCase()}`);
+                const status = this.checked ? 'enabled' : 'disabled';
+                showAlert(`${setting} ${status}`);
             });
         });
     </script>

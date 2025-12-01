@@ -71,33 +71,53 @@ public class BookingsServlet extends HttpServlet {
         try {
             switch (action) {
                 case "create":
-                    createBooking(req, user);
+                    if (createBooking(req, user)) {
+                        req.setAttribute("successMessage", "Booking created successfully!");
+                    } else {
+                        req.setAttribute("errorMessage", "Failed to create booking");
+                    }
                     break;
                 case "checkin":
-                    checkInBooking(req);
+                    if (checkInBooking(req)) {
+                        req.setAttribute("successMessage", "Guest checked in successfully!");
+                    } else {
+                        req.setAttribute("errorMessage", "Failed to check in guest");
+                    }
                     break;
                 case "checkout":
-                    checkOutBooking(req);
+                    if (checkOutBooking(req)) {
+                        req.setAttribute("successMessage", "Guest checked out successfully!");
+                    } else {
+                        req.setAttribute("errorMessage", "Failed to check out guest");
+                    }
                     break;
                 case "cancel":
-                    cancelBooking(req);
+                    if (cancelBooking(req)) {
+                        req.setAttribute("successMessage", "Booking cancelled successfully!");
+                    } else {
+                        req.setAttribute("errorMessage", "Failed to cancel booking");
+                    }
                     break;
                 case "update":
-                    updateBooking(req);
+                    if (updateBooking(req)) {
+                        req.setAttribute("successMessage", "Booking updated successfully!");
+                    } else {
+                        req.setAttribute("errorMessage", "Failed to update booking");
+                    }
                     break;
                 default:
-                    req.setAttribute("error", "Invalid action: " + action);
+                    req.setAttribute("errorMessage", "Invalid action: " + action);
             }
         } catch (SQLException e) {
-            req.setAttribute("error", "Database operation error: " + e.getMessage());
+            req.setAttribute("errorMessage", "Database operation error: " + e.getMessage());
             e.printStackTrace();
         }
 
-        // Redirect back to bookings page
-        resp.sendRedirect(req.getContextPath() + "/bookings");
+        // Forward back to bookings page instead of redirect
+        doGet(req, resp);
     }
 
-    private void createBooking(HttpServletRequest req, User user) throws SQLException {
+    private boolean createBooking(HttpServletRequest req, User user) throws SQLException {
         String firstName = req.getParameter("firstName");
         String lastName = req.getParameter("lastName");
         String email = req.getParameter("email");
@@ -127,50 +147,53 @@ public class BookingsServlet extends HttpServlet {
             // Update room status to occupied
             bookingDao.updateRoomStatus(roomId, "occupied");
         }
+        return success;
     }
 
-    private void checkInBooking(HttpServletRequest req) throws SQLException {
+    private boolean checkInBooking(HttpServletRequest req) throws SQLException {
         int bookingId = Integer.parseInt(req.getParameter("bookingId"));
-        bookingDao.updateBookingStatus(bookingId, "checked_in");
+        return bookingDao.updateBookingStatus(bookingId, "checked_in");
     }
 
-    private void checkOutBooking(HttpServletRequest req) throws SQLException {
-        int bookingId = Integer.parseInt(req.getParameter("bookingId"));
-
-        // Get room ID for this booking
-        int roomId = bookingDao.getRoomIdByBooking(bookingId);
-
-        // Update booking status
-        bookingDao.updateBookingStatus(bookingId, "checked_out");
-
-        if (roomId != -1) {
-            // Update room status to available
-            bookingDao.updateRoomStatus(roomId, "available");
-        }
-    }
-
-    private void cancelBooking(HttpServletRequest req) throws SQLException {
+    private boolean checkOutBooking(HttpServletRequest req) throws SQLException {
         int bookingId = Integer.parseInt(req.getParameter("bookingId"));
 
         // Get room ID for this booking
         int roomId = bookingDao.getRoomIdByBooking(bookingId);
 
         // Update booking status
-        bookingDao.updateBookingStatus(bookingId, "cancelled");
+        boolean success = bookingDao.updateBookingStatus(bookingId, "checked_out");
 
         if (roomId != -1) {
             // Update room status to available
             bookingDao.updateRoomStatus(roomId, "available");
         }
+        return success;
     }
 
-    private void updateBooking(HttpServletRequest req) throws SQLException {
+    private boolean cancelBooking(HttpServletRequest req) throws SQLException {
+        int bookingId = Integer.parseInt(req.getParameter("bookingId"));
+
+        // Get room ID for this booking
+        int roomId = bookingDao.getRoomIdByBooking(bookingId);
+
+        // Update booking status
+        boolean success = bookingDao.updateBookingStatus(bookingId, "cancelled");
+
+        if (roomId != -1) {
+            // Update room status to available
+            bookingDao.updateRoomStatus(roomId, "available");
+        }
+        return success;
+    }
+
+    private boolean updateBooking(HttpServletRequest req) throws SQLException {
         int bookingId = Integer.parseInt(req.getParameter("bookingId"));
         Date checkInDate = Date.valueOf(req.getParameter("checkInDate"));
         Date checkOutDate = Date.valueOf(req.getParameter("checkOutDate"));
         int adults = Integer.parseInt(req.getParameter("adults"));
         int children = Integer.parseInt(req.getParameter("children"));
 
-        bookingDao.updateBooking(bookingId, checkInDate, checkOutDate, adults, children);
+        return bookingDao.updateBooking(bookingId, checkInDate, checkOutDate, adults, children);
     }
 }

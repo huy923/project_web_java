@@ -1,3 +1,4 @@
+-- Active: 1759497781450@@127.0.0.1@3306@hotel_management
 -- =====================================================
 -- Hotel Management System Database Schema (MySQL Compatible)
 -- =====================================================
@@ -6,7 +7,8 @@
 -- =====================================================
 
 -- Drop existing database if exists (for fresh installation)
-
+USE master
+GO
 DROP DATABASE IF EXISTS hotel_management;
 
 CREATE DATABASE hotel_management;
@@ -986,7 +988,6 @@ BEGIN
     IF (p_adults + p_children) > 2 THEN
         SET extra_guest_charge = ((p_adults + p_children) - 2) * 200000.00 * nights;
     END IF;
-    
     SET p_total = (base_price * nights) + extra_guest_charge;
 END$$
 

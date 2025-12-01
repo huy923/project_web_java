@@ -20,13 +20,8 @@ public class CheckOutServlet extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/login");
             return;
         }
-        BookingDao dao = new BookingDao();
-        try {
-            req.setAttribute("occupiedRooms", dao.getOccupiedRooms());
-            req.getRequestDispatcher("/modals/checkout.jsp").forward(req, resp);
-        } catch (SQLException e) {
-            throw new ServletException(e);
-        }
+        // Redirect to dashboard - check-out is done via modal on dashboard
+        resp.sendRedirect(req.getContextPath() + "/dashboard");
     }
 
     @Override
@@ -37,10 +32,18 @@ public class CheckOutServlet extends HttpServlet {
             return;
         }
 
-        int bookingId = Integer.parseInt(req.getParameter("bookingId"));
-        BookingDao dao = new BookingDao();
-
         try {
+            String bookingIdStr = req.getParameter("bookingId");
+
+            if (bookingIdStr == null || bookingIdStr.trim().isEmpty()) {
+                req.setAttribute("errorMessage", "Booking ID is required");
+                doGet(req, resp);
+                return;
+            }
+
+            int bookingId = Integer.parseInt(bookingIdStr);
+            BookingDao dao = new BookingDao();
+
             // Get room ID for this booking
             int roomId = dao.getRoomIdByBooking(bookingId);
 
@@ -54,8 +57,12 @@ public class CheckOutServlet extends HttpServlet {
             } else {
                 resp.sendRedirect(req.getContextPath() + "/dashboard?error=checkout");
             }
+        } catch (NumberFormatException e) {
+            req.setAttribute("errorMessage", "Invalid booking ID format");
+            doGet(req, resp);
         } catch (SQLException e) {
-            throw new ServletException(e);
+            req.setAttribute("errorMessage", "Database error: " + e.getMessage());
+            doGet(req, resp);
         }
     }
 }

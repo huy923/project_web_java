@@ -382,8 +382,18 @@
             border: none;
             font-weight: 600;
         }
-        
-        .table-dark td {
+        .table-light {
+            border-radius: 10px;
+            overflow: hidden;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .table-light th {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            font-weight: 600;
+        }
+        .table-light td {
             border: none;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
@@ -548,7 +558,7 @@
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="/dashboard">
                 <i class="bi bi-building"></i> Hotel Management System
             </a>
             <div class="navbar-nav ms-auto">
