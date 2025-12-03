@@ -1078,28 +1078,3 @@ UPDATE hotel_management.rooms
 SET last_cleaned = CURRENT_TIMESTAMP
 WHERE status = 'available';
 
-
--- =====================================================
--- DATABASE SCHEMA COMPLETE (MySQL Compatible)
--- =====================================================
---
--- The hotel management database is now ready with:
--- - 12 core tables for complete hotel operations
--- - Sample data for immediate testing
--- - Optimized indexes for performance
--- - Useful views for common queries
--- - Stored procedures for business logic
--- - Triggers for automatic updates
--- - Application user with appropriate permissions
--- - MySQL XAMPP compatibility
---
--- To use this database:
--- 1. Run this SQL file in your MySQL XAMPP server
--- 2. Update your application's database connection settings
--- 3. Use the 'hotel_app' user for database connections
--- 4. Default admin login: admin / password (change in production!)
---
--- MySQL XAMPP Installation Command:
--- mysql -u root -p < hotel_database_mysql.sql
---
--- =====================================================

@@ -26,18 +26,22 @@
                 </div>
 
                 <!-- Alert Messages -->
-                <% if (request.getAttribute("success") != null) { %>
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <i class="bi bi-check-circle"></i> <%= request.getAttribute("success") %>oke
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                <% } %>
-                <% if (request.getAttribute("error") != null) { %>
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <i class="bi bi-exclamation-triangle"></i> <%= request.getAttribute("error") %>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                <% } %>
+                <% String successMessage=(String) request.getAttribute("successMessage"); String errorMessage=(String)
+                    request.getAttribute("errorMessage"); %>
+                    <% if (successMessage !=null) { %>
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>Success!</strong>
+                            <%= successMessage %>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                                <% } %>
+                            <% if (errorMessage !=null) { %>
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>Error!</strong>
+                                    <%= errorMessage %>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                        </div>
+                                        <% } %>
 
                 <!-- Filter Section -->
                 <div class="dashboard-card p-4 mb-4">
@@ -70,7 +74,7 @@
                     <h5 class="mb-3">
                         <i class="bi bi-plus-circle"></i> Add New Payment
                     </h5>
-                    <form method="POST" class="row g-3">
+                    <form method="POST" action="<%= request.getContextPath() %>/payments" class="row g-3">
                         <input type="hidden" name="action" value="add_payment">
                         <div class="col-md-2">
                             <label class="form-label">Booking ID</label>
@@ -281,7 +285,7 @@
     </div>
 
     <!-- Hidden form for status updates -->
-    <form id="statusUpdateForm" method="POST" style="display: none;">
+    <form id="statusUpdateForm" method="POST" action="<%= request.getContextPath() %>/payments" style="display: none;">
         <input type="hidden" name="action" value="update_status">
         <input type="hidden" name="payment_id" id="updatePaymentId">
         <input type="hidden" name="new_status" id="updateNewStatus">

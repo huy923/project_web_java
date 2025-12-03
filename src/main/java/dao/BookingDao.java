@@ -89,8 +89,8 @@ public class BookingDao {
             int adults, int children, double totalAmount, int createdBy) throws SQLException {
         String sql = "INSERT INTO bookings (guest_id, room_id, check_in_date, check_out_date, " +
                 "adults, children, total_amount, status, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, 'checked_in', ?)";
-        try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConnection.getConnection(); 
+            PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, guestId);
             ps.setInt(2, roomId);
             ps.setDate(3, checkInDate);

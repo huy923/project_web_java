@@ -1,4 +1,5 @@
 <%-- Footer Component --%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <footer class="mt-5 py-4 border-top border-secondary">
     <div class="container">
         <div class="row">

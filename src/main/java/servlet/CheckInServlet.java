@@ -88,8 +88,7 @@ public class CheckInServlet extends HttpServlet {
             }
 
             // Create booking
-            boolean success = dao.createBooking(guestId, roomId, checkInDate, checkOutDate,
-                    adults, children, totalAmount, user.getUserId());
+            boolean success = dao.createBooking(guestId, roomId, checkInDate, checkOutDate,adults, children, totalAmount, user.getUserId());
 
             if (success) {
                 // Update room status to occupied

@@ -15,6 +15,23 @@
             
             <!-- Main Content -->
             <div class="col-lg-9 col-md-8">
+                <!-- Messages -->
+                <% String successMessage=(String) request.getAttribute("successMessage"); String errorMessage=(String)
+                    request.getAttribute("errorMessage"); %>
+                    <% if (successMessage !=null) { %>
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>Success!</strong>
+                            <%= successMessage %>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                        <% } %>
+                            <% if (errorMessage !=null) { %>
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>Error!</strong>
+                                    <%= errorMessage %>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                                <% } %>
                 <!-- Header -->
                 <div class="row mb-4">
                     <div class="col-12">
@@ -107,7 +124,7 @@
                     <h5 class="mb-3">
                         <i class="bi bi-plus-circle"></i> Add New Room
                     </h5>
-                    <form action="<%= request.getContextPath() %>/room-management" method="post">
+                    <form action="<%= request.getContextPath() %>/rooms" method="post">
                         <input type="hidden" name="action" value="add">
                         <div class="row g-3">
                             <div class="col-md-3">
@@ -215,7 +232,7 @@
                                     </td>
                                     <td>
                                         <div class="btn-group" role="group">
-                                            <form action="<%= request.getContextPath() %>/room-management" method="post" class="d-inline">
+                                            <form action="<%= request.getContextPath() %>/rooms" method="post" class="d-inline">
                                                 <input type="hidden" name="action" value="updateStatus">
                                                 <input type="hidden" name="roomId" value="<%= room.get("room_id") %>">
                                                 <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
@@ -228,7 +245,7 @@
                                             <button class="btn btn-sm btn-hotel-outline ms-2" onclick="viewRoomDetails('<%= room.get("room_id") %>')" title="View Details">
                                                 <i class="bi bi-eye"></i>
                                             </button>
-                                            <form action="<%= request.getContextPath() %>/room-management" method="post" class="d-inline ms-1">
+                                            <form action="<%= request.getContextPath() %>/rooms" method="post" class="d-inline ms-1">
                                                 <input type="hidden" name="action" value="delete">
                                                 <input type="hidden" name="roomId" value="<%= room.get("room_id") %>">
                                                 <button type="submit" class="btn btn-sm btn-hotel-outline" onclick="return confirm('Delete this room?')" title="Delete Room">

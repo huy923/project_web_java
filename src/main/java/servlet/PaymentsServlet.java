@@ -71,9 +71,9 @@ public class PaymentsServlet extends HttpServlet {
                                                          transactionId, currentUser.getUserId(), notes);
                 
                 if (success) {
-                    req.setAttribute("success", "Thêm thanh toán thành công!");
+                    req.setAttribute("successMessage", "Payment added successfully!");
                 } else {
-                    req.setAttribute("error", "Lỗi khi thêm thanh toán!");
+                    req.setAttribute("errorMessage", "Failed to add payment!");
                 }
             } else if ("update_status".equals(action)) {
                 int paymentId = Integer.parseInt(req.getParameter("payment_id"));
@@ -82,17 +82,17 @@ public class PaymentsServlet extends HttpServlet {
                 boolean success = paymentDao.updatePaymentStatus(paymentId, newStatus);
                 
                 if (success) {
-                    req.setAttribute("success", "Cập nhật trạng thái thanh toán thành công!");
+                    req.setAttribute("successMessage", "Payment status updated successfully!");
                 } else {
-                    req.setAttribute("error", "Lỗi khi cập nhật trạng thái thanh toán!");
+                    req.setAttribute("errorMessage", "Failed to update payment status!");
                 }
             }
         } catch (SQLException | NumberFormatException e) {
-            req.setAttribute("error", "Lỗi khi xử lý yêu cầu: " + e.getMessage());
+            req.setAttribute("errorMessage", "Error processing request: " + e.getMessage());
             e.printStackTrace();
         }
 
-        // Redirect to GET to avoid duplicate submissions
-        resp.sendRedirect(req.getContextPath() + "/payments");
+        // Forward back to payments page instead of redirect
+        doGet(req, resp);
     }
 }

@@ -1,3 +1,5 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <jsp:include page="/includes/header.jsp" />
             <div class="px-2 main-container">
             <div class="row">
@@ -226,13 +228,13 @@
                                     <input type="number" name="children" class="form-control bg-dark text-white border-secondary" value="0" min="0">
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                <label class="form-label">Check-in Date</label>
-                                <input type="date" format="yyyy-MM-dd" name="checkInDate" class="form-control bg-dark text-white border-secondary" required value="<%= new java.util.Date() %>">
+                                <label class="form-label">Ngày nhận phòng</label>
+                                <input type="date" name="checkInDate" class="form-control bg-dark text-white border-secondary" required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Check-out Date</label>
-                                <input type="date" name="checkOutDate" class="form-control bg-dark text-white border-secondary" required value="<%= new java.util.Date() %>">
-                            </div>
+                                <input type="date" name="checkOutDate" class="form-control bg-dark text-white border-secondary" required>
+                                </div>
                                 <div class="col-md-12 mb-3">
                                     <label class="form-label">Total Amount (VND)</label>
                                     <input type="number" name="totalAmount" class="form-control bg-dark text-white border-secondary"
@@ -280,12 +282,12 @@
                         </select>
                     </div>
                     <div class="alert alert-info">
-                            <i class="bi bi-info-circle"></i> Total Amount: <strong id="checkoutAmount">Selected Room</strong>
+                            <i class="bi bi-info-circle"></i> Tổng tiền: <strong id="checkoutAmount">Chọn phòng để xem</strong>
                     </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
                     <button type="submit" form="checkoutForm" class="btn-hotel">Check-out</button>
                 </div>
             </div>
@@ -298,7 +300,7 @@
             <div class="modal-content bg-dark text-white">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        <i class="bi bi-calendar-plus"></i> New Booking
+                        <i class="bi bi-calendar-plus"></i> Đặt phòng mới
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
@@ -306,19 +308,19 @@
                     <form>
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Full Name</label>
+                                <label class="form-label">Họ tên</label>
                                 <input type="text" class="form-control bg-dark text-white border-secondary">
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Phone Number</label>
+                                <label class="form-label">Số điện thoại</label>
                                 <input type="tel" class="form-control bg-dark text-white border-secondary">
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Room Type</label>
+                                <label class="form-label">Loại phòng</label>
                                 <select class="form-select bg-dark text-white border-secondary">
-                                    <option>Standard - 1,200,000 VND/night</option>
-                                    <option>Deluxe - 1,800,000 VNĐ/night</option>
-                                    <option>Suite - 2,500,000 VNĐ/night</option>
+                                    <option>Standard - 1,200,000 VNĐ/đêm</option>
+                                    <option>Deluxe - 1,800,000 VNĐ/đêm</option>
+                                    <option>Suite - 2,500,000 VNĐ/đêm</option>
                                 </select>
                             </div>
                             <div class="col-md-6 mb-3">
@@ -671,6 +673,7 @@
         // Auto-refresh room status every 30 seconds
         setInterval(function () {
             refreshRoomStatus();
+            console.log('Refreshing room status...');
         }, 30000);
 
         // Room Status AJAX Functions
@@ -735,12 +738,16 @@
             roomData.forEach((room, index) => {
                 
                 const status = room.status || 'available';
-                const showRoomDetail = `<div class="room-card text-center" style="cursor: pointer;" onclick="showRoomDetails(${room.room_id})">`;
+        // function showRoomDetails(roomId, roomNumber, roomType, roomPrice, status, firstName, lastName, phone, checkInDate, checkOutDate) {
+
+                const showRoomDetail = `<div class="room-card text-center" style="cursor: pointer;" onclick="showRoomDetails(` + 
+                room.room_id +`,`+ room.room_number + `,`+ room.type_name.value +`,`+ room.base_price +`,`+room.status+`,`+ room.firstName +`,`+ room.lastName+`,`+ room.phone+`,` + room.check_in_date+`,`+room.check_out_date+`)">`;
+                console.log(showRoomDetail);
                 const roomHtml = `
                     <div class="col-lg-3 col-md-4 col-sm-6 mb-3 d-flex">`+showRoomDetail+`
-                            <h6 class="mb-2">Room ${room.room_number}</h6>
+                            <h6 class="mb-2">Room `+room.room_number+`</h6>
                             <span class="status-`+status+`">
-                                ${getStatusText(status)}
+                                `+getStatusText(status)+`
                             </span>
                         </div>
                     </div>
@@ -867,137 +874,72 @@
             alert('Guest management - Connect to backend!');
         }
 
-        // Room details function - fetches from API
-        function showRoomDetails(roomId) {
-            // Show loading state
-            const modal = new bootstrap.Modal(document.getElementById('roomDetailsModal'));
-            document.getElementById('roomNumber').textContent = 'Loading...';
-            document.getElementById('roomType').textContent = '';
-            document.getElementById('roomPrice').textContent = '';
-            document.getElementById('roomStatus').innerHTML = '<span class="badge bg-secondary">Loading...</span>';
-            document.getElementById('guestInfo').innerHTML = '<p class="text-muted">Loading guest information...</p>';
-            modal.show();
+        // Room details function
+        function showRoomDetails(roomId, roomNumber, roomType, roomPrice, status, firstName, lastName, phone, checkInDate, checkOutDate) {
+            // Update room information
+            document.getElementById('roomNumber').textContent = roomNumber;
+            document.getElementById('roomType').textContent = roomType;
+            document.getElementById('roomPrice').textContent = roomPrice + ' VNĐ';
             
-            // Fetch room details from API
-            fetch('<%= request.getContextPath() %>/api/room-details?roomId=' + roomId)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success && data.data) {
-                        const room = data.data;
-                        
-                        // Update room information
-                        document.getElementById('roomNumber').textContent = room.room_number;
-                        document.getElementById('roomType').textContent = room.type_name;
-                        document.getElementById('roomPrice').textContent = 
-                            new Intl.NumberFormat('vi-VN', {
-                                style: 'currency',
-                                currency: 'VND'
-                            }).format(room.base_price);
-                        
-                        // Update status with badge
-                        const statusElement = document.getElementById('roomStatus');
-                        let statusClass = 'badge ';
-                        let statusText = '';
-                        
-                        switch(room.status) {
-                            case 'available':
-                                statusClass += 'bg-success';
-                                statusText = 'Available';
-                                break;
-                            case 'occupied':
-                                statusClass += 'bg-warning';
-                                statusText = 'Occupied';
-                                break;
-                            case 'maintenance':
-                                statusClass += 'bg-danger';
-                                statusText = 'Maintenance';
-                                break;
-                            case 'cleaning':
-                                statusClass += 'bg-secondary';
-                                statusText = 'Cleaning';
-                                break;
-                            default:
-                                statusClass += 'bg-secondary';
-                                statusText = room.status;
-                        }
-                        
-                        statusElement.innerHTML = '<span class="' + statusClass + '">' + statusText + '</span>';
-                        
-                        // Update guest information
-                        const guestInfo = document.getElementById('guestInfo');
-                        if (room.booking && room.booking.first_name) {
-                            const booking = room.booking;
-                            const checkInDate = new Date(booking.check_in_date).toLocaleDateString('vi-VN');
-                            const checkOutDate = new Date(booking.check_out_date).toLocaleDateString('vi-VN');
-                            
-                            guestInfo.innerHTML = `
-                                <table class="table table-dark table-sm">
-                                    <tr>
-                                        <td><strong>Guest Name:</strong></td>
-                                        <td>${booking.first_name} ${booking.last_name}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Phone:</strong></td>
-                                        <td>${booking.phone || 'N/A'}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Email:</strong></td>
-                                        <td>${booking.email || 'N/A'}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>ID Number:</strong></td>
-                                        <td>${booking.id_number || 'N/A'}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Check-in:</strong></td>
-                                        <td>${checkInDate}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Check-out:</strong></td>
-                                        <td>${checkOutDate}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Guests:</strong></td>
-                                        <td>${booking.adults} Adult(s), ${booking.children} Child(ren)</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Total Amount:</strong></td>
-                                        <td>${new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(booking.total_amount)}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Status:</strong></td>
-                                        <td>
-                                            <span class="badge ${booking.booking_status === 'checked_in' ? 'bg-success' : 'bg-info'}">
-                                                ${booking.booking_status}
-                                            </span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            `;
-                        } else {
-                            guestInfo.innerHTML = '<p class="text-muted text-center">Empty Room</p>';
-                        }
-                        
-                        // Add room amenities if available
-                        const amenitiesHtml = `
-                            <div class="mt-3">
-                                <h6>Room Details</h6>
-                                <ul class="list-unstyled">
-                                    <li><i class="bi bi-check-circle text-success"></i> Floor: ${room.floor_number}</li>
-                                    <li><i class="bi bi-check-circle text-success"></i> Max Occupancy: ${room.max_occupancy} persons</li>
-                                </ul>
-                            </div>
-                        `;
-                        document.getElementById('guestInfo').innerHTML += amenitiesHtml;
-                        
-                    } else {
-                        document.getElementById('guestInfo').innerHTML = '<p class="text-danger">Error loading room details</p>';
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    document.getElementById('guestInfo').innerHTML = '<p class="text-danger">Failed to load room details</p>';
-                });
+            // Update status with badge
+            const statusElement = document.getElementById('roomStatus');
+            let statusClass = 'badge ';
+            let statusText = '';
+            
+            switch(status) {
+                case 'available':
+                    statusClass += 'bg-success';
+                    statusText = 'Trống';
+                    break;
+                case 'occupied':
+                    statusClass += 'bg-warning';
+                    statusText = 'Có khách';
+                    break;
+                case 'maintenance':
+                    statusClass += 'bg-danger';
+                    statusText = 'Bảo trì';
+                    break;
+                case 'cleaning':
+                    statusClass += 'bg-secondary';
+                    statusText = 'Dọn phòng';
+                    break;
+                default:
+                    statusClass += 'bg-secondary';
+                    statusText = status;
+            }
+            
+            statusElement.innerHTML = '<span class="' + statusClass + '">' + statusText + '</span>';
+            
+            // Update guest information
+            const guestInfo = document.getElementById('guestInfo');
+            if (firstName && lastName) {
+                guestInfo.innerHTML = `
+                    <table class="table table-dark table-sm">
+                        <tr>
+                            <td><strong>Tên khách:</strong></td>
+                            <td>${firstName} ${lastName}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>SĐT:</strong></td>
+                            <td>${phone || 'N/A'}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ngày nhận:</strong></td>
+                            <td>${checkInDate || 'N/A'}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ngày trả:</strong></td>
+                            <td>${checkOutDate || 'N/A'}</td>
+                        </tr>
+                    </table>
+                `;
+            } else {
+                guestInfo.innerHTML = '<p class="text-muted">Phòng trống</p>';
+            }
+            
+            // Show modal
+            const modal = new bootstrap.Modal(document.getElementById('roomDetailsModal'));
+            modal.show();
         }
 
         // Edit guest function
