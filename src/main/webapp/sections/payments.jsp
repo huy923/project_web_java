@@ -16,35 +16,35 @@
             <!-- Main Content -->
             <div class="col-lg-9 col-md-8">
                 <!-- Header -->
-                <div class="row mb-4">
-                    <div class="col-12">
-                        <h1 class="display-6 mb-3">
-                            <i class="bi bi-credit-card"></i> Payment Management
-                        </h1>
-                        <p class="lead">Manage and track all hotel payment transactions</p>
+                <div class="page-header">
+                    <div class="page-title">
+                        <i class="bi bi-credit-card"></i> Payment Management
                     </div>
+                    <div class="page-subtitle">Manage and track all hotel payment transactions</div>
                 </div>
 
                 <!-- Alert Messages -->
                 <% String successMessage=(String) request.getAttribute("successMessage"); String errorMessage=(String)
                     request.getAttribute("errorMessage"); %>
                     <% if (successMessage !=null) { %>
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <strong>Success!</strong>
+                    <div class="alert-modern alert-success">
+                        <i class="bi bi-check-circle"></i>
+                        <span><strong>Success!</strong>
                             <%= successMessage %>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                                </div>
-                                <% } %>
-                            <% if (errorMessage !=null) { %>
-                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                    <strong>Error!</strong>
-                                    <%= errorMessage %>
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                                        </div>
-                                        <% } %>
+                        </span>
+                    </div>
+                    <% } %>
+                        <% if (errorMessage !=null) { %>
+                    <div class="alert-modern alert-danger">
+                        <i class="bi bi-exclamation-circle"></i>
+                        <span><strong>Error!</strong>
+                            <%= errorMessage %>
+                        </span>
+                    </div>
+                    <% } %>
 
                 <!-- Filter Section -->
-                <div class="dashboard-card p-4 mb-4">
+                <div class="card-modern mb-4">
                     <h5 class="mb-3">
                         <i class="bi bi-funnel"></i> Payment Filter
                     </h5>
@@ -59,10 +59,10 @@
                             </select>
                         </div>
                         <div class="col-md-4">
-                            <button type="submit" class="btn-hotel">
+                            <button type="submit" class="btn-modern btn-primary">
                                 <i class="bi bi-search"></i> Filter
                             </button>
-                            <a href="<%= request.getContextPath() %>/payments" class="btn-hotel-outline">
+                            <a href="<%= request.getContextPath() %>/payments" class="btn-modern btn-ghost">
                                 <i class="bi bi-x-circle"></i> Clear Filters
                             </a>
                         </div>
@@ -70,7 +70,7 @@
                 </div>
 
                 <!-- Add Payment Form -->
-                <div class="dashboard-card p-4 mb-4">
+                <div class="card-modern mb-4">
                     <h5 class="mb-3">
                         <i class="bi bi-plus-circle"></i> Add New Payment
                     </h5>
@@ -113,7 +113,7 @@
                 </div>
 
                 <!-- Payments Table -->
-                <div class="dashboard-card p-4">
+                <div class="card-modern">
                     <h5 class="mb-3">
                         <i class="bi bi-table"></i> Payment List
                     </h5>

@@ -29,7 +29,7 @@
                                     <!-- Quick Stats -->
                                     <div class="row mb-4">
                                         <div class="col-lg-3 col-md-6 mb-3">
-                                            <div class="stats-card">
+                                            <div class="stat-card">
                                                 <div class="stat-number text-info">
                                                     <% List<Map<String, Object>> bookings = (List<Map<String, Object>>)
                                                             request.getAttribute("bookings");
@@ -43,7 +43,7 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-3 col-md-6 mb-3">
-                                            <div class="stats-card">
+                                            <div class="stat-card">
                                                 <div class="stat-number text-success">
                                                     <% double totalRevenue=0; if (bookings !=null) { for (Map<String,
                                                         Object> booking : bookings) {
@@ -62,7 +62,7 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-3 col-md-6 mb-3">
-                                            <div class="stats-card">
+                                            <div class="stat-card">
                                                 <div class="stat-number text-warning">
                                                     <% List<Map<String, Object>> rooms = (List<Map<String, Object>>)
                                                             request.getAttribute("rooms");
@@ -76,7 +76,7 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-3 col-md-6 mb-3">
-                                            <div class="stats-card">
+                                            <div class="stat-card">
                                                 <div class="stat-number text-primary">
                                                     <% List<Map<String, Object>> guests = (List<Map<String, Object>>)
                                                             request.getAttribute("guests");
@@ -123,7 +123,7 @@
                                     </div>
 
                                     <!-- Date Range Filter -->
-                                    <div class="dashboard-card p-4 mb-4">
+                                    <div class="card-modern mb-4">
                                         <h5 class="mb-3">
                                             <i class="bi bi-calendar-range"></i> Select Date Range
                                         </h5>
@@ -147,7 +147,7 @@
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="form-label">&nbsp;</label>
-                                                <button class="btn-hotel w-100" onclick="generateReport()">
+                                                <button class="btn-modern btn-success w-100" onclick="generateReport()">
                                                     <i class="bi bi-file-earmark-text"></i> Generate Report
                                                 </button>
                                             </div>
@@ -182,7 +182,7 @@
                                     </div>
 
                                     <!-- Report Actions -->
-                                    <div class="dashboard-card p-4" id="reportActions" style="display: none;">
+                                    <div class="card-modern" id="reportActions" style="display: none;">
                                         <h5 class="mb-3">
                                             <i class="bi bi-download"></i> Export Report
                                         </h5>

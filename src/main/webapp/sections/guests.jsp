@@ -18,98 +18,96 @@
             <!-- Main Content -->
             <div class="col-lg-9 col-md-8">
                 <!-- Header -->
-                <div class="row mb-4">
-                    <div class="col-12">
-                        <h1 class="display-6 mb-3">
-                            <i class="bi bi-people"></i> Guest Management
-                        </h1>
-                        <p class="lead">Manage guest information and booking history</p>
+                <div class="page-header">
+                    <div class="page-title">
+                        <i class="bi bi-people"></i> Guest Management
                     </div>
+                    <div class="page-subtitle">Manage guest information and booking history</div>
                 </div>
+<!-- Messages -->
+<% String successMessage=(String) request.getAttribute("successMessage"); String errorMessage=(String)
+    request.getAttribute("errorMessage"); %>
+    <% if (successMessage !=null) { %>
+        <div class="alert-modern alert-success">
+            <i class="bi bi-check-circle"></i>
+            <span><strong>Success!</strong>
+                <%= successMessage %>
+            </span>
+        </div>
+        <% } %>
+            <% if (errorMessage !=null) { %>
+                <div class="alert-modern alert-danger">
+                    <i class="bi bi-exclamation-circle"></i>
+                    <span><strong>Error!</strong>
+                        <%= errorMessage %>
+                    </span>
+                </div>
+                <% } %>
 
                 <!-- Statistics Cards -->
-                <div class="row mb-4">
-                    <div class="col-lg-3 col-md-6 mb-3">
-                        <div class="stats-card">
-                            <div class="stat-number text-info">
-                                <% 
-                                List<Map<String, Object>> guests = (List<Map<String, Object>>) request.getAttribute("guests");
-                                int totalGuests = guests != null ? guests.size() : 0;
-                                %>
-                                <%= totalGuests %>
-                            </div>
-                            <div class="stats-label">
-                                <i class="bi bi-people"></i> Total Guests
-                            </div>
+                <div class="grid-4 mb-4">
+                    <div class="stat-card">
+                        <div class="stat-number">
+                            <% List<Map<String, Object>> guests = (List<Map<String, Object>>) request.getAttribute("guests");
+                                    int totalGuests = guests != null ? guests.size() : 0;
+                                    %>
+                                    <%= totalGuests %>
                         </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 mb-3">
-                        <div class="stats-card">
-                            <div class="stat-number text-success">
-                                <% 
-                                int activeGuests = 0;
-                                if (guests != null) {
-                                    for (Map<String, Object> guest : guests) {
-                                        if (guest.get("booking_status") != null) {
-                                            activeGuests++;
-                                        }
-                                    }
+                        <div class="stat-label">
+                            <i class="bi bi-people"></i> Total Guests
+                        </div>
+                        </div>
+                    <div class="stat-card">
+                        <div class="stat-number text-success">
+                            <% int activeGuests=0; if (guests !=null) { for (Map<String, Object> guest : guests) {
+                                if (guest.get("booking_status") != null) {
+                                activeGuests++;
+                                }
+                                }
                                 }
                                 %>
                                 <%= activeGuests %>
-                            </div>
-                            <div class="stats-label">
-                                <i class="bi bi-person-check"></i> Checked In
-                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 mb-3">
-                        <div class="stats-card">
-                            <div class="stat-number text-warning">
-                                <% 
-                                int vipGuests = 0;
-                                if (guests != null) {
-                                    for (Map<String, Object> guest : guests) {
-                                        // Simple VIP logic based on booking count
-                                        if (guest.get("booking_count") != null && 
-                                            Integer.parseInt(guest.get("booking_count").toString()) > 2) {
-                                            vipGuests++;
-                                        }
-                                    }
+                        <div class="stat-label">
+                            <i class="bi bi-person-check"></i> Checked In
+                        </div>
+                        </div>
+                    <div class="stat-card">
+                        <div class="stat-number text-warning">
+                            <% int vipGuests=0; if (guests !=null) { for (Map<String, Object> guest : guests) {
+                                if (guest.get("booking_count") != null &&
+                                Integer.parseInt(guest.get("booking_count").toString()) > 2) {
+                                vipGuests++;
                                 }
-                                %>
-                                <%= vipGuests %>
-                            </div>
-                            <div class="stats-label">
-                                <i class="bi bi-star"></i> VIP Guests
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 mb-3">
-                        <div class="stats-card">
-                            <div class="stat-number text-primary">
-                                <% 
-                                int newGuests = 0;
-                                if (guests != null) {
-                                    for (Map<String, Object> guest : guests) {
-                                        if (guest.get("booking_count") != null && 
-                                            Integer.parseInt(guest.get("booking_count").toString()) == 1) {
-                                            newGuests++;
-                                        }
                                     }
+                                    }
+                                    %>
+                                    <%= vipGuests %>
+                                        </div>
+                        <div class="stat-label">
+                            <i class="bi bi-star"></i> VIP Guests
+                        </div>
+                        </div>
+                    <div class="stat-card">
+                        <div class="stat-number text-primary">
+                            <% int newGuests=0; if (guests !=null) { for (Map<String, Object> guest : guests) {
+                                if (guest.get("booking_count") != null &&
+                                Integer.parseInt(guest.get("booking_count").toString()) == 1) {
+                                newGuests++;
+                                }
+                                }
                                 }
                                 %>
                                 <%= newGuests %>
-                            </div>
-                            <div class="stats-label">
-                                <i class="bi bi-person-plus"></i> New Guests
-                            </div>
+                        </div>
+                        <div class="stat-label">
+                            <i class="bi bi-person-plus"></i> New Guests
                         </div>
                     </div>
                 </div>
 
                 <!-- Add Guest Form -->
-                <div class="dashboard-card p-4 mb-4">
+                <div class="card-modern mb-4">
                     <h5 class="mb-3">
                         <i class="bi bi-person-plus"></i> Add New Guest
                     </h5>
@@ -149,7 +147,7 @@
                 </div>
 
                 <!-- Search and Filter -->
-                <div class="dashboard-card p-4 mb-4">
+                <div class="card-modern mb-4">
                     <h5 class="mb-3">
                         <i class="bi bi-search"></i> Search and Filter
                     </h5>
@@ -176,7 +174,7 @@
                 </div>
 
                 <!-- Guests Table -->
-                <div class="dashboard-card p-4">
+                <div class="card-modern">
                     <h5 class="mb-3">
                         <i class="bi bi-table"></i> Guest List
                     </h5>

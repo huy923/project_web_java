@@ -14,102 +14,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hotel Management System - Dashboard</title>
     <link href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/theme.css">
+    <link rel="stylesheet" href="../css/modern-ui.css">
+    <link rel="stylesheet" href="../css/page-template.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="../js/theme-manager.js"></script>
+    <script src="../js/crud-helper.js"></script>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: white;
-            min-height: 100vh;
-        }
-    
-        .navbar {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-    
-        .navbar-brand {
-            font-weight: bold;
-            font-size: 1.5rem;
-        }
-    
         .main-container {
             padding: 2rem 0;
         }
     
         .dashboard-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 15px;
-            transition: transform 0.3s ease;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
         }
     
         .dashboard-card:hover {
-            transform: translateY(-5px);
-        }
-    
-        .stats-card {
-            text-align: center;
-            padding: 2rem;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-    
-        .stats-number {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-    
-        .stats-label {
-            font-size: 1rem;
-            opacity: 0.9;
-        }
-    
-        .btn-hotel {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-            border: none;
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 25px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-    
-        .btn-hotel:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(238, 90, 36, 0.4);
-            color: white;
-        }
-    
-        .btn-hotel-outline {
-            background: transparent;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 25px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-    
-        .btn-hotel-outline:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.5);
-            color: white;
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-200);
         }
     
         .room-card {
-            background: rgba(255, 255, 255, 0.1);
+            background: var(--bg-primary);
             border-radius: 10px;
             padding: 1rem;
             margin-bottom: 1rem;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid var(--border-color);
         }
     
         .room-status {
@@ -120,18 +55,18 @@
         }
     
         .status-available {
-            background: rgba(46, 204, 113, 0.2);
-            color: #2ecc71;
+            background: var(--success-50);
+            color: var(--success-700);
         }
     
         .status-occupied {
-            background: rgba(231, 76, 60, 0.2);
-            color: #e74c3c;
+            background: var(--danger-50);
+            color: var(--danger-700);
         }
     
         .status-maintenance {
-            background: rgba(241, 196, 15, 0.2);
-            color: #f1c40f;
+            background: var(--warning-50);
+            color: var(--warning-700);
         }
     
         .recent-activity {
@@ -141,7 +76,7 @@
     
         .activity-item {
             padding: 0.75rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid var(--border-color);
             display: flex;
             align-items: center;
             gap: 1rem;
@@ -158,59 +93,23 @@
         }
     
         .icon-checkin {
-            background: rgba(46, 204, 113, 0.2);
-            color: #2ecc71;
+            background: var(--success-50);
+            color: var(--success-700);
         }
     
         .icon-checkout {
-            background: rgba(231, 76, 60, 0.2);
-            color: #e74c3c;
+            background: var(--danger-50);
+            color: var(--danger-700);
         }
     
         .icon-booking {
-            background: rgba(52, 152, 219, 0.2);
-            color: #3498db;
+            background: var(--info-50);
+            color: var(--info-700);
         }
     
         .icon-maintenance {
-            background: rgba(241, 196, 15, 0.2);
-            color: #f1c40f;
-        }
-    
-        .sidebar {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 1.5rem;
-            height: fit-content;
-        }
-    
-        .sidebar-menu {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-    
-        .sidebar-menu li {
-            margin-bottom: 0.5rem;
-        }
-    
-        .sidebar-menu a {
-            color: white;
-            text-decoration: none;
-            padding: 0.75rem 1rem;
-            display: block;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-    
-        .sidebar-menu a:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-        }
-    
-        .sidebar-menu a.active {
-            background: rgba(255, 255, 255, 0.2);
+            background: var(--warning-50);
+            color: var(--warning-700);
         }
     
         /* Loading animation */
@@ -222,7 +121,6 @@
             from {
                 transform: rotate(0deg);
             }
-    
             to {
                 transform: rotate(360deg);
             }
@@ -235,12 +133,12 @@
     
         .room-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: var(--shadow-md);
         }
     
         .priority-urgent {
-            background: rgba(231, 76, 60, 0.2);
-            color: #e74c3c;
+            background: var(--danger-50);
+            color: var(--danger-700);
         }
     
         .status-badge {
@@ -251,49 +149,23 @@
         }
     
         .status-reported {
-            background: rgba(52, 152, 219, 0.2);
-            color: #3498db;
+            background: var(--info-50);
+            color: var(--info-700);
         }
     
         .status-in-progress {
-            background: rgba(241, 196, 15, 0.2);
-            color: #f1c40f;
+            background: var(--warning-50);
+            color: var(--warning-700);
         }
     
         .status-completed {
-            background: rgba(46, 204, 113, 0.2);
-            color: #2ecc71;
+            background: var(--success-50);
+            color: var(--success-700);
         }
     
         .status-cancelled {
-            background: rgba(149, 165, 166, 0.2);
-            color: #95a5a6;
-        }
-    
-        .form-control:focus,
-        .form-select:focus {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.4);
-            color: white;
-            box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.1);
-        }
-    
-        .form-control::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-        }
-    
-        .stats-card {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 1.5rem;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-    
-        .stat-number {
-            font-size: 2rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
+            background: var(--text-tertiary);
+            color: var(--text-light);
         }
     
         .priority-badge {
@@ -304,23 +176,23 @@
         }
     
         .priority-low {
-            background: rgba(46, 204, 113, 0.2);
-            color: #2ecc71;
+            background: var(--success-50);
+            color: var(--success-700);
         }
     
         .priority-medium {
-            background: rgba(241, 196, 15, 0.2);
-            color: #f1c40f;
+            background: var(--warning-50);
+            color: var(--warning-700);
         }
     
         .priority-high {
-            background: rgba(230, 126, 34, 0.2);
-            color: #e67e22;
+            background: var(--danger-50);
+            color: var(--danger-700);
         }
     
         .btn-hotel-outline {
             background: transparent;
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            border: 2px solid var(--border-color);
             color: white;
             padding: 0.75rem 1.5rem;
             border-radius: 25px;
@@ -330,9 +202,9 @@
         }
     
         .btn-hotel-outline:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.5);
-            color: white;
+            background: var(--bg-secondary);
+            border-color: var(--primary-300);
+            color: var(--primary-600);
         }
     
         .sidebar {
@@ -407,7 +279,7 @@
         .form-control:focus, .form-select:focus {
             background: rgba(255, 255, 255, 0.15);
             border-color: rgba(255, 255, 255, 0.4);
-            color: white;
+            /* color: white; */
             box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.1);
         }
         

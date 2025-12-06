@@ -138,19 +138,19 @@
             padding: 12px 16px;
             font-size: 14px;
             transition: all 0.3s ease;
-            background: #f8f9fa;
+            /* background: #f8f9fa; */
         }
 
         .form-control:focus {
             border-color: #667eea;
-            background: white;
+            /* background: white; */
             box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.1);
             outline: none;
         }
 
-        .form-control::placeholder {
+        /* .form-control::placeholder {
             color: #999;
-        }
+        } */
 
         .input-group-text {
             background: transparent;

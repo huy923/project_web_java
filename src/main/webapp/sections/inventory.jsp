@@ -16,28 +16,28 @@
                 <% String successMessage=(String) request.getAttribute("successMessage"); String errorMessage=(String)
                     request.getAttribute("errorMessage"); %>
                     <% if (successMessage !=null) { %>
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <strong>Success!</strong>
+                    <div class="alert-modern alert-success">
+                        <i class="bi bi-check-circle"></i>
+                        <span><strong>Success!</strong>
                             <%= successMessage %>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </span>
                         </div>
                         <% } %>
                             <% if (errorMessage !=null) { %>
-                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                    <strong>Error!</strong>
-                                    <%= errorMessage %>
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                                </div>
-                                <% } %>
+                    <div class="alert-modern alert-danger">
+                        <i class="bi bi-exclamation-circle"></i>
+                        <span><strong>Error!</strong>
+                            <%= errorMessage %>
+                        </span>
+                        </div>
+                        <% } %>
 
                 <!-- Header -->
-                <div class="row mb-4">
-                    <div class="col-12">
-                        <h1 class="display-6 mb-3">
-                            <i class="bi bi-box-seam"></i> Inventory Management
-                        </h1>
-                        <p class="lead">Track and manage hotel inventory and supplies</p>
+                <div class="page-header">
+                    <div class="page-title">
+                        <i class="bi bi-box-seam"></i> Inventory Management
                     </div>
+                    <div class="page-subtitle">Track and manage hotel inventory and supplies</div>
                 </div>
 
                 <!-- Statistics -->
@@ -57,7 +57,7 @@
                             %>
                 <div class="row mb-4">
                     <div class="col-lg-3 col-md-6 mb-3">
-                        <div class="stats-card">
+                        <div class="stat-card">
                             <div class="stat-number text-info">
                                 <%= totalItems %>
                             </div>
@@ -65,7 +65,7 @@
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 mb-3">
-                        <div class="stats-card">
+                        <div class="stat-card">
                             <div class="stat-number text-warning">
                                 <%= lowStockCount %>
                             </div>
@@ -73,7 +73,7 @@
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 mb-3">
-                        <div class="stats-card">
+                        <div class="stat-card">
                             <div class="stat-number text-success">
                                 <%= inStock %>
                             </div>
@@ -81,7 +81,7 @@
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 mb-3">
-                        <div class="stats-card">
+                        <div class="stat-card">
                             <div class="stat-number text-danger">
                                 <%= outOfStock %>
                             </div>
@@ -91,7 +91,7 @@
                 </div>
 
                 <!-- Add Inventory Item Form -->
-                <div class="dashboard-card p-4 mb-4">
+                <div class="card-modern mb-4">
                     <h5 class="mb-3">
                         <i class="bi bi-plus-circle"></i> Add New Inventory Item
                     </h5>
@@ -131,7 +131,7 @@
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">&nbsp;</label>
-                                <button type="submit" class="btn-hotel w-100">
+                                <button type="submit" class="w-100 btn-modern btn-success ">
                                     <i class="bi bi-plus"></i> Add Item
                                 </button>
                             </div>
@@ -148,7 +148,7 @@
                 <% } %>
 
                 <!-- Inventory Table -->
-                <div class="dashboard-card p-4">
+                <div class="card-modern">
                     <h5 class="mb-3">
                         <i class="bi bi-table"></i> Inventory Items
                     </h5>
@@ -215,7 +215,5 @@
             </div>
         </div>
     </div>
-
-    <jsp:include page="/includes/footer.jsp" />
 </body>
 </html>

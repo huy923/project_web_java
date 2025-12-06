@@ -63,7 +63,7 @@
                                 <textarea class="form-control" rows="3" placeholder="Enter hotel description">A luxury hotel with professional services, located in the city center.</textarea>
                             </div>
                             <div class="col-12">
-                                <button type="submit" class="btn-hotel">
+                                <button type="submit" class="btn btn-primary">
                                     <i class="bi bi-check-circle"></i> Save Information
                                 </button>
                             </div>
@@ -118,7 +118,7 @@
                                 </select>
                             </div>
                             <div class="col-12">
-                                <button type="submit" class="btn-hotel">
+                                <button type="submit" class="btn btn-primary">
                                     <i class="bi bi-check-circle"></i> Save Settings
                                 </button>
                             </div>

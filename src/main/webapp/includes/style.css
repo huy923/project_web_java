@@ -1,14 +1,14 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-    color: white;
+    background: var(--bg-primary);
+        color: var(--text-primary);
     min-height: 100vh;
 }
 
 .navbar {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--bg-secondary);
     backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1px solid var(--border-color);
 }
 
 .navbar-brand {
@@ -21,11 +21,12 @@ body {
 }
 
 .dashboard-card {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--bg-secondary);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 2px solid var(--border-color);
     border-radius: 15px;
     transition: transform 0.3s ease;
+    color: var(--text-primary);
 }
 
 .dashboard-card:hover {
@@ -35,20 +36,23 @@ body {
 .stats-card {
     text-align: center;
     padding: 2rem;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    background: var(--bg-secondary);
     border-radius: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 2px solid var(--border-color);
+        color: var(--text-primary);
 }
 
 .stats-number {
     font-size: 2.5rem;
     font-weight: bold;
     margin-bottom: 0.5rem;
+    color: var(--text-primary);
 }
 
 .stats-label {
     font-size: 1rem;
     opacity: 0.9;
+    color: var(--text-secondary);
 }
 
 .btn-hotel {
@@ -86,11 +90,12 @@ body {
 }
 
 .room-card {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--bg-secondary);
     border-radius: 10px;
     padding: 1rem;
     margin-bottom: 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 2px solid var(--border-color);
+        color: var(--text-primary);
 }
 
 .room-status {

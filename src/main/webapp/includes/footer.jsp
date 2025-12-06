@@ -1,6 +1,10 @@
 <%-- Footer Component --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<footer class="mt-5 py-4 border-top border-secondary">
+    <link rel="stylesheet" href="../css/theme.css">
+    <link rel="stylesheet" href="../css/modern-ui.css">
+    <link rel="stylesheet" href="../css/page-template.css">
+    <!-- <link rel="stylesheet" href="style.css"> -->
+<!-- <footer class="mt-5 py-4 border-top border-secondary">
     <div class="container">
         <div class="row">
             <div class="col-md-6">
@@ -15,7 +19,7 @@
             </div>
         </div>
     </div>
-</footer>
+</footer> -->
 <script src="/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

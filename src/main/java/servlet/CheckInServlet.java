@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 
-@WebServlet(name = "CheckInServlet", urlPatterns = { "/checkin" })
+@WebServlet(name = "CheckInServlet", urlPatterns = { "/check-in" })
 public class CheckInServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -22,8 +22,7 @@ public class CheckInServlet extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/login");
             return;
         }
-        // Redirect to dashboard - check-in is done via modal on dashboard
-        resp.sendRedirect(req.getContextPath() + "/dashboard");
+        req.getRequestDispatcher("/sections/check-in.jsp").forward(req, resp);
     }
 
     @Override

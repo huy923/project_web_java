@@ -10,95 +10,84 @@
             <!-- Main Content -->
             <div class="col-lg-9 col-md-8">
                 <!-- Header -->
-                <div class="row mb-4">
-                    <div class="col-12">
-                        <h1 class="display-6 mb-3">
-                            <i class="bi bi-house-door"></i> Hotel Dashboard
-                        </h1>
-                        <p class="lead">Welcome to the Hotel Management System</p>
+                <div class="page-header">
+                    <div class="page-title">
+                        <i class="bi bi-house-door"></i> Hotel Dashboard
                     </div>
+                    <div class="page-subtitle">Welcome to the Hotel Management System</div>
                 </div>
 
                 <!-- Statistics Cards -->
-                <div class="row mb-4">
+                <div class="grid-4 mb-4">
                     <% java.util.Map<String, Integer> roomStats = (java.util.Map<String, Integer>) request.getAttribute("roomStats");
                             Integer totalBookings = (Integer) request.getAttribute("totalBookings");
                             if (roomStats != null) {
                             %>
-                    <div class="col-lg-3 col-md-6 mb-3">
-                        <div class="stats-card">
-                            <div class="stats-number text-success">
-                                <%= roomStats.get("available") %>
-                            </div>
-                            <div class="stats-label">
-                                <i class="bi bi-door-open"></i> Available Rooms
-                            </div>
+                    <div class="stat-card">
+                        <div class="stat-number text-success">
+                            <%= roomStats.get("available") %>
                         </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 mb-3">
-                        <div class="stats-card">
-                            <div class="stats-number text-warning">
-                                <%= roomStats.get("occupied") %>
-                            </div>
-                            <div class="stats-label">
-                                <i class="bi bi-person-fill"></i> Occupied
-                            </div>
+                        <div class="stat-label">
+                            <i class="bi bi-door-open"></i> Available Rooms
                         </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 mb-3">
-                        <div class="stats-card">
-                            <div class="stats-number text-info">
-                                <%= totalBookings !=null ? totalBookings : 0 %>
-                            </div>
-                            <div class="stats-label">
-                                <i class="bi bi-calendar-plus"></i> Total Bookings
-                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 mb-3">
-                        <div class="stats-card">
-                            <div class="stats-number text-danger">
-                                <%= roomStats.get("maintenance") %>
-                            </div>
-                            <div class="stats-label">
-                                <i class="bi bi-tools"></i> Maintenance
-                            </div>
+                    <div class="stat-card">
+                        <div class="stat-number text-warning">
+                            <%= roomStats.get("occupied") %>
                         </div>
-                    </div>
+                        <div class="stat-label">
+                            <i class="bi bi-person-fill"></i> Occupied
+                        </div>
+                        </div>
+                    <div class="stat-card">
+                        <div class="stat-number text-info">
+                            <%= totalBookings !=null ? totalBookings : 0 %>
+                        </div>
+                        <div class="stat-label ">
+                            <i class="bi bi-calendar-plus"></i> Total Bookings
+                        </div>
+                        </div>
+                    <div class="stat-card">
+                        <div class="stat-number text-danger">
+                            <%= roomStats.get("maintenance") %>
+                        </div>
+                        <div class="stat-label">
+                            <i class="bi bi-tools"></i> Maintenance
+                        </div>
+                        </div>
                     <% } else { %>
                         <div class="col-12">
-                            <div class="alert alert-warning">Failed to load room statistics</div>
+                            <div class="alert-modern alert-warning">
+                                <i class="bi bi-exclamation-triangle"></i>
+                                <span>Failed to load room statistics</span>
+                            </div>
                         </div>
                         <% } %>
                 </div>
                 
                 <!-- Quick Actions -->
-                <div class="row mb-4">
-                    <div class="col-12">
-                        <div class="dashboard-card p-4">
-                            <h5 class="mb-3">
-                                <i class="bi bi-lightning"></i> Quick Actions
-                            </h5>
-                            <div class="d-flex gap-3 flex-wrap">
-                                <a href="#" class="btn-hotel" data-bs-toggle="modal" data-bs-target="#checkInModal">
-                                    <i class="bi bi-person-plus"></i> Check-in
-                                </a>
-                                <a href="#" class="btn-hotel-outline" data-bs-toggle="modal" data-bs-target="#checkOutModal">
-                                    <i class="bi bi-person-dash"></i> Check-out
-                                </a>
-                                <a href="#" class="btn-hotel-outline" data-bs-toggle="modal" data-bs-target="#bookingModal">
-                                    <i class="bi bi-calendar-plus"></i> Book Room
-                                </a>
-                                <a href="#" class="btn-hotel-outline" data-bs-toggle="modal" data-bs-target="#roomModal">
-                                    <i class="bi bi-door-open"></i> Manage Rooms
-                                </a>
-                                <a href="#" class="btn-hotel-outline" data-bs-toggle="modal" data-bs-target="#guestModal">
-                                    <i class="bi bi-people"></i> Guests
-                                </a>
-                                </div>
-                                </div>
-                                </div>
-                                </div>
+                <div class="card-modern mb-4">
+                    <h5 class="mb-3">
+                        <i class="bi bi-lightning"></i> Quick Actions
+                    </h5>
+                    <div class="d-flex gap-3 flex-wrap">
+                        <a href="<%= request.getContextPath() %>/check-in" class="btn-modern btn-primary">
+                            <i class="bi bi-person-plus"></i> Check-in
+                        </a>
+                        <a href="<%= request.getContextPath() %>/check-out" class="btn-modern btn-success">
+                            <i class="bi bi-person-dash"></i> Check-out
+                        </a>
+                        <a href="<%= request.getContextPath() %>/bookings" class="btn-modern btn-info">
+                            <i class="bi bi-calendar-plus"></i> Bookings
+                        </a>
+                        <a href="<%= request.getContextPath() %>/rooms" class="btn-modern btn-warning">
+                            <i class="bi bi-door-open"></i> Rooms
+                        </a>
+                        <a href="<%= request.getContextPath() %>/guests" class="btn-modern btn-ghost">
+                            <i class="bi bi-people"></i> Guests
+                        </a>
+                        </div>
+                        </div>
                                 <div class="row">
                                    <!-- Room Status -->
                                     <div class="col-lg-8 mb-4">
@@ -606,9 +595,24 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <h6>Thông tin khách</h6>
-                                                    <div id="guestInfo">
-                                                        <p class="text-muted">Phòng trống</p>
-                                                    </div>
+                                                    <table class="table table-dark table-sm">
+                                                        <tr>
+                                                            <td><strong>Họ và tên:</strong></td>
+                                                            <td id="guestName"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><strong>Số điện thoại:</strong></td>
+                                                            <td id="guestPhone"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><strong>Check-in:</strong></td>
+                                                            <td id="guestCheckin"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><strong>Check-out:</strong></td>
+                                                            <td id="guestCheckout"></td>
+                                                        </tr>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
@@ -673,7 +677,6 @@
         // Auto-refresh room status every 30 seconds
         setInterval(function () {
             refreshRoomStatus();
-            console.log('Refreshing room status...');
         }, 30000);
 
         // Room Status AJAX Functions
@@ -735,13 +738,17 @@
                 return;
             }
             let html = '';
+            // console.log(roomData[1]);
+
             roomData.forEach((room, index) => {
-                
+
                 const status = room.status || 'available';
-        // function showRoomDetails(roomId, roomNumber, roomType, roomPrice, status, firstName, lastName, phone, checkInDate, checkOutDate) {
 
                 const showRoomDetail = `<div class="room-card text-center" style="cursor: pointer;" onclick="showRoomDetails(` + 
-                room.room_id +`,`+ room.room_number + `,`+ room.type_name.value +`,`+ room.base_price +`,`+room.status+`,`+ room.firstName +`,`+ room.lastName+`,`+ room.phone+`,` + room.check_in_date+`,`+room.check_out_date+`)">`;
+                    room.room_id + `,` + room.room_number + `,'` + (room.type_name?.value || '') + `',` + room.base_price + `,'` + room.status + `','` +
+                    (room.firstName || '') + `','` + (room.lastName || '') + `','` + (room.phone || '') + `','` +
+                    (room.check_in_date || '') + `','` + (room.check_out_date || '') + `')">`;
+
                 console.log(showRoomDetail);
                 const roomHtml = `
                     <div class="col-lg-3 col-md-4 col-sm-6 mb-3 d-flex">`+showRoomDetail+`
@@ -779,7 +786,7 @@
                 container.innerHTML = `
                     <div class="col-12 text-center">
                         <div class="alert alert-warning" role="alert">
-                            <i class="bi bi-exclamation-triangle"></i> ${message}
+                            <i class="bi bi-exclamation-triangle"></i>`+ message +`
                         </div>
                     </div>
                 `;
@@ -875,12 +882,12 @@
         }
 
         // Room details function
-        function showRoomDetails(roomId, roomNumber, roomType, roomPrice, status, firstName, lastName, phone, checkInDate, checkOutDate) {
+                    function showRoomDetails(roomId = null, roomNumber = null, roomType = null, roomPrice = null, status = null, firstName = null, lastName = null, phone = null, checkInDate = null, checkOutDate = null) {
             // Update room information
             document.getElementById('roomNumber').textContent = roomNumber;
             document.getElementById('roomType').textContent = roomType;
             document.getElementById('roomPrice').textContent = roomPrice + ' VNĐ';
-            
+                    console.log(roomId + ` ` + roomNumber + ` ` + roomType + ` ` + roomPrice + ` ` + status + ` ` + firstName + ` ` + lastName + ` ` + phone + ` ` + checkInDate + ` ` + checkOutDate);
             // Update status with badge
             const statusElement = document.getElementById('roomStatus');
             let statusClass = 'badge ';
@@ -908,34 +915,11 @@
                     statusText = status;
             }
             
-            statusElement.innerHTML = '<span class="' + statusClass + '">' + statusText + '</span>';
-            
-            // Update guest information
-            const guestInfo = document.getElementById('guestInfo');
-            if (firstName && lastName) {
-                guestInfo.innerHTML = `
-                    <table class="table table-dark table-sm">
-                        <tr>
-                            <td><strong>Tên khách:</strong></td>
-                            <td>${firstName} ${lastName}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>SĐT:</strong></td>
-                            <td>${phone || 'N/A'}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Ngày nhận:</strong></td>
-                            <td>${checkInDate || 'N/A'}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Ngày trả:</strong></td>
-                            <td>${checkOutDate || 'N/A'}</td>
-                        </tr>
-                    </table>
-                `;
-            } else {
-                guestInfo.innerHTML = '<p class="text-muted">Phòng trống</p>';
-            }
+                    // statusElement.innerHTML = '<span class="' + statusClass + '">' + statusText + '</span>';
+                    document.getElementById('guestName').textContent = firstName + ' ' + lastName;
+                    document.getElementById('guestPhone').textContent = phone;
+                    document.getElementById('guestCheckin').textContent = checkInDate;
+                    document.getElementById('guestCheckout').textContent = checkOutDate;
             
             // Show modal
             const modal = new bootstrap.Modal(document.getElementById('roomDetailsModal'));
@@ -945,7 +929,7 @@
         // Edit guest function
         function editGuest(guestId) {
             // Find the guest data from the table
-            const guestRow = document.querySelector(`button[onclick="editGuest(${guestId})"]`).closest('tr');
+            const guestRow = document.querySelector(`button[onclick="editGuest(` + guestId + `)"]`).closest('tr');
             const cells = guestRow.querySelectorAll('td');
             
             // Extract guest data from table cells

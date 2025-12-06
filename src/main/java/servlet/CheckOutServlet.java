@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet(name = "CheckOutServlet", urlPatterns = { "/checkout" })
+@WebServlet(name = "CheckOutServlet", urlPatterns = { "/check-out" })
 public class CheckOutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -20,8 +20,7 @@ public class CheckOutServlet extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/login");
             return;
         }
-        // Redirect to dashboard - check-out is done via modal on dashboard
-        resp.sendRedirect(req.getContextPath() + "/dashboard");
+        req.getRequestDispatcher("/sections/check-out.jsp").forward(req, resp);
     }
 
     @Override
