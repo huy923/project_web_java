@@ -65,8 +65,13 @@ public class GuestManagementServlet extends HttpServlet {
                 message = success ? "Thông tin khách hàng đã được cập nhật" : "Không thể cập nhật thông tin";
             } else if ("delete".equals(action)) {
                 int guestId = Integer.parseInt(req.getParameter("guestId"));
-                success = dao.deleteGuest(guestId);
-                message = success ? "Khách hàng đã được xóa" : "Không thể xóa khách hàng (có đặt phòng đang hoạt động)";
+                try {
+                    success = dao.deleteGuest(guestId);
+                    message = success ? "Guest deleted successfully" : "Unable to delete guest";
+                } catch (SQLException e) {
+                    success = false;
+                    message = "Error deleting guest: " + e.getMessage();
+                }
             }
 
             req.setAttribute("message", message);

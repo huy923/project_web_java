@@ -565,7 +565,7 @@
                                 <div class="modal-dialog">
                                     <div class="modal-content bg-dark text-white">
                                         <div class="modal-header">
-                                            <h5 class="modal-title">
+                                            <h5 class="modal-titl">
                                                 <i class="bi bi-door-open"></i> Thông tin phòng
                                             </h5>
                                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
@@ -749,7 +749,7 @@
                     (room.firstName || '') + `','` + (room.lastName || '') + `','` + (room.phone || '') + `','` +
                     (room.check_in_date || '') + `','` + (room.check_out_date || '') + `')">`;
 
-                console.log(showRoomDetail);
+                // console.log(showRoomDetail);
                 const roomHtml = `
                     <div class="col-lg-3 col-md-4 col-sm-6 mb-3 d-flex">`+showRoomDetail+`
                             <h6 class="mb-2">Room `+room.room_number+`</h6>

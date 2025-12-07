@@ -33,27 +33,24 @@ public class UserDao {
         return null;
     }
     public List<Map<String, Object>> allUserList() throws SQLException {
-        String sql = "SELECT user_id, username, password, email, full_name, phone, role, is_active FROM users ORDER BY create_at DESC";
+        String sql = "SELECT user_id, username, email, full_name, phone, role, is_active FROM users ORDER BY user_id DESC";
         try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)) {
-            ResultSet rs = ps.executeQuery();
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()) {
             List<Map<String, Object>> list = new java.util.ArrayList<>();
             while (rs.next()) {
                 Map<String, Object> m = new HashMap<>();
                 m.put("user_id", rs.getInt("user_id"));
                 m.put("username", rs.getString("username"));
-                m.put("password", rs.getString("password"));
                 m.put("email", rs.getString("email"));
                 m.put("full_name", rs.getString("full_name"));
                 m.put("phone", rs.getString("phone"));
                 m.put("role", rs.getString("role"));
                 m.put("is_active", rs.getBoolean("is_active"));
-                m.put("create_at", rs.getTimestamp("create_at"));
-                m.put("update_at", rs.getTimestamp("update_at"));
                 list.add(m);
             }
+            return list;
         }
-        return null;
     }
 
     public boolean validatePassword(String plaintext, String hashed) {

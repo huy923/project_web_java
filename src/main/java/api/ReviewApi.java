@@ -81,18 +81,18 @@ public class ReviewApi extends HttpServlet {
             JsonObject json = gson.fromJson(sb.toString(), JsonObject.class);
             
             int bookingId = json.has("booking_id") ? json.get("booking_id").getAsInt() : 0;
-            int guestId = json.has("guest_id") ? json.get("guest_id").getAsInt() : 0;
             int rating = json.has("rating") ? json.get("rating").getAsInt() : 0;
-            String reviewText = json.has("review_text") ? json.get("review_text").getAsString() : "";
+            String title = json.has("title") ? json.get("title").getAsString() : "";
+            String comment = json.has("comment") ? json.get("comment").getAsString() : "";
             boolean isPublic = json.has("is_public") ? json.get("is_public").getAsBoolean() : false;
 
-            if (bookingId == 0 || guestId == 0 || rating == 0 || rating < 1 || rating > 5) {
+            if (bookingId == 0 || rating == 0 || rating < 1 || rating > 5) {
                 sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Missing required fields or invalid rating");
                 return;
             }
 
             ReviewDao dao = new ReviewDao();
-            boolean success = dao.addReview(bookingId, guestId, rating, reviewText, isPublic);
+            boolean success = dao.addReview(bookingId, rating, title, comment, isPublic);
 
             if (success) {
                 sendSuccessResponse(resp, "Review added successfully");
@@ -136,7 +136,8 @@ public class ReviewApi extends HttpServlet {
             JsonObject json = gson.fromJson(sb.toString(), JsonObject.class);
             
             Integer rating = json.has("rating") ? json.get("rating").getAsInt() : null;
-            String reviewText = json.has("review_text") ? json.get("review_text").getAsString() : null;
+            String title = json.has("title") ? json.get("title").getAsString() : null;
+            String comment = json.has("comment") ? json.get("comment").getAsString() : null;
             Boolean isPublic = json.has("is_public") ? json.get("is_public").getAsBoolean() : null;
             Boolean toggleVisibility = json.has("toggle_visibility") ? json.get("toggle_visibility").getAsBoolean() : null;
 
@@ -145,10 +146,11 @@ public class ReviewApi extends HttpServlet {
 
             if (toggleVisibility != null && toggleVisibility) {
                 success = dao.toggleReviewVisibility(reviewId);
-            } else if (rating != null && reviewText != null && isPublic != null) {
-                success = dao.updateReview(reviewId, rating, reviewText, isPublic);
+            } else if (rating != null && title != null && comment != null && isPublic != null) {
+                success = dao.updateReview(reviewId, rating, title, comment, isPublic);
             } else {
-                sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Invalid update parameters");
+                sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST,
+                        "Invalid update parameters - title and comment required");
                 return;
             }
 

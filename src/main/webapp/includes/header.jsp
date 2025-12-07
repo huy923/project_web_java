@@ -434,7 +434,7 @@
                 <i class="bi bi-building"></i> Hotel Management System
             </a>
             <div class="navbar-nav ms-auto">
-                <span class="navbar-text">
+                <span>
                     <i class="bi bi-person-circle"></i> Admin Dashboard
                 </span>
                 </div>

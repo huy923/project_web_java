@@ -29,7 +29,7 @@
                 <div id="alertContainer"></div>
 
                 <!-- Hotel Information Settings -->
-                <div class="settings-section">
+                <div class="settings-section card-modern">
                     <div class="d-flex align-items-center mb-4">
                         <div class="settings-icon text-primary">
                             <i class="bi bi-building"></i>
@@ -72,7 +72,7 @@
                 </div>
 
                 <!-- System Settings -->
-                <div class="settings-section">
+                <div class="settings-section card-modern">
                     <div class="d-flex align-items-center mb-4">
                         <div class="settings-icon text-success">
                             <i class="bi bi-sliders"></i>
@@ -127,7 +127,7 @@
                 </div>
 
                 <!-- Notification Settings -->
-                <div class="settings-section">
+                <div class="settings-section card-modern">
                     <div class="d-flex align-items-center mb-4">
                         <div class="settings-icon text-warning">
                             <i class="bi bi-bell"></i>

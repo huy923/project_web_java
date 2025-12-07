@@ -152,7 +152,7 @@
                                 <strong>
                                     <%= review.get("guest_name") %>
                                 </strong> - Booking ID: #<%= review.get("booking_id") %>
-                                    <br><small class="text-muted">Posted on <%= review.get("review_date") %></small>
+                                    <br><small class="text-muted">Posted on <%= review.get("created_at") %></small>
                             </div>
                             <div>
                                 <span class="review-stars">
@@ -168,7 +168,7 @@
                             <%= review.get("title") %>
                         </h6>
                         <p class="review-body">
-                            <%= review.get("review_text") %>
+                            <%= review.get("comment") %>
                         </p>
                         <div class="mt-3">
                             <small class="text-muted">Status:

@@ -283,6 +283,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - GitHub: [@huy923](https://github.com/huy923)
 - Project: [Hotel Management System](https://github.com/huy923/project_web_java)
 
+
 ---
 
 ## 🙏 Acknowledgments
@@ -295,4 +296,19 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Error 
 
-- if you see some error like `HTTP Status 500 - java.sql.SQLException: Access denied for user 'hotel_app'@'localhost' (using password: YES)` mabe you did't create user try to run code in file `hotel_database_mysql.sql` line 1059 to 1079.
+- if you see some error like `HTTP Status 500 - java.sql.SQLException: Access denied for user 'hotel_app'@'localhost' (using password: YES)` mabe you did't create user in mysql to fix that error you just run copy code below and paste it in mysql:
+
+```bash
+CREATE USER IF NOT EXISTS 'hotel_app'@'localhost' 
+IDENTIFIED BY 'hotel_password';
+
+GRANT SELECT, INSERT, UPDATE, DELETE 
+ON hotel_management.* TO 'hotel_app'@'localhost';
+
+FLUSH PRIVILEGES;
+
+UPDATE hotel_management.rooms
+SET last_cleaned = CURRENT_TIMESTAMP
+WHERE status = 'available';
+
+```

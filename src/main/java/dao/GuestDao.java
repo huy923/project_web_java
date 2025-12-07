@@ -74,13 +74,31 @@ public class GuestDao {
     }
     
     public boolean deleteGuest(int guestId) throws SQLException {
-        // Only delete if guest has no active bookings
-        String sql = "DELETE FROM guests WHERE guest_id = ? AND guest_id NOT IN " +
-                    "(SELECT DISTINCT guest_id FROM bookings WHERE status IN ('confirmed', 'checked_in'))";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, guestId);
-            return ps.executeUpdate() == 1;
+        Connection conn = DatabaseConnection.getConnection();
+        try {
+            conn.setAutoCommit(false);
+
+            // First, delete all bookings for this guest
+            String deleteBookingsSql = "DELETE FROM bookings WHERE guest_id = ?";
+            try (PreparedStatement ps = conn.prepareStatement(deleteBookingsSql)) {
+                ps.setInt(1, guestId);
+                ps.executeUpdate();
+            }
+
+            // Then delete the guest
+            String deleteGuestSql = "DELETE FROM guests WHERE guest_id = ?";
+            try (PreparedStatement ps = conn.prepareStatement(deleteGuestSql)) {
+                ps.setInt(1, guestId);
+                int result = ps.executeUpdate();
+                conn.commit();
+                return result == 1;
+            }
+        } catch (SQLException e) {
+            conn.rollback();
+            throw e;
+        } finally {
+            conn.setAutoCommit(true);
+            conn.close();
         }
     }
     

@@ -5,7 +5,7 @@
 <%@ page import="java.text.NumberFormat" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.util.Locale" %>
-    <jsp:include page="/includes/header.jsp" />    
+<jsp:include page="/includes/header.jsp" />    
     <div class="px-2 main-container">
         <div class="row">
             <!-- Sidebar -->

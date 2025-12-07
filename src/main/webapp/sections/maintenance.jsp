@@ -55,7 +55,7 @@
                             %>
                 <div class="row mb-4">
                     <div class="col-lg-3 col-md-6 mb-3">
-                        <div class="stats-card">
+                        <div class="stat-card">
                             <div class="stat-number text-warning">
                                 <%= reported %>
                             </div>
@@ -63,7 +63,7 @@
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 mb-3">
-                        <div class="stats-card">
+                        <div class="stat-card">
                             <div class="stat-number text-info">
                                 <%= inProgress %>
                             </div>
@@ -71,7 +71,7 @@
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 mb-3">
-                        <div class="stats-card">
+                        <div class="stat-card">
                             <div class="stat-number text-success">
                                 <%= completed %>
                             </div>
@@ -79,7 +79,7 @@
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 mb-3">
-                        <div class="stats-card">
+                        <div class="stat-card">
                             <div class="stat-number text-danger">
                                 <%= cancelled %>
                             </div>

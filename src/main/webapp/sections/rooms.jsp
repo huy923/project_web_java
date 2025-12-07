@@ -51,57 +51,57 @@
                                     if (rooms != null) {
                                     for (Map<String, Object> room : rooms) {
                                         if ("available".equals(room.get("status"))) {
-                                        availableRooms++;
+                                            availableRooms++;
+                                            }
                                         }
-                                        }
-                                        }
-                                        %>
-                                        <%= availableRooms %>
-                                            </div>
+                                    }
+                            %>
+                            <%= availableRooms %>
+                        </div>
                         <div class="stat-label">
                             <i class="bi bi-check-circle"></i> Available
                         </div>
-                        </div>
+                    </div>
                     <div class="stat-card">
                         <div class="stat-number text-warning">
                             <% int occupiedRooms=0; if (rooms !=null) { for (Map<String, Object> room : rooms) {
                                 if ("occupied".equals(room.get("status"))) {
-                                occupiedRooms++;
+                                    occupiedRooms++;
+                                    }
                                 }
-                                }
-                                }
-                                %>
-                                <%= occupiedRooms %>
+                            }
+                            %>
+                            <%= occupiedRooms %>
                         </div>
                         <div class="stat-label">
                             <i class="bi bi-person-fill"></i> Occupied
                         </div>
-                        </div>
+                    </div>
                     <div class="stat-card">
                         <div class="stat-number text-danger">
                             <% int maintenanceRooms=0; if (rooms !=null) { for (Map<String, Object> room : rooms) {
                                 if ("maintenance".equals(room.get("status"))) {
-                                maintenanceRooms++;
+                                    maintenanceRooms++;
+                                    }
                                 }
-                                }
-                                }
-                                %>
-                                <%= maintenanceRooms %>
+                            }
+                            %>
+                            <%= maintenanceRooms %>
                         </div>
                         <div class="stat-label">
                             <i class="bi bi-tools"></i> Maintenance
                         </div>
-                        </div>
+                    </div>
                     <div class="stat-card">
                         <div class="stat-number">
                             <% int totalRooms=rooms !=null ? rooms.size() : 0; %>
-                                <%= totalRooms %>
+                            <%= totalRooms %>
                         </div>
                         <div class="stat-label">
                             <i class="bi bi-door-open"></i> Total
                         </div>
-                        </div>
-                        </div>
+                    </div>
+                </div>
 
                 <!-- Add Room Form -->
                 <div class="card-modern mb-4">
@@ -160,20 +160,20 @@
                                     statusClass = "badge-available";
                                     statusText = "Available";
                                     statusIcon = "bi-check-circle";
-                                    } else if ("occupied".equals(status)) {
+                            } else if ("occupied".equals(status)) {
                                     statusClass = "badge-occupied";
                                     statusText = "Occupied";
                                     statusIcon = "bi-person-fill";
-                                    } else if ("maintenance".equals(status)) {
+                            } else if ("maintenance".equals(status)) {
                                     statusClass = "badge-maintenance";
                                     statusText = "Maintenance";
                                     statusIcon = "bi-tools";
-                                    } else if ("cleaning".equals(status)) {
+                            } else if ("cleaning".equals(status)) {
                                     statusClass = "badge-cleaning";
                                     statusText = "Cleaning";
                                     statusIcon = "bi-brush";
-                                    }
-                                    %>
+                            }
+                        %>
                         <div class="card-compact">
                             <div class="d-flex justify-content-between align-items-start mb-3">
                                 <div>
@@ -199,7 +199,7 @@
                                     <div class="d-flex gap-2">
                                         <form action="<%= request.getContextPath() %>/rooms" method="post" class="flex-grow-1">
                                             <input type="hidden" name="action" value="updateStatus">
-                                    <input type="hidden" name="roomId" value="<%= room.get(" room_id") %>">
+                                    <input type="hidden" name="roomId" value="<%= room.get("room_id") %>">
                                     <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
                                         <option value="available" <%=status.equals("available") ? "selected" : "" %>>Available</option>
                                         <option value="occupied" <%=status.equals("occupied") ? "selected" : "" %>>Occupied</option>
@@ -209,7 +209,7 @@
                                     </form>
                                 <form action="<%= request.getContextPath() %>/rooms" method="post" class="d-inline">
                                     <input type="hidden" name="action" value="delete">
-                                    <input type="hidden" name="roomId" value="<%= room.get(" room_id") %>">
+                                    <input type="hidden" name="roomId" value="<%= room.get("room_id") %>">
                                     <button type="submit" class="btn-modern btn-danger btn-sm" onclick="return confirm('Delete this room?')" title="Delete">
                                         <i class="bi bi-trash"></i>
                                     </button>

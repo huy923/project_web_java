@@ -1056,8 +1056,282 @@ BEGIN
         UPDATE rooms SET status = 'available' WHERE room_id = NEW.room_id;
     END IF;
 END$$
-
 DELIMITER;
+
+CREATE TABLE permissions (
+    permission_id INT AUTO_INCREMENT PRIMARY KEY,
+    permission_name VARCHAR(100) UNIQUE NOT NULL,
+    description TEXT,
+    module VARCHAR(50) NOT NULL,
+    action VARCHAR(50) NOT NULL,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 2. Roles Table - Enhanced with permissions
+CREATE TABLE roles (
+    role_id INT AUTO_INCREMENT PRIMARY KEY,
+    role_name VARCHAR(50) UNIQUE NOT NULL,
+    description TEXT,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- 3. Role Permissions Mapping
+CREATE TABLE role_permissions (
+    role_permission_id INT AUTO_INCREMENT PRIMARY KEY,
+    role_id INT NOT NULL,
+    permission_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (role_id) REFERENCES roles (role_id) ON DELETE CASCADE,
+    FOREIGN KEY (permission_id) REFERENCES permissions (permission_id) ON DELETE CASCADE,
+    UNIQUE KEY unique_role_permission (role_id, permission_id)
+);
+
+-- 4. User Roles Mapping - Support multiple roles per user
+CREATE TABLE user_roles (
+    user_role_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    role_id INT NOT NULL,
+    assigned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    assigned_by INT,
+    FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE,
+    FOREIGN KEY (role_id) REFERENCES roles (role_id) ON DELETE CASCADE,
+    FOREIGN KEY (assigned_by) REFERENCES users (user_id),
+    UNIQUE KEY unique_user_role (user_id, role_id)
+);
+
+-- 5. Audit Log - Track all permission-related actions
+CREATE TABLE audit_logs (
+    audit_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    action VARCHAR(100) NOT NULL,
+    module VARCHAR(50) NOT NULL,
+    entity_type VARCHAR(50),
+    entity_id INT,
+    old_value TEXT,
+    new_value TEXT,
+    ip_address VARCHAR(45),
+    status VARCHAR(20),
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users (user_id),
+    INDEX idx_user_timestamp (user_id, timestamp),
+    INDEX idx_action_timestamp (action, timestamp)
+);
+
+-- 6. Resource Access Control - Fine-grained access
+CREATE TABLE resource_access (
+    resource_id INT AUTO_INCREMENT PRIMARY KEY,
+    resource_type VARCHAR(50) NOT NULL,
+    resource_name VARCHAR(100) NOT NULL,
+    owner_id INT,
+    access_level ENUM('public', 'private', 'restricted') DEFAULT 'private',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (owner_id) REFERENCES users (user_id),
+    INDEX idx_resource_type (resource_type)
+);
+
+-- 7. Resource Permissions - Who can access what
+CREATE TABLE resource_permissions (
+    resource_perm_id INT AUTO_INCREMENT PRIMARY KEY,
+    resource_id INT NOT NULL,
+    role_id INT,
+    user_id INT,
+    permission_type ENUM('view', 'edit', 'delete', 'share') NOT NULL,
+    granted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    granted_by INT,
+    FOREIGN KEY (resource_id) REFERENCES resource_access (resource_id) ON DELETE CASCADE,
+    FOREIGN KEY (role_id) REFERENCES roles (role_id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE,
+    FOREIGN KEY (granted_by) REFERENCES users (user_id)
+);
+
+-- =====================================================
+-- INSERT DEFAULT PERMISSIONS
+-- =====================================================
+
+-- Dashboard Permissions
+INSERT INTO permissions (permission_name, description, module, action) VALUES
+('dashboard.view', 'View dashboard', 'dashboard', 'view'),
+('dashboard.export', 'Export dashboard data', 'dashboard', 'export');
+
+-- Room Management Permissions
+INSERT INTO permissions (permission_name, description, module, action) VALUES
+('rooms.view', 'View rooms', 'rooms', 'view'),
+('rooms.create', 'Create new room', 'rooms', 'create'),
+('rooms.edit', 'Edit room details', 'rooms', 'edit'),
+('rooms.delete', 'Delete room', 'rooms', 'delete'),
+('rooms.status_change', 'Change room status', 'rooms', 'status_change'),
+('rooms.export', 'Export room data', 'rooms', 'export');
+
+-- Booking Management Permissions
+INSERT INTO permissions (permission_name, description, module, action) VALUES
+('bookings.view', 'View bookings', 'bookings', 'view'),
+('bookings.create', 'Create booking', 'bookings', 'create'),
+('bookings.edit', 'Edit booking', 'bookings', 'edit'),
+('bookings.delete', 'Delete booking', 'bookings', 'delete'),
+('bookings.checkin', 'Check-in guest', 'bookings', 'checkin'),
+('bookings.checkout', 'Check-out guest', 'bookings', 'checkout'),
+('bookings.cancel', 'Cancel booking', 'bookings', 'cancel'),
+('bookings.export', 'Export booking data', 'bookings', 'export');
+
+-- Guest Management Permissions
+INSERT INTO permissions (permission_name, description, module, action) VALUES
+('guests.view', 'View guests', 'guests', 'view'),
+('guests.create', 'Create guest', 'guests', 'create'),
+('guests.edit', 'Edit guest', 'guests', 'edit'),
+('guests.delete', 'Delete guest', 'guests', 'delete'),
+('guests.export', 'Export guest data', 'guests', 'export');
+
+-- Payment Management Permissions
+INSERT INTO permissions (permission_name, description, module, action) VALUES
+('payments.view', 'View payments', 'payments', 'view'),
+('payments.create', 'Create payment', 'payments', 'create'),
+('payments.edit', 'Edit payment', 'payments', 'edit'),
+('payments.delete', 'Delete payment', 'payments', 'delete'),
+('payments.refund', 'Process refund', 'payments', 'refund'),
+('payments.export', 'Export payment data', 'payments', 'export');
+
+-- Service Management Permissions
+INSERT INTO permissions (permission_name, description, module, action) VALUES
+('services.view', 'View services', 'services', 'view'),
+('services.create', 'Create service', 'services', 'create'),
+('services.edit', 'Edit service', 'services', 'edit'),
+('services.delete', 'Delete service', 'services', 'delete');
+
+-- Maintenance Permissions
+INSERT INTO permissions (permission_name, description, module, action) VALUES
+('maintenance.view', 'View maintenance records', 'maintenance', 'view'),
+('maintenance.create', 'Create maintenance record', 'maintenance', 'create'),
+('maintenance.edit', 'Edit maintenance record', 'maintenance', 'edit'),
+('maintenance.delete', 'Delete maintenance record', 'maintenance', 'delete'),
+('maintenance.assign', 'Assign maintenance task', 'maintenance', 'assign'),
+('maintenance.complete', 'Mark maintenance complete', 'maintenance', 'complete');
+
+-- Inventory Permissions
+INSERT INTO permissions (permission_name, description, module, action) VALUES
+('inventory.view', 'View inventory', 'inventory', 'view'),
+('inventory.create', 'Create inventory item', 'inventory', 'create'),
+('inventory.edit', 'Edit inventory item', 'inventory', 'edit'),
+('inventory.delete', 'Delete inventory item', 'inventory', 'delete'),
+('inventory.adjust', 'Adjust inventory stock', 'inventory', 'adjust');
+
+-- Reports Permissions
+INSERT INTO permissions (permission_name, description, module, action) VALUES
+('reports.view', 'View reports', 'reports', 'view'),
+('reports.create', 'Create report', 'reports', 'create'),
+('reports.export', 'Export report', 'reports', 'export'),
+('reports.occupancy', 'View occupancy report', 'reports', 'occupancy'),
+('reports.revenue', 'View revenue report', 'reports', 'revenue'),
+('reports.guest_analysis', 'View guest analysis', 'reports', 'guest_analysis');
+
+-- Reviews Permissions
+INSERT INTO permissions (permission_name, description, module, action) VALUES
+('reviews.view', 'View reviews', 'reviews', 'view'),
+('reviews.create', 'Create review', 'reviews', 'create'),
+('reviews.edit', 'Edit review', 'reviews', 'edit'),
+('reviews.delete', 'Delete review', 'reviews', 'delete'),
+('reviews.publish', 'Publish review', 'reviews', 'publish');
+
+-- User Management Permissions
+INSERT INTO permissions (permission_name, description, module, action) VALUES
+('users.view', 'View users', 'users', 'view'),
+('users.create', 'Create user', 'users', 'create'),
+('users.edit', 'Edit user', 'users', 'edit'),
+('users.delete', 'Delete user', 'users', 'delete'),
+('users.roles', 'Manage user roles', 'users', 'roles'),
+('users.permissions', 'Manage user permissions', 'users', 'permissions');
+
+-- Settings Permissions
+INSERT INTO permissions (permission_name, description, module, action) VALUES
+('settings.view', 'View settings', 'settings', 'view'),
+('settings.edit', 'Edit settings', 'settings', 'edit'),
+('settings.system', 'System settings', 'settings', 'system'),
+('settings.audit', 'View audit logs', 'settings', 'audit');
+
+-- =====================================================
+-- INSERT DEFAULT ROLES
+-- =====================================================
+
+INSERT INTO roles (role_name, description) VALUES
+('admin', 'Administrator - Full system access'),
+('manager', 'Manager - Manage operations and staff'),
+('receptionist', 'Receptionist - Handle bookings and guests'),
+('housekeeping', 'Housekeeping - Room maintenance'),
+('maintenance', 'Maintenance - Equipment and repairs'),
+('accountant', 'Accountant - Financial management'),
+('guest', 'Guest - Limited access');
+
+-- =====================================================
+-- ASSIGN PERMISSIONS TO ROLES
+-- =====================================================
+
+-- Admin - All permissions
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.role_id, p.permission_id 
+FROM roles r, permissions p 
+WHERE r.role_name = 'admin';
+
+-- Manager - Most permissions except user management
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.role_id, p.permission_id 
+FROM roles r, permissions p 
+WHERE r.role_name = 'manager' 
+AND p.permission_name NOT IN ('users.delete', 'settings.system');
+
+-- Receptionist - Booking, guest, payment, and review permissions
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.role_id, p.permission_id 
+FROM roles r, permissions p 
+WHERE r.role_name = 'receptionist' 
+AND p.module IN ('bookings', 'guests', 'payments', 'reviews', 'dashboard')
+AND p.permission_name NOT IN ('payments.delete', 'payments.refund', 'guests.delete');
+
+-- Housekeeping - Room and maintenance permissions
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.role_id, p.permission_id 
+FROM roles r, permissions p 
+WHERE r.role_name = 'housekeeping' 
+AND p.module IN ('rooms', 'maintenance')
+AND p.permission_name NOT IN ('rooms.delete', 'maintenance.delete');
+
+-- Maintenance - Maintenance and inventory permissions
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.role_id, p.permission_id 
+FROM roles r, permissions p 
+WHERE r.role_name = 'maintenance' 
+AND p.module IN ('maintenance', 'inventory')
+AND p.permission_name NOT IN ('maintenance.delete', 'inventory.delete');
+
+-- Accountant - Payment and report permissions
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.role_id, p.permission_id 
+FROM roles r, permissions p 
+WHERE r.role_name = 'accountant' 
+AND p.module IN ('payments', 'reports', 'bookings')
+AND p.permission_name NOT IN ('payments.delete', 'bookings.delete');
+
+-- Guest - Limited view permissions
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.role_id, p.permission_id 
+FROM roles r, permissions p 
+WHERE r.role_name = 'guest' 
+AND p.permission_name IN ('bookings.view', 'reviews.create', 'reviews.view', 'dashboard.view');
+
+-- =====================================================
+-- CREATE INDEXES FOR PERFORMANCE
+-- =====================================================
+
+CREATE INDEX idx_role_permissions_role ON role_permissions (role_id);
+CREATE INDEX idx_role_permissions_permission ON role_permissions (permission_id);
+CREATE INDEX idx_user_roles_user ON user_roles (user_id);
+CREATE INDEX idx_user_roles_role ON user_roles (role_id);
+CREATE INDEX idx_resource_access_owner ON resource_access (owner_id);
+CREATE INDEX idx_resource_permissions_resource ON resource_permissions (resource_id);
+CREATE INDEX idx_resource_permissions_role ON resource_permissions (role_id);
+CREATE INDEX idx_resource_permissions_user ON resource_permissions (user_id);
+
 
 -- =====================================================
 -- FINAL SETUP
@@ -1077,4 +1351,3 @@ FLUSH PRIVILEGES;
 UPDATE hotel_management.rooms
 SET last_cleaned = CURRENT_TIMESTAMP
 WHERE status = 'available';
-

@@ -85,6 +85,7 @@ public class GuestServiceApi extends HttpServlet {
             int bookingId = json.has("booking_id") ? json.get("booking_id").getAsInt() : 0;
             int serviceId = json.has("service_id") ? json.get("service_id").getAsInt() : 0;
             int quantity = json.has("quantity") ? json.get("quantity").getAsInt() : 1;
+            double unitPrice = json.has("unit_price") ? json.get("unit_price").getAsDouble() : 0.0;
 
             if (bookingId == 0 || serviceId == 0) {
                 sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Missing required fields");
@@ -92,7 +93,7 @@ public class GuestServiceApi extends HttpServlet {
             }
 
             GuestServiceDao dao = new GuestServiceDao();
-            boolean success = dao.addGuestService(bookingId, serviceId, quantity);
+            boolean success = dao.addGuestService(bookingId, serviceId, quantity, unitPrice);
 
             if (success) {
                 sendSuccessResponse(resp, "Guest service added successfully");

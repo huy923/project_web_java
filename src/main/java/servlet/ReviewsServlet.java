@@ -96,12 +96,12 @@ public class ReviewsServlet extends HttpServlet {
             if ("add".equals(action)) {
                 // Add new review
                 int bookingId = Integer.parseInt(request.getParameter("bookingId"));
-                int guestId = Integer.parseInt(request.getParameter("guestId"));
                 int rating = Integer.parseInt(request.getParameter("rating"));
-                String reviewText = request.getParameter("reviewText");
+                String title = request.getParameter("title");
+                String comment = request.getParameter("comment");
                 boolean isPublic = "on".equals(request.getParameter("isPublic"));
 
-                boolean success = reviewDao.addReview(bookingId, guestId, rating, reviewText, isPublic);
+                boolean success = reviewDao.addReview(bookingId, rating, title, comment, isPublic);
 
                 if (success) {
                     request.setAttribute("successMessage", "Review added successfully");
@@ -114,10 +114,11 @@ public class ReviewsServlet extends HttpServlet {
                 // Update review
                 int reviewId = Integer.parseInt(request.getParameter("reviewId"));
                 int rating = Integer.parseInt(request.getParameter("rating"));
-                String reviewText = request.getParameter("reviewText");
+                String title = request.getParameter("title");
+                String comment = request.getParameter("comment");
                 boolean isPublic = "on".equals(request.getParameter("isPublic"));
 
-                boolean success = reviewDao.updateReview(reviewId, rating, reviewText, isPublic);
+                boolean success = reviewDao.updateReview(reviewId, rating, title, comment, isPublic);
 
                 if (success) {
                     request.setAttribute("successMessage", "Review updated successfully");

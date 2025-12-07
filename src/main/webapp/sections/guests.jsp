@@ -50,8 +50,8 @@
                         <div class="stat-number">
                             <% List<Map<String, Object>> guests = (List<Map<String, Object>>) request.getAttribute("guests");
                                     int totalGuests = guests != null ? guests.size() : 0;
-                                    %>
-                                    <%= totalGuests %>
+                            %>
+                            <%= totalGuests %>
                         </div>
                         <div class="stat-label">
                             <i class="bi bi-people"></i> Total Guests
@@ -61,12 +61,12 @@
                         <div class="stat-number text-success">
                             <% int activeGuests=0; if (guests !=null) { for (Map<String, Object> guest : guests) {
                                 if (guest.get("booking_status") != null) {
-                                activeGuests++;
+                                   activeGuests++;
                                 }
-                                }
-                                }
-                                %>
-                                <%= activeGuests %>
+                            }
+                            }
+                            %>
+                            <%= activeGuests %>
                         </div>
                         <div class="stat-label">
                             <i class="bi bi-person-check"></i> Checked In
@@ -79,11 +79,11 @@
                                 Integer.parseInt(guest.get("booking_count").toString()) > 2) {
                                 vipGuests++;
                                 }
-                                    }
-                                    }
-                                    %>
-                                    <%= vipGuests %>
-                                        </div>
+                            }
+                            }
+                            %>
+                            <%= vipGuests %>
+                        </div>
                         <div class="stat-label">
                             <i class="bi bi-star"></i> VIP Guests
                         </div>
@@ -93,12 +93,12 @@
                             <% int newGuests=0; if (guests !=null) { for (Map<String, Object> guest : guests) {
                                 if (guest.get("booking_count") != null &&
                                 Integer.parseInt(guest.get("booking_count").toString()) == 1) {
-                                newGuests++;
+                                    newGuests++;
                                 }
-                                }
-                                }
-                                %>
-                                <%= newGuests %>
+                            }
+                            }
+                            %>
+                            <%= newGuests %>
                         </div>
                         <div class="stat-label">
                             <i class="bi bi-person-plus"></i> New Guests
@@ -127,7 +127,7 @@
                         </div>
                         <div class="col-md-5">
                             <label class="form-label">&nbsp;</label>
-                            <button class="btn-hotel" type="submit">
+                            <button class="btn-modern btn-success" type="submit">
                                 <i class="bi bi-plus"></i> Add Guest
                             </button>
                         </div>
@@ -162,12 +162,12 @@
                                 <option value="inactive">Not Checked In</option>
                             </select>
                         </div>
-                        <div class="col-md-3 d-flex">
-                            <button class="btn btn-hotel d-flex" onclick="filterGuests()">
-                                <i class="bi bi-funnel mr-2"></i> Filter
+                        <div class="col-md-3 d-flex justify-content-center align-items-center">
+                            <button class="btn btn-primary d-flex mx-2" onclick="filterGuests()">
+                                <i class="bi bi-funnel me-2"></i> Filter
                             </button>
-                            <button class="btn-hotel-outline d-flex" onclick="clearFilters()">
-                                <i class="bi bi-x-circle pr-2"></i> Clear Filters
+                            <button class="btn btn-outline-secondary d-flex ms-2" onclick="clearFilters()">
+                                <i class="bi bi-x-circle ms-2"></i> Clear Filters
                             </button>
                         </div>
                     </div>

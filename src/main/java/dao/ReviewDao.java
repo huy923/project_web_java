@@ -11,12 +11,11 @@ import java.util.Map;
 public class ReviewDao {
 
     public List<Map<String, Object>> getAllReviews() throws SQLException {
-        String sql = "SELECT r.review_id, r.booking_id, r.guest_id, r.rating, r.review_text, r.is_public, r.created_at, "
-                +
-                "b.booking_id, g.first_name, g.last_name, g.email " +
+        String sql = "SELECT r.review_id, r.booking_id, r.rating, r.comment, r.title, r.is_public, r.created_at, " +
+                "g.first_name, g.last_name, g.email " +
                 "FROM reviews r " +
                 "JOIN bookings b ON r.booking_id = b.booking_id " +
-                "JOIN guests g ON r.guest_id = g.guest_id " +
+                "JOIN guests g ON b.guest_id = g.guest_id " +
                 "ORDER BY r.created_at DESC";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -27,9 +26,9 @@ public class ReviewDao {
                 Map<String, Object> review = new HashMap<>();
                 review.put("review_id", rs.getInt("review_id"));
                 review.put("booking_id", rs.getInt("booking_id"));
-                review.put("guest_id", rs.getInt("guest_id"));
                 review.put("rating", rs.getInt("rating"));
-                review.put("review_text", rs.getString("review_text"));
+                review.put("title", rs.getString("title"));
+                review.put("comment", rs.getString("comment"));
                 review.put("is_public", rs.getBoolean("is_public"));
                 review.put("guest_name", rs.getString("first_name") + " " + rs.getString("last_name"));
                 review.put("guest_email", rs.getString("email"));
@@ -41,10 +40,11 @@ public class ReviewDao {
     }
 
     public List<Map<String, Object>> getPublicReviews() throws SQLException {
-        String sql = "SELECT r.review_id, r.booking_id, r.guest_id, r.rating, r.review_text, r.created_at, " +
+        String sql = "SELECT r.review_id, r.booking_id, r.rating, r.title, r.comment, r.created_at, " +
                 "g.first_name, g.last_name " +
                 "FROM reviews r " +
-                "JOIN guests g ON r.guest_id = g.guest_id " +
+                "JOIN bookings b ON r.booking_id = b.booking_id " +
+                "JOIN guests g ON b.guest_id = g.guest_id " +
                 "WHERE r.is_public = TRUE " +
                 "ORDER BY r.created_at DESC";
 
@@ -57,7 +57,8 @@ public class ReviewDao {
                 review.put("review_id", rs.getInt("review_id"));
                 review.put("guest_name", rs.getString("first_name") + " " + rs.getString("last_name"));
                 review.put("rating", rs.getInt("rating"));
-                review.put("review_text", rs.getString("review_text"));
+                review.put("title", rs.getString("title"));
+                review.put("comment", rs.getString("comment"));
                 review.put("created_at", rs.getTimestamp("created_at"));
                 reviews.add(review);
             }
@@ -65,12 +66,12 @@ public class ReviewDao {
         }
     }
 
-    public List<Map<String, Object>> getReviewsByGuestId(int guestId) throws SQLException {
-        String sql = "SELECT * FROM reviews WHERE guest_id = ? ORDER BY created_at DESC";
+    public List<Map<String, Object>> getReviewsByBookingId(int bookingId) throws SQLException {
+        String sql = "SELECT * FROM reviews WHERE booking_id = ? ORDER BY created_at DESC";
 
         try (Connection conn = DatabaseConnection.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, guestId);
+            ps.setInt(1, bookingId);
             try (ResultSet rs = ps.executeQuery()) {
                 List<Map<String, Object>> reviews = new ArrayList<>();
                 while (rs.next()) {
@@ -78,7 +79,8 @@ public class ReviewDao {
                     review.put("review_id", rs.getInt("review_id"));
                     review.put("booking_id", rs.getInt("booking_id"));
                     review.put("rating", rs.getInt("rating"));
-                    review.put("review_text", rs.getString("review_text"));
+                    review.put("title", rs.getString("title"));
+                    review.put("comment", rs.getString("comment"));
                     review.put("is_public", rs.getBoolean("is_public"));
                     review.put("created_at", rs.getTimestamp("created_at"));
                     reviews.add(review);
@@ -90,7 +92,8 @@ public class ReviewDao {
 
     public List<Map<String, Object>> getReviewsByRating(int minRating, int maxRating) throws SQLException {
         String sql = "SELECT r.*, g.first_name, g.last_name FROM reviews r " +
-                "JOIN guests g ON r.guest_id = g.guest_id " +
+                "JOIN bookings b ON r.booking_id = b.booking_id " +
+                "JOIN guests g ON b.guest_id = g.guest_id " +
                 "WHERE r.rating BETWEEN ? AND ? AND r.is_public = TRUE " +
                 "ORDER BY r.created_at DESC";
 
@@ -105,7 +108,8 @@ public class ReviewDao {
                     review.put("review_id", rs.getInt("review_id"));
                     review.put("guest_name", rs.getString("first_name") + " " + rs.getString("last_name"));
                     review.put("rating", rs.getInt("rating"));
-                    review.put("review_text", rs.getString("review_text"));
+                    review.put("title", rs.getString("title"));
+                    review.put("comment", rs.getString("comment"));
                     reviews.add(review);
                 }
                 return reviews;
@@ -113,31 +117,33 @@ public class ReviewDao {
         }
     }
 
-    public boolean addReview(int bookingId, int guestId, int rating, String reviewText, boolean isPublic)
+    public boolean addReview(int bookingId, int rating, String title, String comment, boolean isPublic)
             throws SQLException {
-        String sql = "INSERT INTO reviews (booking_id, guest_id, rating, review_text, is_public) " +
+        String sql = "INSERT INTO reviews (booking_id, rating, title, comment, is_public) " +
                 "VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, bookingId);
-            ps.setInt(2, guestId);
-            ps.setInt(3, rating);
-            ps.setString(4, reviewText);
+            ps.setInt(2, rating);
+            ps.setString(3, title);
+            ps.setString(4, comment);
             ps.setBoolean(5, isPublic);
             return ps.executeUpdate() == 1;
         }
     }
 
-    public boolean updateReview(int reviewId, int rating, String reviewText, boolean isPublic) throws SQLException {
-        String sql = "UPDATE reviews SET rating = ?, review_text = ?, is_public = ? WHERE review_id = ?";
+    public boolean updateReview(int reviewId, int rating, String title, String comment, boolean isPublic)
+            throws SQLException {
+        String sql = "UPDATE reviews SET rating = ?, title = ?, comment = ?, is_public = ? WHERE review_id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, rating);
-            ps.setString(2, reviewText);
-            ps.setBoolean(3, isPublic);
-            ps.setInt(4, reviewId);
+            ps.setString(2, title);
+            ps.setString(3, comment);
+            ps.setBoolean(4, isPublic);
+            ps.setInt(5, reviewId);
             return ps.executeUpdate() == 1;
         }
     }
@@ -164,7 +170,8 @@ public class ReviewDao {
 
     public Map<String, Object> getReviewById(int reviewId) throws SQLException {
         String sql = "SELECT r.*, g.first_name, g.last_name FROM reviews r " +
-                "JOIN guests g ON r.guest_id = g.guest_id WHERE r.review_id = ?";
+                "JOIN bookings b ON r.booking_id = b.booking_id " +
+                "JOIN guests g ON b.guest_id = g.guest_id WHERE r.review_id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -174,10 +181,10 @@ public class ReviewDao {
                     Map<String, Object> review = new HashMap<>();
                     review.put("review_id", rs.getInt("review_id"));
                     review.put("booking_id", rs.getInt("booking_id"));
-                    review.put("guest_id", rs.getInt("guest_id"));
                     review.put("guest_name", rs.getString("first_name") + " " + rs.getString("last_name"));
                     review.put("rating", rs.getInt("rating"));
-                    review.put("review_text", rs.getString("review_text"));
+                    review.put("title", rs.getString("title"));
+                    review.put("comment", rs.getString("comment"));
                     review.put("is_public", rs.getBoolean("is_public"));
                     review.put("created_at", rs.getTimestamp("created_at"));
                     return review;

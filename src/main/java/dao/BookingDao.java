@@ -186,7 +186,7 @@ public class BookingDao {
     public boolean createBookingConfirmed(int guestId, int roomId, Date checkInDate, Date checkOutDate,
             int adults, int children, double totalAmount, int createdBy) throws SQLException {
         String sql = "INSERT INTO bookings (guest_id, room_id, check_in_date, check_out_date, " +
-                "adults, children, total_amount, status, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, 'confirmed', ?, ?)";
+                "adults, children, total_amount, status, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, 'confirmed', ?)";
         try (Connection conn = DatabaseConnection.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, guestId);
@@ -196,7 +196,7 @@ public class BookingDao {
             ps.setInt(5, adults);
             ps.setInt(6, children);
             ps.setBigDecimal(7, new java.math.BigDecimal(totalAmount));
-            ps.setInt(9, createdBy);
+            ps.setInt(8, createdBy);
             return ps.executeUpdate() == 1;
         }
     }
@@ -221,7 +221,7 @@ public class BookingDao {
             ps.setDate(2, checkOutDate);
             ps.setInt(3, adults);
             ps.setInt(4, children);
-            ps.setInt(6, bookingId);
+            ps.setInt(5, bookingId);
             return ps.executeUpdate() == 1;
         }
     }
