@@ -129,7 +129,7 @@
                     <div class="row align-items-end">
                         <div class="col-md-3 mb-3">
                             <label class="form-label">Search Guest</label>
-                            <input type="text" class="form-control text-white border-secondary" 
+                            <input type="text" class="form-control border-secondary" 
                                    placeholder="Enter guest name" id="guestSearch">
                         </div>
                         <div class="col-md-2 mb-3">
@@ -178,7 +178,7 @@
                     </div>
                     
                     <div class="table-responsive overflow-x-auto" style="max-height: 500px;">
-                        <table class="table table-dark table-striped table-hover" id="bookingsTable">
+                        <table class="table table-striped table-hover" id="bookingsTable">
                             <thead>
                                 <tr>
                                     <th>Booking ID</th>
@@ -297,7 +297,7 @@
     <!-- New Booking Modal -->
     <div class="modal fade" id="newBookingModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
-            <div class="modal-content text-white">
+            <div class="modal-content ">
                 <div class="modal-header">
                     <h5 class="modal-title">
                         <i class="bi bi-calendar-plus"></i> New Booking
@@ -310,27 +310,27 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Guest Name</label>
-                                <input type="text" name="firstName" class="form-control text-white border-secondary" required>
+                                <input type="text" name="firstName" class="form-control  border-secondary" required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Last Name</label>
-                                <input type="text" name="lastName" class="form-control text-white border-secondary" required>
+                                <input type="text" name="lastName" class="form-control  border-secondary" required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Phone Number</label>
-                                <input type="tel" name="phone" class="form-control text-white border-secondary" required>
+                                <input type="tel" name="phone" class="form-control  border-secondary" required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Email</label>
-                                <input type="email" name="email" class="form-control text-white border-secondary">
+                                <input type="email" name="email" class="form-control  border-secondary">
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">ID/Passport Number</label>
-                                <input type="text" name="idNumber" class="form-control text-white border-secondary" required>
+                                <input type="text" name="idNumber" class="form-control  border-secondary" required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Room</label>
-                                <select name="roomId" class="form-select text-white border-secondary" required>
+                                <select name="roomId" class="form-select  border-secondary" required>
                                     <option value="">Select Room</option>
                                     <% 
                                     List<Map<String, Object>> availableRooms = (List<Map<String, Object>>) request.getAttribute("availableRooms");
@@ -349,19 +349,19 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Check-in Date</label>
-                                <input type="date" name="checkInDate" class="form-control text-white border-secondary" required>
+                                <input type="date" name="checkInDate" class="form-control  border-secondary" required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Check-out Date</label>
-                                <input type="date" name="checkOutDate" class="form-control text-white border-secondary" required>
+                                <input type="date" name="checkOutDate" class="form-control  border-secondary" required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Adults</label>
-                                <input type="number" name="adults" class="form-control text-white border-secondary" value="1" min="1" required>
+                                <input type="number" name="adults" class="form-control  border-secondary" value="1" min="1" required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Children</label>
-                                <input type="number" name="children" class="form-control text-white border-secondary" value="0" min="0">
+                                <input type="number" name="children" class="form-control  border-secondary" value="0" min="0">
                             </div>
                         </div>
                     </form>
@@ -377,7 +377,7 @@
     <!-- Booking Details Modal -->
     <div class="modal fade" id="bookingDetailsModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
-            <div class="modal-content text-white">
+            <div class="modal-content ">
                 <div class="modal-header">
                     <h5 class="modal-title">
                         <i class="bi bi-calendar-check"></i> Booking Details

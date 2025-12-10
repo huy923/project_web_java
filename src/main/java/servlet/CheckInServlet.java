@@ -1,7 +1,6 @@
 package servlet;
 
 import dao.BookingDao;
-import model.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,8 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 
 @WebServlet(name = "CheckInServlet", urlPatterns = { "/check-in" })
 public class CheckInServlet extends HttpServlet {
@@ -22,6 +22,15 @@ public class CheckInServlet extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/login");
             return;
         }
+
+        try {
+            BookingDao dao = new BookingDao();
+            List<Map<String, Object>> bookings = dao.getAllBookings();
+            req.setAttribute("bookings", bookings);
+        } catch (SQLException e) {
+            req.setAttribute("errorMessage", "Error loading bookings: " + e.getMessage());
+        }
+
         req.getRequestDispatcher("/sections/check-in.jsp").forward(req, resp);
     }
 
@@ -34,70 +43,39 @@ public class CheckInServlet extends HttpServlet {
         }
 
         try {
-            String firstName = req.getParameter("firstName");
-            String lastName = req.getParameter("lastName");
-            String email = req.getParameter("email");
-            String phone = req.getParameter("phone");
-            String idNumber = req.getParameter("idNumber");
+            String bookingIdStr = req.getParameter("bookingId");
+            String checkInTimeStr = req.getParameter("checkInTime");
 
             // Validate required parameters
-            if (firstName == null || firstName.trim().isEmpty() ||
-                    lastName == null || lastName.trim().isEmpty() ||
-                    phone == null || phone.trim().isEmpty() ||
-                    idNumber == null || idNumber.trim().isEmpty()) {
-                req.setAttribute("errorMessage", "All fields are required");
+            if (bookingIdStr == null || bookingIdStr.trim().isEmpty() ||
+                    checkInTimeStr == null || checkInTimeStr.trim().isEmpty()) {
+                req.setAttribute("errorMessage", "Booking ID and Check-in Time are required");
                 doGet(req, resp);
                 return;
             }
 
-            String roomIdStr = req.getParameter("roomId");
-            String checkInDateStr = req.getParameter("checkInDate");
-            String checkOutDateStr = req.getParameter("checkOutDate");
-            String adultsStr = req.getParameter("adults");
-            String childrenStr = req.getParameter("children");
-            String totalAmountStr = req.getParameter("totalAmount");
-
-            // Validate numeric parameters
-            if (roomIdStr == null || roomIdStr.trim().isEmpty() ||
-                    checkInDateStr == null || checkInDateStr.trim().isEmpty() ||
-                    checkOutDateStr == null || checkOutDateStr.trim().isEmpty() ||
-                    adultsStr == null || adultsStr.trim().isEmpty() ||
-                    totalAmountStr == null || totalAmountStr.trim().isEmpty()) {
-                req.setAttribute("errorMessage", "Please fill in all required fields");
-                doGet(req, resp);
-                return;
-            }
-
-            int roomId = Integer.parseInt(roomIdStr);
-            Date checkInDate = Date.valueOf(checkInDateStr);
-            Date checkOutDate = Date.valueOf(checkOutDateStr);
-            int adults = Integer.parseInt(adultsStr);
-            int children = Integer.parseInt(childrenStr == null || childrenStr.isEmpty() ? "0" : childrenStr);
-            double totalAmount = Double.parseDouble(totalAmountStr);
-
-            User user = (User) session.getAttribute("user");
+            int bookingId = Integer.parseInt(bookingIdStr);
             BookingDao dao = new BookingDao();
 
-            // Check if guest exists by phone
-            int guestId = dao.getGuestId(phone);
-            if (guestId == -1) {
-                // Create new guest
-                dao.createGuest(firstName, lastName, email == null ? "" : email, phone, idNumber);
-                guestId = dao.getGuestId(phone);
-            }
-
-            // Create booking
-            boolean success = dao.createBooking(guestId, roomId, checkInDate, checkOutDate,adults, children, totalAmount, user.getUserId());
+            // Update booking status to checked_in
+            boolean success = dao.updateBookingStatus(bookingId, "checked_in");
 
             if (success) {
-                // Update room status to occupied
-                dao.updateRoomStatus(roomId, "occupied");
-                resp.sendRedirect(req.getContextPath() + "/dashboard?success=checkin");
+                // Get booking details to update room status
+                Map<String, Object> booking = dao.getBookingById(bookingId);
+                if (booking != null) {
+                    int roomId = (int) booking.get("room_id");
+                    dao.updateRoomStatus(roomId, "occupied");
+                }
+
+                req.setAttribute("successMessage", "Check-in completed successfully!");
             } else {
-                resp.sendRedirect(req.getContextPath() + "/dashboard?error=checkin");
+                req.setAttribute("errorMessage", "Failed to complete check-in");
             }
-        } catch (IllegalArgumentException e) {
-            req.setAttribute("errorMessage", "Invalid date format. Please use YYYY-MM-DD");
+
+            doGet(req, resp);
+        } catch (NumberFormatException e) {
+            req.setAttribute("errorMessage", "Invalid booking ID format");
             doGet(req, resp);
         } catch (SQLException e) {
             req.setAttribute("errorMessage", "Database error: " + e.getMessage());

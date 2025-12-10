@@ -101,45 +101,57 @@
                                                     <form action="<%= request.getContextPath() %>/check-out"
                                                         method="post" class="row g-3">
                                                         <input type="hidden" name="action" value="checkout">
-                                                        <div class="col-md-3">
-                                                            <label class="form-label">Booking ID</label>
-                                                            <input type="number" name="bookingId" class="form-control"
-                                                                placeholder="Enter booking ID" required>
+                                                        <div class="col-md-4">
+                                                            <label class="form-label">Select Booking</label>
+                                                            <select name="bookingId" id="bookingSelect" class="form-control" required onchange="updateCheckoutInfo()">
+                                                                <option value="">-- Select a booking --</option>
+                                                                <% List<Map<String, Object>> bookings = (List<Map<String, Object>>) request.getAttribute("bookings");
+                                                                        if (bookings != null && !bookings.isEmpty()) {
+                                                                        for (Map<String, Object> booking : bookings) {
+                                                                            String bookingId = String.valueOf(booking.get("booking_id"));
+                                                                            String guestName = booking.get("first_name") + " " + booking.get("last_name");
+                                                                            String roomNumber = (String) booking.get("room_number");
+                                                                            String totalAmount = booking.get("total_amount") != null ? booking.get("total_amount").toString() :
+                                                                            "0";
+                                                                            %>
+                                                                            <option value="<%= bookingId %>" data-guest="<%= guestName %>" data-room="<%= roomNumber %>"
+                                                                                data-amount="<%= totalAmount %>">
+                                                                                Booking #<%= bookingId %> - <%= guestName %> - Room <%= roomNumber %>
+                                                                            </option>
+                                                                            <% } } %>
+                                                            </select>
                                                         </div>
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-4">
                                                             <label class="form-label">Guest Name</label>
-                                                            <input type="text" name="guestName" class="form-control"
-                                                                placeholder="Guest name" required>
+                                                            <input type="text" name="guestName" id="guestName" class="form-control" placeholder="Auto-populated" readonly>
                                                         </div>
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-4">
                                                             <label class="form-label">Room Number</label>
-                                                            <input type="text" name="roomNumber" class="form-control"
-                                                                placeholder="Room number" required>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <label class="form-label">&nbsp;</label>
-                                                            <button class="btn-modern btn-primary w-100" type="submit">
-                                                                <i class="bi bi-check"></i> Check-out
-                                                            </button>
+                                                            <input type="text" name="roomNumber" id="roomNumber" class="form-control" placeholder="Auto-populated" readonly>
                                                         </div>
                                                         <div class="col-md-3">
                                                             <label class="form-label">Check-out Time</label>
-                                                            <input type="time" name="checkOutTime" class="form-control">
+                                                            <input type="time" name="checkOutTime" id="checkOutTime" class="form-control" required>
                                                         </div>
                                                         <div class="col-md-3">
                                                             <label class="form-label">Total Amount</label>
-                                                            <input type="number" name="totalAmount" class="form-control"
-                                                                step="0.01" placeholder="0.00">
+                                                            <input type="number" name="totalAmount" id="totalAmount" class="form-control" step="0.01" placeholder="0.00" readonly>
                                                         </div>
                                                         <div class="col-md-3">
                                                             <label class="form-label">Payment Method</label>
-                                                            <select name="paymentMethod" class="form-select">
+                                                            <select name="paymentMethod" class="form-select" required>
                                                                 <option value="">Select method</option>
                                                                 <option value="cash">Cash</option>
                                                                 <option value="card">Card</option>
                                                                 <option value="bank_transfer">Bank Transfer</option>
                                                                 <option value="online">Online</option>
                                                             </select>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label class="form-label">&nbsp;</label>
+                                                            <button class="btn-modern btn-primary w-100" type="submit">
+                                                                <i class="bi bi-check"></i> Check-out
+                                                            </button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -205,6 +217,40 @@
                 </div>
 
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+                <script>
+                    // Set current time on page load
+                    function setCurrentTime() {
+                        const now = new Date();
+                        const hours = String(now.getHours()).padStart(2, '0');
+                        const minutes = String(now.getMinutes()).padStart(2, '0');
+                        document.getElementById('checkOutTime').value = hours + ':' + minutes;
+                    }
+
+                    // Auto-populate guest name, room number, and total amount from selected booking
+                    function updateCheckoutInfo() {
+                        const select = document.getElementById('bookingSelect');
+                        const selectedOption = select.options[select.selectedIndex];
+
+                        if (selectedOption.value) {
+                            const guestName = selectedOption.getAttribute('data-guest');
+                            const roomNumber = selectedOption.getAttribute('data-room');
+                            const totalAmount = selectedOption.getAttribute('data-amount');
+
+                            document.getElementById('guestName').value = guestName || '';
+                            document.getElementById('roomNumber').value = roomNumber || '';
+                            document.getElementById('totalAmount').value = totalAmount || '0';
+                        } else {
+                            document.getElementById('guestName').value = '';
+                            document.getElementById('roomNumber').value = '';
+                            document.getElementById('totalAmount').value = '';
+                        }
+                    }
+
+                    // Initialize on page load
+                    document.addEventListener('DOMContentLoaded', function () {
+                        setCurrentTime();
+                    });
+                </script>
 
                 </body>
 

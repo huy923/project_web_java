@@ -44,7 +44,7 @@
                 <% List<Map<String, Object>> services = (List<Map<String, Object>>) request.getAttribute("services");
                         int totalServices = services != null ? services.size() : 0;
                         double totalRevenue = 0;
-                        java.util.Set<String> categories = new java.util.HashSet<>();
+                        java.util.Set<String> categories = new java.util.HashSet<String>();
                                 if (services != null) {
                                 for (Map<String, Object> service : services) {
                                     Double price = Double.parseDouble(service.get("price").toString());
@@ -55,26 +55,26 @@
                                     %>
                 <div class="row mb-4">
                     <div class="col-lg-4 col-md-6 mb-3">
-                        <div class="stats-card">
+                        <div class="stat-card">
                             <div class="stat-number text-success">
                                 <%= totalServices %>
                             </div>
-                            <div class="stats-label"><i class="bi bi-check-circle"></i> Active Services</div>
+                            <div class="stat-label"><i class="bi bi-check-circle"></i> Active Services</div>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-6 mb-3">
-                        <div class="stats-card">
+                        <div class="stat-card">
                             <div class="stat-number text-info">
                                 <%= categories.size() %>
                             </div>
-                            <div class="stats-label"><i class="bi bi-bar-chart"></i> Total Categories</div>
+                            <div class="stat-label"><i class="bi bi-bar-chart"></i> Total Categories</div>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-6 mb-3">
-                        <div class="stats-card">
+                        <div class="stat-card">
                             <div class="stat-number text-warning">$<%= String.format("%.2f", totalRevenue) %>
                             </div>
-                            <div class="stats-label"><i class="bi bi-coin"></i> Total Revenue</div>
+                            <div class="stat-label"><i class="bi bi-coin"></i> Total Revenue</div>
                         </div>
                     </div>
                 </div>
@@ -112,7 +112,7 @@
                                 <textarea name="description" class="form-control" rows="3" placeholder="Describe the service"></textarea>
                             </div>
                             <div class="col-12">
-                                <button type="submit" class="btn-hotel">
+                                <button type="submit" class="btn btn-primary">
                                     <i class="bi bi-plus"></i> Add Service
                                 </button>
                             </div>
@@ -126,7 +126,7 @@
                         <i class="bi bi-table"></i> All Services
                     </h5>
                     <div class="table-responsive">
-                        <table class="table table-dark table-striped">
+                        <table class="table table-light table-striped">
                             <thead>
                                 <tr>
                                     <th><i class="bi bi-hash"></i> ID</th>

@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 
 @WebServlet(name = "CheckOutServlet", urlPatterns = { "/check-out" })
 public class CheckOutServlet extends HttpServlet {
@@ -20,6 +22,15 @@ public class CheckOutServlet extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/login");
             return;
         }
+
+        try {
+            BookingDao dao = new BookingDao();
+            List<Map<String, Object>> bookings = dao.getAllBookings();
+            req.setAttribute("bookings", bookings);
+        } catch (SQLException e) {
+            req.setAttribute("errorMessage", "Error loading bookings: " + e.getMessage());
+        }
+
         req.getRequestDispatcher("/sections/check-out.jsp").forward(req, resp);
     }
 
@@ -33,9 +44,14 @@ public class CheckOutServlet extends HttpServlet {
 
         try {
             String bookingIdStr = req.getParameter("bookingId");
+            String checkOutTimeStr = req.getParameter("checkOutTime");
+            String paymentMethod = req.getParameter("paymentMethod");
 
-            if (bookingIdStr == null || bookingIdStr.trim().isEmpty()) {
-                req.setAttribute("errorMessage", "Booking ID is required");
+            // Validate required parameters
+            if (bookingIdStr == null || bookingIdStr.trim().isEmpty() ||
+                    checkOutTimeStr == null || checkOutTimeStr.trim().isEmpty() ||
+                    paymentMethod == null || paymentMethod.trim().isEmpty()) {
+                req.setAttribute("errorMessage", "Booking ID, Check-out Time, and Payment Method are required");
                 doGet(req, resp);
                 return;
             }
@@ -46,16 +62,18 @@ public class CheckOutServlet extends HttpServlet {
             // Get room ID for this booking
             int roomId = dao.getRoomIdByBooking(bookingId);
 
-            // Checkout booking
-            boolean success = dao.checkoutBooking(bookingId);
+            // Update booking status to checked_out
+            boolean success = dao.updateBookingStatus(bookingId, "checked_out");
 
             if (success && roomId != -1) {
                 // Update room status to available
                 dao.updateRoomStatus(roomId, "available");
-                resp.sendRedirect(req.getContextPath() + "/dashboard?success=checkout");
+                req.setAttribute("successMessage", "Check-out completed successfully!");
             } else {
-                resp.sendRedirect(req.getContextPath() + "/dashboard?error=checkout");
+                req.setAttribute("errorMessage", "Failed to complete check-out");
             }
+
+            doGet(req, resp);
         } catch (NumberFormatException e) {
             req.setAttribute("errorMessage", "Invalid booking ID format");
             doGet(req, resp);

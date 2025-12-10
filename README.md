@@ -281,11 +281,16 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 **Huy**
 
 - GitHub: [@huy923](https://github.com/huy923)
-- Project: [Hotel Management System](https://github.com/huy923/project_web_java)
 
+**Hiep**
+
+- GitHub: [@hiep](https://github.com/hiep)
+
+**Son**
+
+- GitHub: [@son](https://github.com/son)
 
 ---
-
 ## 🙏 Acknowledgments
 
 - Built with ❤️ using Java, JSP, and MySQL

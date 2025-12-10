@@ -149,7 +149,7 @@ public class ReviewDao {
     }
 
     public boolean toggleReviewVisibility(int reviewId) throws SQLException {
-        String sql = "UPDATE reviews SET is_public = !is_public WHERE review_id = ?";
+        String sql = "UPDATE reviews SET is_public = NOT is_public WHERE review_id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {

@@ -100,30 +100,34 @@
                                                     <form action="<%= request.getContextPath() %>/check-in"
                                                         method="post" class="row g-3">
                                                         <input type="hidden" name="action" value="checkin">
-                                                        <div class="col-md-3">
-                                                            <label class="form-label">Booking ID</label>
-                                                            <input type="number" name="bookingId" class="form-control"
-                                                                placeholder="Enter booking ID" required>
+                                                        <div class="col-md-4">
+                                                            <label class="form-label">Select Booking</label>
+                                                            <select name="bookingId" id="bookingSelect" class="form-control" required onchange="updateGuestInfo()">
+                                                                <option value="">-- Select a booking --</option>
+                                                                <% List<Map<String, Object>> bookings = (List<Map<String, Object>>) request.getAttribute("bookings");
+                                                                        if (bookings != null && !bookings.isEmpty()) {
+                                                                        for (Map<String, Object> booking : bookings) {
+                                                                            String bookingId = String.valueOf(booking.get("booking_id"));
+                                                                            String guestName = booking.get("first_name") + " " + booking.get("last_name");
+                                                                            String roomNumber = (String) booking.get("room_number");
+                                                                            %>
+                                                                            <option value="<%= bookingId %>" data-guest="<%= guestName %>" data-room="<%= roomNumber %>">
+                                                                                Booking #<%= bookingId %> - <%= guestName %> - Room <%= roomNumber %>
+                                                                            </option>
+                                                                            <% } } %>
+                                                            </select>
                                                         </div>
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-4">
                                                             <label class="form-label">Guest Name</label>
-                                                            <input type="text" name="guestName" class="form-control"
-                                                                placeholder="Guest name" required>
+                                                            <input type="text" name="guestName" id="guestName" class="form-control" placeholder="Auto-populated" readonly>
                                                         </div>
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-4">
                                                             <label class="form-label">Room Number</label>
-                                                            <input type="text" name="roomNumber" class="form-control"
-                                                                placeholder="Room number" required>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <label class="form-label">&nbsp;</label>
-                                                            <button class="btn-modern btn-primary w-100" type="submit">
-                                                                <i class="bi bi-check"></i> Check-in
-                                                            </button>
+                                                            <input type="text" name="roomNumber" id="roomNumber" class="form-control" placeholder="Auto-populated" readonly>
                                                         </div>
                                                         <div class="col-md-3">
                                                             <label class="form-label">Check-in Time</label>
-                                                            <input type="time" name="checkInTime" class="form-control">
+                                                            <input type="time" name="checkInTime" id="checkInTime" class="form-control" required>
                                                         </div>
                                                         <div class="col-md-3">
                                                             <label class="form-label">Number of Guests</label>
@@ -132,8 +136,13 @@
                                                         </div>
                                                         <div class="col-md-3">
                                                             <label class="form-label">Special Requests</label>
-                                                            <input type="text" name="specialRequests"
-                                                                class="form-control" placeholder="Any special requests">
+                                                            <textarea name="specialRequests" class="form-control" rows="1" placeholder="Any special requests"></textarea>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <label class="form-label">&nbsp;</label>
+                                                                <button class="btn-modern btn-primary w-100" type="submit">
+                                                                    <i class="bi bi-check"></i> Check-in
+                                                                </button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -198,6 +207,37 @@
                 </div>
 
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+                <script>
+                    // Set current time on page load
+                    function setCurrentTime() {
+                        const now = new Date();
+                        const hours = String(now.getHours()).padStart(2, '0');
+                        const minutes = String(now.getMinutes()).padStart(2, '0');
+                        document.getElementById('checkInTime').value = hours + ':' + minutes;
+                    }
+
+                    // Auto-populate guest name and room number from selected booking
+                    function updateGuestInfo() {
+                        const select = document.getElementById('bookingSelect');
+                        const selectedOption = select.options[select.selectedIndex];
+
+                        if (selectedOption.value) {
+                            const guestName = selectedOption.getAttribute('data-guest');
+                            const roomNumber = selectedOption.getAttribute('data-room');
+
+                            document.getElementById('guestName').value = guestName || '';
+                            document.getElementById('roomNumber').value = roomNumber || '';
+                        } else {
+                            document.getElementById('guestName').value = '';
+                            document.getElementById('roomNumber').value = '';
+                        }
+                    }
+
+                    // Initialize on page load
+                    document.addEventListener('DOMContentLoaded', function () {
+                        setCurrentTime();
+                    });
+                </script>
 
                 </body>
 

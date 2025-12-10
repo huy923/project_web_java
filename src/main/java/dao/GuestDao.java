@@ -78,14 +78,22 @@ public class GuestDao {
         try {
             conn.setAutoCommit(false);
 
-            // First, delete all bookings for this guest
+            // First, delete all payments for bookings of this guest
+            String deletePaymentsSql = "DELETE FROM payments WHERE booking_id IN " +
+                    "(SELECT booking_id FROM bookings WHERE guest_id = ?)";
+            try (PreparedStatement ps = conn.prepareStatement(deletePaymentsSql)) {
+                ps.setInt(1, guestId);
+                ps.executeUpdate();
+            }
+
+            // Then delete all bookings for this guest
             String deleteBookingsSql = "DELETE FROM bookings WHERE guest_id = ?";
             try (PreparedStatement ps = conn.prepareStatement(deleteBookingsSql)) {
                 ps.setInt(1, guestId);
                 ps.executeUpdate();
             }
 
-            // Then delete the guest
+            // Finally delete the guest
             String deleteGuestSql = "DELETE FROM guests WHERE guest_id = ?";
             try (PreparedStatement ps = conn.prepareStatement(deleteGuestSql)) {
                 ps.setInt(1, guestId);
@@ -94,11 +102,19 @@ public class GuestDao {
                 return result == 1;
             }
         } catch (SQLException e) {
-            conn.rollback();
+            try {
+                conn.rollback();
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
             throw e;
         } finally {
-            conn.setAutoCommit(true);
-            conn.close();
+            try {
+                conn.setAutoCommit(true);
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
     
@@ -117,8 +133,7 @@ public class GuestDao {
                     guest.put("phone", rs.getString("phone"));
                     guest.put("id_number", rs.getString("id_number"));
                     guest.put("nationality", rs.getString("nationality"));
-                    guest.put("address", rs.getString("address"));
-                    guest.put("date_of_birth", rs.getDate("date_of_birth"));
+                    guest.put("created_at", rs.getTimestamp("created_at"));
                     return guest;
                 }
             }
