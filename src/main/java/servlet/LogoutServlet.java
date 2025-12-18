@@ -1,5 +1,7 @@
 package servlet;
 
+import util.CookieUtil;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,6 +14,10 @@ import java.io.IOException;
 public class LogoutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String token = CookieUtil.getAuthToken(req);
+        CookieUtil.invalidateToken(token);
+        CookieUtil.clearAuthCookie(resp);
+
         HttpSession session = req.getSession(false);
         if (session != null) {
             session.invalidate();

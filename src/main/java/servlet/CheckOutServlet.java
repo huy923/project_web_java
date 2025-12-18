@@ -4,22 +4,18 @@ import dao.BookingDao;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
 @WebServlet(name = "CheckOutServlet", urlPatterns = { "/check-out" })
-public class CheckOutServlet extends HttpServlet {
+public class CheckOutServlet extends BaseServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession(false);
-        if (session == null || session.getAttribute("user") == null) {
-            resp.sendRedirect(req.getContextPath() + "/login");
+        if (!checkAuthentication(req, resp)) {
             return;
         }
 
@@ -36,9 +32,7 @@ public class CheckOutServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession(false);
-        if (session == null || session.getAttribute("user") == null) {
-            resp.sendRedirect(req.getContextPath() + "/login");
+        if (!checkAuthentication(req, resp)) {
             return;
         }
 
@@ -64,7 +58,7 @@ public class CheckOutServlet extends HttpServlet {
 
             // Update booking status to checked_out
             boolean success = dao.updateBookingStatus(bookingId, "checked_out");
-
+            
             if (success && roomId != -1) {
                 // Update room status to available
                 dao.updateRoomStatus(roomId, "available");

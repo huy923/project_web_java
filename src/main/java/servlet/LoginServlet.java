@@ -2,6 +2,7 @@ package servlet;
 
 import dao.UserDao;
 import model.User;
+import util.CookieUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,6 +28,9 @@ public class LoginServlet extends HttpServlet {
         try {
             User user = userDao.findByUsername(username);
             if (user != null && user.isActive() && userDao.validatePassword(password, user.getPasswordHash())) {
+                String token = CookieUtil.generateToken(user.getUserId());
+                CookieUtil.setAuthCookie(resp, token, user.getUserId());
+
                 HttpSession session = req.getSession(true);
                 session.setAttribute("user", user);
                 resp.sendRedirect(req.getContextPath() + "/dashboard");

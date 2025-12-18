@@ -64,6 +64,29 @@ public class UserDao {
         return plaintext.equals(hashed);
     }
 
+    public User findByUserId(int userId) throws SQLException {
+        String sql = "SELECT user_id, username, password, email, full_name, phone, role, is_active FROM users WHERE user_id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    User u = new User();
+                    u.setUserId(rs.getInt("user_id"));
+                    u.setUsername(rs.getString("username"));
+                    u.setPasswordHash(rs.getString("password"));
+                    u.setEmail(rs.getString("email"));
+                    u.setFullName(rs.getString("full_name"));
+                    u.setPhone(rs.getString("phone"));
+                    u.setRole(rs.getString("role"));
+                    u.setActive(rs.getBoolean("is_active"));
+                    return u;
+                }
+            }
+        }
+        return null;
+    }
+
     public boolean createUser(String username, String password, String email, String fullName, String phone,
             String role) throws SQLException {
         String sql = "INSERT INTO users (username, password, email, full_name, phone, role, is_active) VALUES (?,?,?,?,?,?,TRUE)";

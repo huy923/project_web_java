@@ -5,9 +5,9 @@ import dao.RoomDao;
 import dao.GuestDao;
 import model.User;
 
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @WebServlet(name = "BookingsServlet", urlPatterns = { "/bookings" })
-public class BookingsServlet extends HttpServlet {
+public class BookingsServlet extends BaseServlet {
 
     private BookingDao bookingDao = new BookingDao();
     private RoomDao roomDao = new RoomDao();
@@ -26,9 +26,7 @@ public class BookingsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession(false);
-        if (session == null || session.getAttribute("user") == null) {
-            resp.sendRedirect(req.getContextPath() + "/login");
+        if (!checkAuthentication(req, resp)) {
             return;
         }
 
@@ -59,13 +57,12 @@ public class BookingsServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession(false);
-        if (session == null || session.getAttribute("user") == null) {
-            resp.sendRedirect(req.getContextPath() + "/login");
+        if (!checkAuthentication(req, resp)) {
             return;
         }
 
         String action = req.getParameter("action");
+        HttpSession session = req.getSession(false);
         User user = (User) session.getAttribute("user");
 
         try {

@@ -458,7 +458,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <h6>Guest Information</h6>
-                            <table class="table table-dark table-sm">
+                            <table class="table table-sm">
                                 <tr><td><strong>Booking ID:</strong></td><td>BK${bookingId.padStart(3, '0')}</td></tr>
                                 <tr><td><strong>Guest Name:</strong></td><td>John Doe</td></tr>
                                 <tr><td><strong>Phone:</strong></td><td>0123456789</td></tr>
@@ -467,7 +467,7 @@
                         </div>
                         <div class="col-md-6">
                             <h6>Room Information</h6>
-                            <table class="table table-dark table-sm">
+                            <table class="table table-sm">
                                 <tr><td><strong>Room:</strong></td><td>102</td></tr>
                                 <tr><td><strong>Type:</strong></td><td>Standard</td></tr>
                                 <tr><td><strong>Check-in:</strong></td><td>2024-01-15</td></tr>

@@ -118,7 +118,7 @@
                         <i class="bi bi-table"></i> Payment List
                     </h5>
                     <div class="table-responsive">
-                        <table class="table table-dark table-striped">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th><i class="bi bi-hash"></i> Payment ID</th>

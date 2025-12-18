@@ -185,7 +185,7 @@
                                     required>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">Email</label>
+                                    <label class="form-label">Emhttps://img.shields.io/badge/Hotel-Management%20System-blue?style=for-the-badge&logo=hotelil</label>
                                     <input type="email" name="email" class="form-control bg-dark text-white border-secondary" placeholder="Enter email">
                             </div>
                             <div class="col-md-6 mb-3">
@@ -563,18 +563,18 @@
                             <!-- Room Details Modal -->
                             <div class="modal fade" id="roomDetailsModal" tabindex="-1">
                                 <div class="modal-dialog">
-                                    <div class="modal-content bg-dark text-white">
+                                    <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-titl">
+                                            <h5 class="modal-title">
                                                 <i class="bi bi-door-open"></i> Thông tin phòng
                                             </h5>
-                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                         </div>
-                                        <div class="modal-body">
-                                            <div class="row">
+                                        <form action="<%= request.getContextPath() %>/check-out" class="modal-body">
+                                            <div  class="row">
                                                 <div class="col-md-6">
                                                     <h6>Thông tin phòng</h6>
-                                                    <table class="table table-dark table-sm">
+                                                    <table class="table table-sm">
                                                         <tr>
                                                             <td><strong>Số phòng:</strong></td>
                                                             <td id="roomNumber"></td>
@@ -595,7 +595,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <h6>Thông tin khách</h6>
-                                                    <table class="table table-dark table-sm">
+                                                    <table class="table table-sm">
                                                         <tr>
                                                             <td><strong>Họ và tên:</strong></td>
                                                             <td id="guestName"></td>
@@ -615,9 +615,10 @@
                                                     </table>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </form>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                            <button type="submit" class="btn btn-primary" > Thanh toán</button>
+                                            <button type="button" class="btn btn-success" data-bs-dismiss="modal">Đóng</button>
                 </div>
             </div>
         </div>
@@ -769,7 +770,6 @@
                 console.error('Container not found when setting HTML');
             }
         }
-        
         function getStatusText(status) {
             switch(status) {
                 case 'available': return 'Available';
@@ -865,10 +865,31 @@
             alert('Check-in functionality - Connect to backend!');
         }
 
-        function checkOut() {
-            alert('Check-out functionality - Connect to backend!');
+        function checkOut(id, time, pay) {
+            // Validate user inputs
+            if (!id || !time || !pay) {
+                alert('Please provide all required information');
+                return;
+            }
+
+            // Sanitize user inputs
+            id = sanitizeInput(id);
+            time = sanitizeInput(time);
+            pay = sanitizeInput(pay);
+
+            // Connect to backend
+            let con = "request.getContextPath() />check-out";
+
+            try {
+                // Make API request to backend
+                let response = makeAPIRequest(con, id, time, pay);
+                console.log(response);
+            } catch (error) {
+                console.error('Error occurred:', error);
+            }
         }
 
+// Room details functionality
         function makeBooking() {
             alert('Booking functionality - Connect to backend!');
         }
