@@ -5,6 +5,7 @@
 <%@ page import="java.text.NumberFormat" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.util.Locale" %>
+<%@ page import="util.PermissionUtil" %>
     <jsp:include page="/includes/header.jsp" />
     <div class="px-2 main-container">
         <div class="row">
@@ -21,7 +22,7 @@
                     <% if (successMessage !=null) { %>
                     <div class="alert-modern alert-success">
                         <i class="bi bi-check-circle"></i>
-                        <span><strong>Success!</strong>
+                        <span><strong>Thành công!</strong>
                             <%= successMessage %>
                         </span>
                         </div>
@@ -29,7 +30,7 @@
                             <% if (errorMessage !=null) { %>
                     <div class="alert-modern alert-danger">
                         <i class="bi bi-exclamation-circle"></i>
-                        <span><strong>Error!</strong>
+                        <span><strong>Lỗi!</strong>
                             <%= errorMessage %>
                         </span>
                         </div>
@@ -38,9 +39,9 @@
                 <!-- Header -->
                 <div class="page-header">
                     <div class="page-title">
-                        <i class="bi bi-star"></i> Guest Reviews
+                        <i class="bi bi-star"></i> Đánh giá của khách
                     </div>
-                    <div class="page-subtitle">Manage and view guest reviews and ratings</div>
+                    <div class="page-subtitle">Quản lý và xem đánh giá/xếp hạng của khách</div>
                 </div>
 
                 <!-- Statistics -->
@@ -64,7 +65,7 @@
                             <div class="stat-number text-warning">
                                 <%= String.format("%.1f", avgRating) %>
                             </div>
-                            <div class="stats-label"><i class="bi bi-star-fill"></i> Average Rating</div>
+                            <div class="stats-label"><i class="bi bi-star-fill"></i> Điểm trung bình</div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 mb-3">
@@ -72,7 +73,7 @@
                             <div class="stat-number text-success">
                                 <%= totalReviews %>
                             </div>
-                            <div class="stats-label"><i class="bi bi-chat-square"></i> Total Reviews</div>
+                            <div class="stats-label"><i class="bi bi-chat-square"></i> Tổng đánh giá</div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 mb-3">
@@ -80,7 +81,7 @@
                             <div class="stat-number text-info">
                                 <%= publicReviews %>
                             </div>
-                            <div class="stats-label"><i class="bi bi-check-circle"></i> Public Reviews</div>
+                            <div class="stats-label"><i class="bi bi-check-circle"></i> Đánh giá công khai</div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 mb-3">
@@ -88,7 +89,7 @@
                             <div class="stat-number text-danger">
                                 <%= hiddenReviews %>
                             </div>
-                            <div class="stats-label"><i class="bi bi-eye-slash"></i> Hidden Reviews</div>
+                            <div class="stats-label"><i class="bi bi-eye-slash"></i> Đánh giá ẩn</div>
                         </div>
                     </div>
                 </div>
@@ -96,41 +97,41 @@
                 <!-- Filter Section -->
                 <div class="card-modern mb-4">
                     <h5 class="mb-3">
-                        <i class="bi bi-funnel"></i> Filter Reviews
+                        <i class="bi bi-funnel"></i> Lọc đánh giá
                     </h5>
                     <div class="row g-3">
                         <div class="col-md-3">
-                            <label class="form-label">Rating</label>
+                            <label class="form-label">Xếp hạng</label>
                             <select class="form-select" id="ratingFilter">
-                                <option value="">All Ratings</option>
-                                <option value="5">5 Stars</option>
-                                <option value="4">4 Stars</option>
-                                <option value="3">3 Stars</option>
-                                <option value="2">2 Stars</option>
-                                <option value="1">1 Star</option>
+                                <option value="">Tất cả</option>
+                                <option value="5">5 sao</option>
+                                <option value="4">4 sao</option>
+                                <option value="3">3 sao</option>
+                                <option value="2">2 sao</option>
+                                <option value="1">1 sao</option>
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label">Status</label>
+                            <label class="form-label">Trạng thái</label>
                             <select class="form-select" id="statusFilter">
-                                <option value="">All</option>
-                                <option value="public">Public</option>
-                                <option value="private">Private</option>
+                                <option value="">Tất cả</option>
+                                <option value="public">Công khai</option>
+                                <option value="private">Riêng tư</option>
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label">Sort By</label>
+                            <label class="form-label">Sắp xếp theo</label>
                             <select class="form-select" id="sortFilter">
-                                <option value="recent">Most Recent</option>
-                                <option value="oldest">Oldest</option>
-                                <option value="highest">Highest Rated</option>
-                                <option value="lowest">Lowest Rated</option>
+                                <option value="recent">Mới nhất</option>
+                                <option value="oldest">Cũ nhất</option>
+                                <option value="highest">Điểm cao nhất</option>
+                                <option value="lowest">Điểm thấp nhất</option>
                             </select>
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">&nbsp;</label>
                             <button class="btn-hotel w-100">
-                                <i class="bi bi-search"></i> Filter
+                                <i class="bi bi-search"></i> Lọc
                             </button>
                         </div>
                     </div>
@@ -139,7 +140,7 @@
                 <!-- Reviews List -->
                 <div class="card-modern">
                     <h5 class="mb-4">
-                        <i class="bi bi-list-check"></i> All Reviews
+                        <i class="bi bi-list-check"></i> Tất cả đánh giá
                     </h5>
                     
                     <% if (reviews !=null && !reviews.isEmpty()) { for (Map<String, Object> review : reviews) {
@@ -151,8 +152,8 @@
                             <div>
                                 <strong>
                                     <%= review.get("guest_name") %>
-                                </strong> - Booking ID: #<%= review.get("booking_id") %>
-                                    <br><small class="text-muted">Posted on <%= review.get("created_at") %></small>
+                                </strong> - Mã đặt phòng: #<%= review.get("booking_id") %>
+                                    <br><small class="text-muted">Đăng lúc <%= review.get("created_at") %></small>
                             </div>
                             <div>
                                 <span class="review-stars">
@@ -171,27 +172,31 @@
                             <%= review.get("comment") %>
                         </p>
                         <div class="mt-3">
-                            <small class="text-muted">Status:
+                            <small class="text-muted">Trạng thái:
                                 <span class="badge <%= (Boolean) review.get(" is_public") ? "bg-success" : "bg-secondary" %>">
-                                    <%= (Boolean) review.get("is_public") ? "Public" : "Private" %>
+                                    <%= (Boolean) review.get("is_public") ? "Công khai" : "Riêng tư" %>
                                 </span>
                             </small>
                             <div class="mt-2">
-                                <form method="post" action="<%= request.getContextPath() %>/reviews" style="display:inline;">
-                                    <input type="hidden" name="action" value="toggleVisibility">
-                                    <input type="hidden" name="reviewId" value="<%= review.get(" review_id") %>">
-                                    <button type="submit" class="btn btn-sm btn-hotel-outline" title="Toggle Visibility">
-                                        <i class="bi <%= (Boolean) review.get(" is_public") ? "bi-eye-slash" : "bi-eye" %>"></i>
-                                        <%= (Boolean) review.get("is_public") ? "Hide" : "Show" %>
-                                    </button>
-                                </form>
-                                <form method="post" action="<%= request.getContextPath() %>/reviews" style="display:inline;">
-                                    <input type="hidden" name="action" value="delete">
-                                    <input type="hidden" name="reviewId" value="<%= review.get(" review_id") %>">
-                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">
-                                        <i class="bi bi-trash"></i> Delete
-                                    </button>
-                                </form>
+                                <% if (PermissionUtil.canEdit(session, "reviews" )) { %>
+                                    <form method="post" action="<%= request.getContextPath() %>/reviews" style="display:inline;">
+                                        <input type="hidden" name="action" value="toggleVisibility">
+                                        <input type="hidden" name="reviewId" value="<%= review.get(" review_id") %>">
+                                        <button type="submit" class="btn btn-sm btn-hotel-outline" title="Chuyển hiển thị">
+                                            <i class="bi <%= (Boolean) review.get(" is_public") ? "bi-eye-slash" : "bi-eye" %>"></i>
+                                            <%= (Boolean) review.get("is_public") ? "Ẩn" : "Hiện" %>
+                                        </button>
+                                        </form>
+                                <% } %>
+                                    <% if (PermissionUtil.canDelete(session, "reviews" )) { %>
+                                    <form method="post" action="<%= request.getContextPath() %>/reviews" style="display:inline;">
+                                        <input type="hidden" name="action" value="delete">
+                                        <input type="hidden" name="reviewId" value="<%= review.get(" review_id") %>">
+                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc chắn không?')">
+                                            <i class="bi bi-trash"></i> Xóa
+                                        </button>
+                                        </form>
+                                <% } %>
                             </div>
                         </div>
                     </div>
@@ -199,7 +204,7 @@
                     <!-- Empty State -->
                     <div class="text-center py-4">
                         <i class="bi bi-inbox display-4 text-muted"></i>
-                        <p class="text-muted mt-2">No reviews available</p>
+                        <p class="text-muted mt-2">Chưa có đánh giá nào</p>
                     </div>
                     <% } %>
                 </div>

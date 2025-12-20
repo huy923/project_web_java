@@ -115,7 +115,11 @@ public class PermissionUtil {
         User user = (User) session.getAttribute("user");
         if (user == null) return false;
 
-        return "admin".equals(user.getRole());
+        if ("admin".equalsIgnoreCase(user.getRole())) {
+            return true;
+        }
+
+        return hasAnyPermission(session, "users.view", "settings.system", "settings.view");
     }
 
     /**
@@ -127,6 +131,10 @@ public class PermissionUtil {
         User user = (User) session.getAttribute("user");
         if (user == null) return false;
 
-        return "manager".equals(user.getRole());
+        if ("manager".equalsIgnoreCase(user.getRole())) {
+            return true;
+        }
+
+        return hasAnyPermission(session, "reports.view", "rooms.edit", "bookings.edit", "payments.edit");
     }
 }

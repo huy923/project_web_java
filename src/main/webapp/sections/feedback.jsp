@@ -2,6 +2,7 @@
     <%@ page contentType="text/html;charset=UTF-8" language="java" %>
         <%@ page import="java.util.List" %>
             <%@ page import="java.util.Map" %>
+                <%@ page import="util.PermissionUtil" %>
                 <jsp:include page="/includes/header.jsp" />
 
                 <div class="px-2 main-container">
@@ -17,7 +18,7 @@
                                 <% if (successMessage !=null) { %>
                                     <div class="alert-modern alert-success">
                                         <i class="bi bi-check-circle"></i>
-                                        <span><strong>Success!</strong>
+                                        <span><strong>Thành công!</strong>
                                             <%= successMessage %>
                                         </span>
                                     </div>
@@ -25,7 +26,7 @@
                                         <% if (errorMessage !=null) { %>
                                             <div class="alert-modern alert-danger">
                                                 <i class="bi bi-exclamation-circle"></i>
-                                                <span><strong>Error!</strong>
+                                                <span><strong>Lỗi!</strong>
                                                     <%= errorMessage %>
                                                 </span>
                                             </div>
@@ -34,9 +35,9 @@
                                                 <!-- Header -->
                                                 <div class="page-header">
                                                     <div class="page-title">
-                                                        <i class="bi bi-chat-dots"></i> Guest Feedback
+                                                        <i class="bi bi-chat-dots"></i> Phản hồi của khách
                                                     </div>
-                                                    <div class="page-subtitle">Manage and respond to guest feedback
+                                                    <div class="page-subtitle">Quản lý và phản hồi ý kiến của khách
                                                     </div>
                                                 </div>
 
@@ -52,7 +53,7 @@
                                                                     <%= totalFeedbacks %>
                                                         </div>
                                                         <div class="stat-label">
-                                                            <i class="bi bi-chat-dots"></i> Total Feedback
+                                                            <i class="bi bi-chat-dots"></i> Tổng phản hồi
                                                         </div>
                                                     </div>
                                                     <div class="stat-card">
@@ -68,7 +69,7 @@
                                                                 <%= positiveFeedbacks %>
                                                         </div>
                                                         <div class="stat-label">
-                                                            <i class="bi bi-hand-thumbs-up"></i> Positive
+                                                            <i class="bi bi-hand-thumbs-up"></i> Tích cực
                                                         </div>
                                                     </div>
                                                     <div class="stat-card">
@@ -84,7 +85,7 @@
                                                                 <%= neutralFeedbacks %>
                                                         </div>
                                                         <div class="stat-label">
-                                                            <i class="bi bi-dash-circle"></i> Neutral
+                                                            <i class="bi bi-dash-circle"></i> Trung lập
                                                         </div>
                                                     </div>
                                                     <div class="stat-card">
@@ -94,7 +95,7 @@
                                                                 <%= negativeFeedbacks %>
                                                         </div>
                                                         <div class="stat-label">
-                                                            <i class="bi bi-hand-thumbs-down"></i> Negative
+                                                            <i class="bi bi-hand-thumbs-down"></i> Tiêu cực
                                                         </div>
                                                     </div>
                                                 </div>
@@ -102,7 +103,7 @@
                                                 <!-- Feedback List -->
                                                 <div class="card-modern">
                                                     <h5 class="mb-4">
-                                                        <i class="bi bi-list-check"></i> Guest Feedback
+                                                        <i class="bi bi-list-check"></i> Phản hồi của khách
                                                     </h5>
                                                     <div class="grid-2">
                                                         <% if (feedbacks !=null && !feedbacks.isEmpty()) { for
@@ -111,6 +112,9 @@
                                                             String type = (String) f.get("type");
                                                             String message = (String) f.get("message");
                                                             String date = (String) f.get("date");
+                                                            String typeText = "positive".equals(type) ? "Tích cực" :
+                                                            "neutral".equals(type) ? "Trung lập" :
+                                                            "negative".equals(type) ? "Tiêu cực" : type;
                                                             %>
                                                             <div class="card-compact">
                                                                 <div class="mb-3">
@@ -129,7 +133,7 @@
                                                                             ? "badge-success" : "neutral" .equals(type)
                                                                             ? "badge-warning" : "badge-danger" ; %>
                                                                             <span class="badge <%= badgeClass %>">
-                                                                                <%= type %>
+                                                                                <%= typeText %>
                                                                             </span>
                                                                     </div>
                                                                 </div>
@@ -139,22 +143,24 @@
                                                                         </small></p>
                                                                 </div>
                                                                 <div class="d-flex gap-2">
+                                                                    <% if (PermissionUtil.isAdmin(session)) { %>
                                                                     <button
                                                                         class="btn-modern btn-ghost btn-sm flex-grow-1"
                                                                         type="button">
-                                                                        <i class="bi bi-reply"></i> Reply
+                                                                        <i class="bi bi-reply"></i> Trả lời
                                                                     </button>
                                                                     <button class="btn-modern btn-danger btn-sm"
                                                                         type="button">
                                                                         <i class="bi bi-trash"></i>
                                                                     </button>
+                                                                    <% } %>
                                                                 </div>
                                                             </div>
                                                             <% } } else { %>
                                                                 <div class="col-12 text-center py-5">
                                                                     <i class="bi bi-inbox"
                                                                         style="font-size: 3rem; color: var(--text-secondary);"></i>
-                                                                    <p class="text-muted mt-3">No feedback available</p>
+                                                                    <p class="text-muted mt-3">Chưa có phản hồi nào</p>
                                                                 </div>
                                                                 <% } %>
                                                     </div>
@@ -162,8 +168,6 @@
                         </div>
                     </div>
                 </div>
-
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
                 </body>
 

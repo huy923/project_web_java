@@ -34,10 +34,10 @@ Welcome to the **Hotel Management System** - a modern, feature-rich web applicat
 
 ### Prerequisites
 
-- Java 8 or higher
+- Java 17 or higher
 - Maven 3.6+
 - MySQL 5.7+ or MariaDB 10.3+
-- Tomcat 7+
+- Tomcat 9+
 
 ### 1️⃣ Clone the Repository
 
@@ -62,7 +62,7 @@ If you have some error mysql is not found you just copy all code in file `hotel_
 mvn clean compile
 
 # Start the server
-mvn tomcat7:run
+mvn tomcat9:run
 ```
 
 ### 4️⃣ Access the System
@@ -188,7 +188,7 @@ password=hotel_password
 ### Local Development
 
 ```bash
-mvn tomcat7:run
+mvn tomcat9:run
 ```
 
 ### Production Deployment
@@ -198,7 +198,7 @@ mvn tomcat7:run
 mvn clean package
 
 # Deploy to Tomcat
-mvn tomcat7:deploy
+mvn tomcat9:deploy
 ```
 
 ### Server Deployment
@@ -234,7 +234,7 @@ sudo lsof -ti:8080 | xargs kill -9
 ```bash
 # Clear Tomcat work directory
 rm -rf target/tomcat/work/
-mvn tomcat7:run
+mvn tomcat9:run
 ```
 
 ---
@@ -299,7 +299,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## Error 
+## Error
 
 - if you see some error like `HTTP Status 500 - java.sql.SQLException: Access denied for user 'hotel_app'@'localhost' (using password: YES)` mabe you did't create user in mysql to fix that error you just run copy code below and paste it in mysql:
 
@@ -317,3 +317,5 @@ SET last_cleaned = CURRENT_TIMESTAMP
 WHERE status = 'available';
 
 ```
+
+- or you just change user to root and your password to empty in file [Database](/src/main/java/util/DatabaseConnection.java)

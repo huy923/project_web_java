@@ -12,7 +12,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotel Management System - Dashboard</title>
+    <title>Hệ thống quản lý khách sạn - Bảng điều khiển</title>
     <link href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/theme.css">
@@ -22,6 +22,7 @@
     <script src="../js/theme-manager.js"></script>
     <script src="../js/crud-helper.js"></script>
     <style>
+        
         .main-container {
             padding: 2rem 0;
         }
@@ -431,12 +432,20 @@
     <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
             <a class="navbar-brand" href="/dashboard">
-                <i class="bi bi-building"></i> Hotel Management System
+                <i class="bi bi-building"></i> Hệ thống quản lý khách sạn
             </a>
             <div class="navbar-nav ms-auto">
-                <span>
-                    <i class="bi bi-person-circle"></i> Admin Dashboard
+                <% model.User currentUser=(model.User) session.getAttribute("user"); String currentName=currentUser !=null &&
+                    currentUser.getFullName() !=null ? currentUser.getFullName() : "" ; %>
+                    <span class="me-3">
+                        <i class="bi bi-person-circle"></i>
+                        <%= currentName %>
                 </span>
+                <a class="nav-link" href="<%= request.getContextPath() %>/logout">
+                    <i class="bi bi-box-arrow-right"></i> Đăng xuất
+                </a>
                 </div>
             </div>
             </nav>
+
+            

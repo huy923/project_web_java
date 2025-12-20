@@ -1,5 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
 <jsp:include page="/includes/header.jsp" />
             <div class="px-2 main-container">
             <div class="row">
@@ -12,9 +11,9 @@
                 <!-- Header -->
                 <div class="page-header">
                     <div class="page-title">
-                        <i class="bi bi-house-door"></i> Hotel Dashboard
+                        <i class="bi bi-house-door"></i> Quản lý khách sạn
                     </div>
-                    <div class="page-subtitle">Welcome to the Hotel Management System</div>
+                    <div class="page-subtitle">Chào mừng <%= session.getAttribute("username") %></div>
                 </div>
 
                 <!-- Statistics Cards -->
@@ -28,7 +27,7 @@
                             <%= roomStats.get("available") %>
                         </div>
                         <div class="stat-label">
-                            <i class="bi bi-door-open"></i> Available Rooms
+                            <i class="bi bi-door-open"></i> Số phòng trống
                         </div>
                         </div>
                     <div class="stat-card">
@@ -772,10 +771,10 @@
         }
         function getStatusText(status) {
             switch(status) {
-                case 'available': return 'Available';
-                case 'occupied': return 'Occupied';
-                case 'maintenance': return 'Maintenance';
-                case 'cleaning': return 'Cleaning';
+                case 'available': return 'Phòng trống';
+                case 'occupied': return 'Có khách';
+                case 'maintenance': return 'Bảo trì';
+                case 'cleaning': return 'Dọn phòng';
                 default: return status;
             }
         }
@@ -903,7 +902,7 @@
         }
 
         // Room details function
-                    function showRoomDetails(roomId = null, roomNumber = null, roomType = null, roomPrice = null, status = null, firstName = null, lastName = null, phone = null, checkInDate = null, checkOutDate = null) {
+        function showRoomDetails(roomId = null, roomNumber = null, roomType = null, roomPrice = null, status = null, firstName = null, lastName = null, phone = null, checkInDate = null, checkOutDate = null) {
             // Update room information
             document.getElementById('roomNumber').textContent = roomNumber;
             document.getElementById('roomType').textContent = roomType;
@@ -935,7 +934,6 @@
                     statusClass += 'bg-secondary';
                     statusText = status;
             }
-            
                     // statusElement.innerHTML = '<span class="' + statusClass + '">' + statusText + '</span>';
                     document.getElementById('guestName').textContent = firstName + ' ' + lastName;
                     document.getElementById('guestPhone').textContent = phone;
@@ -976,5 +974,6 @@
         }
         
     </script>
+    
 </body>
 </html>

@@ -1,13 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Error - Hotel Management System</title>
-    <link href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/webjars/bootstrap-icons/1.11.0/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="./css/modern-ui.css">
+    <title>Lỗi - Hệ thống quản lý khách sạn</title>
+    <link href="<%= request.getContextPath() %>/webjars/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<%= request.getContextPath() %>/webjars/bootstrap-icons/1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/modern-ui.css">
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -91,26 +91,28 @@
         <div class="error-icon">
             <i class="bi bi-exclamation-triangle"></i>
         </div>
-        <div class="error-code">Error</div>
-        <div class="error-title">Oops! Something Went Wrong</div>
+        <div class="error-code">🖕</div>
+        <div class="error-title">Lỗi rồi sửa đi</div>
         <p class="error-message">
             <% 
-                String message = request.getParameter("message");
+                String message = (String) request.getAttribute("message");
                 if (message == null || message.isEmpty()) {
-                    message = "An unexpected error occurred. Please try again later or contact support.";
+                    message = request.getParameter("message");
+                }
+                if (message == null || message.isEmpty()) {
+                    message = "Đã xảy ra lỗi không mong muốn. Vui lòng thử lại sau hoặc liên hệ bộ phận hỗ trợ.";
                 }
             %>
             <%= message %>
         </p>
         <div class="error-actions">
             <a href="<%= request.getContextPath() %>/dashboard" class="btn-modern btn-primary">
-                <i class="bi bi-house"></i> Dashboard
+                <i class="bi bi-house"></i> Bảng điều khiển
             </a>
             <a href="javascript:history.back()" class="btn-modern btn-ghost">
-                <i class="bi bi-arrow-left"></i> Go Back
+                <i class="bi bi-arrow-left"></i> Quay lại
             </a>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

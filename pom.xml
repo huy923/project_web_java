@@ -13,10 +13,10 @@
     <name>My Web App</name>
 
     <properties>
-        <!-- Target Java LTS version -->
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
-        <maven.compiler.release>21</maven.compiler.release>
+        <!-- Hạ xuống Java 17 để tương thích với Tomcat 9 -->
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.release>17</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -51,7 +51,7 @@
             <version>5.3.2</version>
         </dependency>
 
-        <!-- jQuery WebJar (Bootstrap cần jQuery) nếu cần  -->
+        <!-- jQuery WebJar -->
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>jquery</artifactId>
@@ -65,7 +65,7 @@
             <version>1.10.5</version>
         </dependency>
 
-        <!-- WebJars Locator  -->
+        <!-- WebJars Locator -->
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>webjars-locator</artifactId>
@@ -85,25 +85,24 @@
             <artifactId>jbcrypt</artifactId>
             <version>0.4</version>
         </dependency>
-        <!-- gson for JSON parsing -->
+
+        <!-- Gson for JSON parsing -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.10.1</version>
         </dependency>
-        <!--  -->
     </dependencies>
 
     <build>
         <finalName>my-web-app</finalName>
         <plugins>
-            <!-- Maven Compiler Plugin: use a recent version that supports Java 21 -->
+            <!-- Maven Compiler Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
                 <configuration>
-                    <!-- Use the release flag for consistent cross-compilation -->
                     <release>${maven.compiler.release}</release>
                 </configuration>
             </plugin>
@@ -112,23 +111,21 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>3.2.3</version>
+                <version>3.4.0</version>
             </plugin>
 
-            <!-- Tomcat Maven Plugin -->
+            <!-- Tomcat 9 Maven Plugin (Hỗ trợ Java 17) -->
             <plugin>
-                <groupId>org.apache.tomcat.maven</groupId>
-                <artifactId>tomcat7-maven-plugin</artifactId>
-                <version>2.2</version>
+                <groupId>org.opoo.maven</groupId>
+                <artifactId>tomcat9-maven-plugin</artifactId>
+                <version>3.0.1</version>
                 <configuration>
                     <path>/</path>
                     <port>8082</port>
                     <contextReloadable>true</contextReloadable>
-                    <backgroundProcessorDelay>1</backgroundProcessorDelay>
-                    <url>http://localhost:8082/manager/text</url>
-                    <server>TomcatServer</server>
-                    <username>admin</username>
-                    <password>password</password>
+                    <systemProperties>
+                        <java.net.preferIPv4Stack>true</java.net.preferIPv4Stack>
+                    </systemProperties>
                 </configuration>
             </plugin>
         </plugins>

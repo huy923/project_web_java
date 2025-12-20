@@ -2,6 +2,7 @@
     <%@ page contentType="text/html;charset=UTF-8" language="java" %>
         <%@ page import="java.util.List" %>
             <%@ page import="java.util.Map" %>
+                <%@ page import="util.PermissionUtil" %>
                 <jsp:include page="/includes/header.jsp" />
 
                 <div class="px-2 main-container">
@@ -17,7 +18,7 @@
                                 <% if (successMessage !=null) { %>
                                     <div class="alert-modern alert-success">
                                         <i class="bi bi-check-circle"></i>
-                                        <span><strong>Success!</strong>
+                                        <span><strong>Thành công!</strong>
                                             <%= successMessage %>
                                         </span>
                                     </div>
@@ -25,7 +26,7 @@
                                         <% if (errorMessage !=null) { %>
                                             <div class="alert-modern alert-danger">
                                                 <i class="bi bi-exclamation-circle"></i>
-                                                <span><strong>Error!</strong>
+                                                <span><strong>Lỗi!</strong>
                                                     <%= errorMessage %>
                                                 </span>
                                             </div>
@@ -34,9 +35,9 @@
                                                 <!-- Header -->
                                                 <div class="page-header">
                                                     <div class="page-title">
-                                                        <i class="bi bi-person-badge"></i> Staff Management
+                                                        <i class="bi bi-person-badge"></i> Quản lý nhân viên
                                                     </div>
-                                                    <div class="page-subtitle">Manage hotel staff and employees</div>
+                                                    <div class="page-subtitle">Quản lý nhân sự và nhân viên khách sạn</div>
                                                 </div>
 
                                                 <!-- Statistics -->
@@ -50,7 +51,7 @@
                                                                     <%= totalStaff %>
                                                         </div>
                                                         <div class="stat-label">
-                                                            <i class="bi bi-person-badge"></i> Total Staff
+                                                            <i class="bi bi-person-badge"></i> Tổng số nhân viên
                                                         </div>
                                                     </div>
                                                     <div class="stat-card">
@@ -66,7 +67,7 @@
                                                                 <%= activeStaff %>
                                                         </div>
                                                         <div class="stat-label">
-                                                            <i class="bi bi-check-circle"></i> Active
+                                                            <i class="bi bi-check-circle"></i> Đang làm
                                                         </div>
                                                     </div>
                                                     <div class="stat-card">
@@ -75,7 +76,7 @@
                                                                 <%= inactiveStaff %>
                                                         </div>
                                                         <div class="stat-label">
-                                                            <i class="bi bi-pause-circle"></i> Inactive
+                                                            <i class="bi bi-pause-circle"></i> Ngừng làm
                                                         </div>
                                                     </div>
                                                     <div class="stat-card">
@@ -83,49 +84,50 @@
                                                             0
                                                         </div>
                                                         <div class="stat-label">
-                                                            <i class="bi bi-calendar-event"></i> On Leave
+                                                            <i class="bi bi-calendar-event"></i> Nghỉ phép
                                                         </div>
                                                     </div>
                                                 </div>
 
                                                 <!-- Add Staff Form -->
+                                                <% if (PermissionUtil.hasPermission(session, "users.create" )) { %>
                                                 <div class="card-modern mb-4">
                                                     <h5 class="mb-3">
-                                                        <i class="bi bi-plus-circle"></i> Add New Staff
+                                                        <i class="bi bi-plus-circle"></i> Thêm nhân viên mới
                                                     </h5>
                                                     <form action="<%= request.getContextPath() %>/staff" method="post"
                                                         class="row g-3">
                                                         <input type="hidden" name="action" value="add">
                                                         <div class="col-md-3">
-                                                            <label class="form-label">First Name</label>
+                                                            <label class="form-label">Tên</label>
                                                             <input type="text" name="firstName" class="form-control"
                                                                 required>
                                                         </div>
                                                         <div class="col-md-3">
-                                                            <label class="form-label">Last Name</label>
+                                                            <label class="form-label">Họ</label>
                                                             <input type="text" name="lastName" class="form-control"
                                                                 required>
                                                         </div>
                                                         <div class="col-md-3">
-                                                            <label class="form-label">Position</label>
+                                                            <label class="form-label">Chức vụ</label>
                                                             <select name="position" class="form-select" required>
-                                                                <option value="">Select position</option>
-                                                                <option value="manager">Manager</option>
-                                                                <option value="receptionist">Receptionist</option>
-                                                                <option value="housekeeping">Housekeeping</option>
-                                                                <option value="maintenance">Maintenance</option>
-                                                                <option value="chef">Chef</option>
-                                                                <option value="waiter">Waiter</option>
+                                                                <option value="">Chọn chức vụ</option>
+                                                                <option value="manager">Quản lý</option>
+                                                                <option value="receptionist">Lễ tân</option>
+                                                                <option value="housekeeping">Buồng phòng</option>
+                                                                <option value="maintenance">Bảo trì</option>
+                                                                <option value="chef">Đầu bếp</option>
+                                                                <option value="waiter">Phục vụ</option>
                                                             </select>
                                                         </div>
                                                         <div class="col-md-3">
                                                             <label class="form-label">&nbsp;</label>
                                                             <button class="btn-modern btn-primary w-100" type="submit">
-                                                                <i class="bi bi-plus"></i> Add
+                                                                <i class="bi bi-plus"></i> Thêm
                                                             </button>
                                                         </div>
                                                         <div class="col-md-3">
-                                                            <label class="form-label">Phone</label>
+                                                            <label class="form-label">Số điện thoại</label>
                                                             <input type="tel" name="phone" class="form-control"
                                                                 required>
                                                         </div>
@@ -135,17 +137,18 @@
                                                                 required>
                                                         </div>
                                                         <div class="col-md-3">
-                                                            <label class="form-label">Salary</label>
+                                                            <label class="form-label">Lương</label>
                                                             <input type="number" name="salary" class="form-control"
                                                                 step="0.01">
                                                         </div>
                                                     </form>
                                                 </div>
+                                                <% } %>
 
                                                 <!-- Staff List -->
                                                 <div class="card-modern">
                                                     <h5 class="mb-4">
-                                                        <i class="bi bi-list-check"></i> Staff Members
+                                                        <i class="bi bi-list-check"></i> Danh sách nhân viên
                                                     </h5>
                                                     <div class="grid-3">
                                                         <% if (staff !=null && !staff.isEmpty()) { for (Map<String,
@@ -154,6 +157,14 @@
                                                             String lastName = (String) s.get("last_name");
                                                             String position = (String) s.get("position");
                                                             String status = (String) s.get("status");
+                                                            String positionText = "manager".equals(position) ? "Quản lý" :
+                                                            "receptionist".equals(position) ? "Lễ tân" :
+                                                            "housekeeping".equals(position) ? "Buồng phòng" :
+                                                            "maintenance".equals(position) ? "Bảo trì" :
+                                                            "chef".equals(position) ? "Đầu bếp" :
+                                                            "waiter".equals(position) ? "Phục vụ" : position;
+                                                            String statusText = "active".equals(status) ? "Đang làm" :
+                                                            "inactive".equals(status) ? "Ngừng làm" : status;
                                                             %>
                                                             <div class="card-compact">
                                                                 <div class="mb-3">
@@ -163,33 +174,37 @@
                                                                     </h6>
                                                                     <p class="text-muted mb-0" style="font-size: 12px;">
                                                                         <i class="bi bi-briefcase"></i>
-                                                                        <%= position %>
+                                                                        <%= positionText %>
                                                                     </p>
                                                                 </div>
                                                                 <div class="mb-3 pb-3 border-bottom">
                                                                     <p class="mb-1"><small
-                                                                            class="text-muted">Status:</small></p>
+                                                                            class="text-muted">Trạng thái:</small></p>
                                                                     <p class="mb-0"><small>
-                                                                            <%= status %>
+                                                                            <%= statusText %>
                                                                         </small></p>
                                                                 </div>
                                                                 <div class="d-flex gap-2">
+                                                                    <% if (PermissionUtil.hasPermission(session, "users.edit" )) { %>
                                                                     <button
                                                                         class="btn-modern btn-ghost btn-sm flex-grow-1"
                                                                         type="button">
-                                                                        <i class="bi bi-pencil"></i> Edit
+                                                                        <i class="bi bi-pencil"></i> Sửa
                                                                     </button>
+                                                                    <% } %>
+                                                                        <% if (PermissionUtil.hasPermission(session, "users.delete" )) { %>
                                                                     <button class="btn-modern btn-danger btn-sm"
                                                                         type="button">
                                                                         <i class="bi bi-trash"></i>
                                                                     </button>
+                                                                    <% } %>
                                                                 </div>
                                                             </div>
                                                             <% } } else { %>
                                                                 <div class="col-12 text-center py-5">
                                                                     <i class="bi bi-inbox"
                                                                         style="font-size: 3rem; color: var(--text-secondary);"></i>
-                                                                    <p class="text-muted mt-3">No staff members</p>
+                                                                    <p class="text-muted mt-3">Chưa có nhân viên nào</p>
                                                                 </div>
                                                                 <% } %>
                                                     </div>

@@ -1,13 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 - Page Not Found</title>
-    <link href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>404 - Không tìm thấy trang</title>
+    <link href="<%= request.getContextPath() %>/webjars/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="./css/modern-ui.css">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/modern-ui.css">
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -75,20 +75,17 @@
 </head>
 <body>
     <div class="error-container">
-        <div class="error-code">404</div>
-        <div class="error-title">Page Not Found</div>
         <p class="error-message">
-            The page you are looking for could not be found. It may have been moved or deleted.
+            CÓ ĐÂU MÀ ĐÒI XEM
         </p>
         <div class="error-actions">
             <a href="<%= request.getContextPath() %>/dashboard" class="btn-modern btn-primary">
-                <i class="bi bi-house"></i> Dashboard
+                <i class="bi bi-house"></i> Bảng điều khiển
             </a>
             <a href="javascript:history.back()" class="btn-modern btn-ghost">
-                <i class="bi bi-arrow-left"></i> Go Back
+                <i class="bi bi-arrow-left"></i> Quay lại
             </a>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

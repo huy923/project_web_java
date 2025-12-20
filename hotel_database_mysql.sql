@@ -336,7 +336,9 @@ VALUES (
         'WiFi, TV, Air conditioning, Mini bar, Balcony, Extra bed'
     );
 
--- Insert Users/Staff
+-- Insert Users/Staff 
+-- Password is password 
+-- all user have role admin
 INSERT INTO
     users (
         username,
@@ -1058,6 +1060,7 @@ BEGIN
 END$$
 DELIMITER;
 
+-- 1. Permossons 
 CREATE TABLE permissions (
     permission_id INT AUTO_INCREMENT PRIMARY KEY,
     permission_name VARCHAR(100) UNIQUE NOT NULL,
@@ -1132,7 +1135,7 @@ CREATE TABLE resource_access (
     INDEX idx_resource_type (resource_type)
 );
 
--- 7. Resource Permissions - Who can access what
+-- 7. Resource Permissions - Who can access what they can do 
 CREATE TABLE resource_permissions (
     resource_perm_id INT AUTO_INCREMENT PRIMARY KEY,
     resource_id INT NOT NULL,
@@ -1318,6 +1321,14 @@ SELECT r.role_id, p.permission_id
 FROM roles r, permissions p 
 WHERE r.role_name = 'guest' 
 AND p.permission_name IN ('bookings.view', 'reviews.create', 'reviews.view', 'dashboard.view');
+
+-- Users Roles
+INSERT INTO user_roles (user_id, role_id) VALUES
+(1, 1), -- Admin
+(2, 2), -- Manager
+(3, 3), -- Receptionist
+(4, 4), -- Housekeeping
+(5, 5); -- Maintenance
 
 -- =====================================================
 -- CREATE INDEXES FOR PERFORMANCE

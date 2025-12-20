@@ -1,11 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotel Management - Login</title>
+    <title>Quản lý khách sạn - Đăng nhập</title>
     <link href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="/webjars/bootstrap-icons/1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <style>
@@ -67,9 +67,20 @@
             max-width: 420px;
             padding: 20px;
         }
+        .btn-ghost {
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+}
+
+.btn-ghost:hover {
+    background: var(--light);
+    border-color: var(--primary);
+    color: var(--primary);
+}
 
         .login-card {
-            background: rgba(255, 255, 255, 0.95);
+            /* background: rgba(255, 255, 255, 0.95); */
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             padding: 50px 40px;
@@ -231,8 +242,8 @@
                 <div class="login-icon">
                     <i class="bi bi-building"></i>
                 </div>
-                <h1>Welcome Back</h1>
-                <p>Hotel Management System</p>
+                <h1>Chào mừng bạn quay lại</h1>
+                <p>Hệ thống quản lý khách sạn</p>
             </div>
 
             <% String error=(String) request.getAttribute("error"); if (error !=null) { %>
@@ -244,26 +255,27 @@
             <form action="<%= request.getContextPath() %>/login" method="post">
                 <div class="form-group">
                     <label class="form-label" for="username">
-                        <i class="bi bi-person"></i> Username
+                        <i class="bi bi-person"></i> Tên đăng nhập
                     </label>
-                    <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" required>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Nhập tên đăng nhập" required>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label" for="password">
-                        <i class="bi bi-lock"></i> Password
+                        <i class="bi bi-lock"></i> Mật khẩu
                     </label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Nhập mật khẩu" required>
                 </div>
-
-                <button class="btn btn-login" type="submit">
-                    <i class="bi bi-box-arrow-in-right"></i> Sign In
-                </button>
+                    <button class="btn btn-login" type="submit">
+                        <i class="bi bi-box-arrow-in-right"></i> Đăng nhập
+                    </button>
             </form>
-
-            <div class="login-footer">
-                <i class="bi bi-shield-check"></i> Secure Login
+            <hr>
+            <!-- demo acc -->
+            <div style="text-align: center; color: #666;">
+                <p>Tài khoản demo</p>
             </div>
+            <button type="button" class="btn btn-ghost">dsfa</button>
         </div>
     </div>
 

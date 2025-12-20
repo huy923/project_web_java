@@ -20,9 +20,9 @@
                                     <div class="row mb-4">
                                         <div class="col-12">
                                             <h1 class="display-6 mb-3">
-                                                <i class="bi bi-graph-up"></i> Reports and Statistics
+                                                <i class="bi bi-graph-up"></i> Báo cáo và thống kê
                                             </h1>
-                                            <p class="lead">Analyze data and generate detailed reports about hotel operations</p>
+                                            <p class="lead">Phân tích dữ liệu và tạo báo cáo chi tiết về hoạt động của khách sạn</p>
                                         </div>
                                     </div>
 
@@ -38,7 +38,7 @@
                                                             <%= totalBookings %>
                                                 </div>
                                                 <div class="stats-label">
-                                                    <i class="bi bi-calendar-plus"></i> Total Bookings
+                                                    <i class="bi bi-calendar-plus"></i> Tổng đặt phòng
                                                 </div>
                                             </div>
                                         </div>
@@ -57,7 +57,7 @@
                                                         <%= String.format("%.0f", totalRevenue / 1000000) %>M
                                                 </div>
                                                 <div class="stats-label">
-                                                    <i class="bi bi-currency-dollar"></i> Revenue (VND)
+                                                    <i class="bi bi-currency-dollar"></i> Doanh thu (VNĐ)
                                                 </div>
                                             </div>
                                         </div>
@@ -71,7 +71,7 @@
                                                             <%= totalRooms %>
                                                 </div>
                                                 <div class="stats-label">
-                                                    <i class="bi bi-door-open"></i> Total Rooms
+                                                    <i class="bi bi-door-open"></i> Tổng số phòng
                                                 </div>
                                             </div>
                                         </div>
@@ -85,7 +85,7 @@
                                                             <%= totalGuests %>
                                                 </div>
                                                 <div class="stats-label">
-                                                    <i class="bi bi-people"></i> Total Guests
+                                                    <i class="bi bi-people"></i> Tổng số khách
                                                 </div>
                                             </div>
                                         </div>
@@ -98,8 +98,8 @@
                                                 <div class="report-icon text-info">
                                                     <i class="bi bi-house-door"></i>
                                                 </div>
-                                                <h5>Room Occupancy</h5>
-                                                <p class="text-muted">Analyze room occupancy rate over time</p>
+                                                <h5>Tỷ lệ lấp đầy phòng</h5>
+                                                <p class="text-muted">Phân tích tỷ lệ lấp đầy phòng theo thời gian</p>
                                             </div>
                                         </div>
                                         <div class="col-md-4 mb-3">
@@ -107,8 +107,8 @@
                                                 <div class="report-icon text-success">
                                                     <i class="bi bi-graph-up-arrow"></i>
                                                 </div>
-                                                <h5>Revenue Report</h5>
-                                                <p class="text-muted">Revenue statistics by day, month, and year</p>
+                                                <h5>Báo cáo doanh thu</h5>
+                                                <p class="text-muted">Thống kê doanh thu theo ngày, tháng và năm</p>
                                             </div>
                                         </div>
                                         <div class="col-md-4 mb-3">
@@ -116,8 +116,8 @@
                                                 <div class="report-icon text-warning">
                                                     <i class="bi bi-people"></i>
                                                 </div>
-                                                <h5>Guest Analysis</h5>
-                                                <p class="text-muted">Guest statistics and behavior analysis</p>
+                                                <h5>Phân tích khách hàng</h5>
+                                                <p class="text-muted">Thống kê và phân tích hành vi khách hàng</p>
                                             </div>
                                         </div>
                                     </div>
@@ -125,30 +125,30 @@
                                     <!-- Date Range Filter -->
                                     <div class="card-modern mb-4">
                                         <h5 class="mb-3">
-                                            <i class="bi bi-calendar-range"></i> Select Date Range
+                                            <i class="bi bi-calendar-range"></i> Chọn khoảng thời gian
                                         </h5>
                                         <div class="row g-3">
                                             <div class="col-md-3">
-                                                <label class="form-label">From Date</label>
+                                                <label class="form-label">Từ ngày</label>
                                                 <input type="date" class="form-control" id="fromDate">
                                             </div>
                                             <div class="col-md-3">
-                                                <label class="form-label">To Date</label>
+                                                <label class="form-label">Đến ngày</label>
                                                 <input type="date" class="form-control" id="toDate">
                                             </div>
                                             <div class="col-md-3">
-                                                <label class="form-label">Report Type</label>
+                                                <label class="form-label">Loại báo cáo</label>
                                                 <select class="form-select" id="reportType">
-                                                    <option value="daily">Daily</option>
-                                                    <option value="weekly">Weekly</option>
-                                                    <option value="monthly">Monthly</option>
-                                                    <option value="yearly">Yearly</option>
+                                                    <option value="daily">Theo ngày</option>
+                                                    <option value="weekly">Theo tuần</option>
+                                                    <option value="monthly">Theo tháng</option>
+                                                    <option value="yearly">Theo năm</option>
                                                 </select>
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="form-label">&nbsp;</label>
                                                 <button class="btn-modern btn-success w-100" onclick="generateReport()">
-                                                    <i class="bi bi-file-earmark-text"></i> Generate Report
+                                                    <i class="bi bi-file-earmark-text"></i> Tạo báo cáo
                                                 </button>
                                             </div>
                                         </div>
@@ -159,7 +159,7 @@
                                         <!-- Occupancy Chart -->
                                         <div class="chart-container" id="occupancyChart">
                                             <h5 class="mb-3">
-                                                <i class="bi bi-house-door"></i> Room Occupancy
+                                                <i class="bi bi-house-door"></i> Tỷ lệ lấp đầy phòng
                                             </h5>
                                             <canvas id="occupancyCanvas" width="400" height="200"></canvas>
                                         </div>
@@ -167,7 +167,7 @@
                                         <!-- Revenue Chart -->
                                         <div class="chart-container" id="revenueChart">
                                             <h5 class="mb-3">
-                                                <i class="bi bi-graph-up-arrow"></i> Revenue
+                                                <i class="bi bi-graph-up-arrow"></i> Doanh thu
                                             </h5>
                                             <canvas id="revenueCanvas" width="400" height="200"></canvas>
                                         </div>
@@ -175,7 +175,7 @@
                                         <!-- Guest Analysis Chart -->
                                         <div class="chart-container" id="guestChart">
                                             <h5 class="mb-3">
-                                                <i class="bi bi-people"></i> Guest Analysis
+                                                <i class="bi bi-people"></i> Phân tích khách hàng
                                             </h5>
                                             <canvas id="guestCanvas" width="400" height="200"></canvas>
                                         </div>
@@ -184,27 +184,27 @@
                                     <!-- Report Actions -->
                                     <div class="card-modern" id="reportActions" style="display: none;">
                                         <h5 class="mb-3">
-                                            <i class="bi bi-download"></i> Export Report
+                                            <i class="bi bi-download"></i> Xuất báo cáo
                                         </h5>
                                         <div class="row g-3">
                                             <div class="col-md-3">
                                                 <button class="btn-hotel-outline w-100" onclick="exportReport('pdf')">
-                                                    <i class="bi bi-file-pdf"></i> Export PDF
+                                                    <i class="bi bi-file-pdf"></i> Xuất PDF
                                                 </button>
                                             </div>
                                             <div class="col-md-3">
                                                 <button class="btn-hotel-outline w-100" onclick="exportReport('excel')">
-                                                    <i class="bi bi-file-excel"></i> Export Excel
+                                                    <i class="bi bi-file-excel"></i> Xuất Excel
                                                 </button>
                                             </div>
                                             <div class="col-md-3">
                                                 <button class="btn-hotel-outline w-100" onclick="exportReport('csv')">
-                                                    <i class="bi bi-file-text"></i> Export CSV
+                                                    <i class="bi bi-file-text"></i> Xuất CSV
                                                 </button>
                                             </div>
                                             <div class="col-md-3">
                                                 <button class="btn-hotel-outline w-100" onclick="printReport()">
-                                                    <i class="bi bi-printer"></i> Print Report
+                                                    <i class="bi bi-printer"></i> In báo cáo
                                                 </button>
                                             </div>
                                         </div>
@@ -251,9 +251,9 @@
                                 new Chart(ctx, {
                                     type: 'line',
                                     data: {
-                                        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                                        labels: ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'],
                                         datasets: [{
-                                            label: 'Occupancy (%)',
+                                            label: 'Lấp đầy (%)',
                                             data: [85, 92, 78, 95, 88, 96, 82],
                                             borderColor: '#3498db',
                                             backgroundColor: 'rgba(52, 152, 219, 0.1)',
@@ -299,7 +299,7 @@
                                     data: {
                                         labels: ['M1', 'M2', 'M3', 'M4', 'M5', 'M6'],
                                         datasets: [{
-                                            label: 'Revenue (VND)',
+                                            label: 'Doanh thu (VNĐ)',
                                             data: [12000000, 15000000, 18000000, 16000000, 20000000, 22000000],
                                             backgroundColor: 'rgba(46, 204, 113, 0.8)',
                                             borderColor: '#2ecc71',
@@ -346,7 +346,7 @@
                                 new Chart(ctx, {
                                     type: 'doughnut',
                                     data: {
-                                        labels: ['New Guests', 'Returning Guests', 'VIP Guests'],
+                                        labels: ['Khách mới', 'Khách quay lại', 'Khách VIP'],
                                         datasets: [{
                                             data: [45, 35, 20],
                                             backgroundColor: [
@@ -381,7 +381,7 @@
                                 const reportType = document.getElementById('reportType').value;
 
                                 if (!fromDate || !toDate) {
-                                    alert('Please select a date range!');
+                                    alert('Vui lòng chọn khoảng thời gian!');
                                     return;
                                 }
 
@@ -389,7 +389,7 @@
                                 document.getElementById('chartsSection').innerHTML = `
                 <div class="text-center py-5">
                     <i class="bi bi-hourglass-split" style="font-size: 3rem;"></i>
-                    <p class="mt-3">Generating report...</p>
+                    <p class="mt-3">Đang tạo báo cáo...</p>
                 </div>
             `;
                                 document.getElementById('chartsSection').style.display = 'block';
@@ -398,15 +398,15 @@
                                 setTimeout(() => {
                                     document.getElementById('chartsSection').innerHTML = `
                     <div class="chart-container" id="occupancyChart">
-                        <h5 class="mb-3"><i class="bi bi-house-door"></i> Room Occupancy</h5>
+                        <h5 class="mb-3"><i class="bi bi-house-door"></i> Tỷ lệ lấp đầy phòng</h5>
                         <canvas id="occupancyCanvas" width="400" height="200"></canvas>
                     </div>
                     <div class="chart-container" id="revenueChart">
-                        <h5 class="mb-3"><i class="bi bi-graph-up-arrow"></i> Revenue</h5>
+                        <h5 class="mb-3"><i class="bi bi-graph-up-arrow"></i> Doanh thu</h5>
                         <canvas id="revenueCanvas" width="400" height="200"></canvas>
                     </div>
                     <div class="chart-container" id="guestChart">
-                        <h5 class="mb-3"><i class="bi bi-people"></i> Guest Analysis</h5>
+                        <h5 class="mb-3"><i class="bi bi-people"></i> Phân tích khách hàng</h5>
                         <canvas id="guestCanvas" width="400" height="200"></canvas>
                     </div>
                 `;
@@ -421,7 +421,7 @@
                             }
 
                             function exportReport(format) {
-                                alert(`Report export feature for ${format.toUpperCase()} is under development!`);
+                                alert(`Tính năng xuất báo cáo dạng ${format.toUpperCase()} đang được phát triển!`);
                             }
 
                             function printReport() {

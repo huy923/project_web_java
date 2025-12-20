@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +23,18 @@ public class CheckOutServlet extends BaseServlet {
         try {
             BookingDao dao = new BookingDao();
             List<Map<String, Object>> bookings = dao.getAllBookings();
-            req.setAttribute("bookings", bookings);
+
+            List<Map<String, Object>> activeBookings = new ArrayList<>();
+            if (bookings != null) {
+                for (Map<String, Object> booking : bookings) {
+                    String status = booking.get("status") != null ? String.valueOf(booking.get("status")) : null;
+                    if (!"checked_out".equalsIgnoreCase(status)) {
+                        activeBookings.add(booking);
+                    }
+                }
+            }
+
+            req.setAttribute("bookings", activeBookings);
         } catch (SQLException e) {
             req.setAttribute("errorMessage", "Error loading bookings: " + e.getMessage());
         }

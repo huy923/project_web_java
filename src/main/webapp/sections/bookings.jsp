@@ -23,7 +23,7 @@
                     <% if (successMessage !=null) { %>
                     <div class="alert-modern alert-success">
                         <i class="bi bi-check-circle"></i>
-                        <span><strong>Success!</strong>
+                        <span><strong>Thành công!</strong>
                             <%= successMessage %>
                         </span>
                         </div>
@@ -31,7 +31,7 @@
                             <% if (errorMessage !=null) { %>
                     <div class="alert-modern alert-danger">
                         <i class="bi bi-exclamation-circle"></i>
-                        <span><strong>Error!</strong>
+                        <span><strong>Lỗi!</strong>
                             <%= errorMessage %>
                         </span>
                         </div>
@@ -40,9 +40,9 @@
                 <!-- Header -->
                 <div class="page-header">
                     <div class="page-title">
-                        <i class="bi bi-calendar-check"></i> Booking Management
+                        <i class="bi bi-calendar-check"></i> Quản lý đặt phòng
                     </div>
-                    <div class="page-subtitle">Manage and track all hotel bookings</div>
+                    <div class="page-subtitle">Quản lý và theo dõi tất cả đặt phòng của khách sạn</div>
                 </div>
 
                 <!-- Statistics Cards -->
@@ -57,7 +57,7 @@
                                 <%= totalBookings %>
                             </div>
                             <div class="stats-label">
-                                <i class="bi bi-calendar-plus"></i> Total Bookings
+                                <i class="bi bi-calendar-plus"></i> Tổng đặt phòng
                             </div>
                         </div>
                     </div>
@@ -78,7 +78,7 @@
                                 <%= confirmedCount %>
                             </div>
                             <div class="stats-label">
-                                <i class="bi bi-clock"></i> Pending Check-in
+                                <i class="bi bi-clock"></i> Chờ nhận phòng
                             </div>
                         </div>
                     </div>
@@ -98,7 +98,7 @@
                                 <%= checkedInCount %>
                             </div>
                             <div class="stats-label">
-                                <i class="bi bi-person-check"></i> Checked In
+                                <i class="bi bi-person-check"></i> Đã nhận phòng
                             </div>
                         </div>
                     </div>
@@ -118,7 +118,7 @@
                                 <%= checkedOutCount %>
                             </div>
                             <div class="stats-label">
-                                <i class="bi bi-person-dash"></i> Checked Out
+                                <i class="bi bi-person-dash"></i> Đã trả phòng
                             </div>
                         </div>
                     </div>
@@ -128,34 +128,34 @@
                 <div class="filter-section">
                     <div class="row align-items-end">
                         <div class="col-md-3 mb-3">
-                            <label class="form-label">Search Guest</label>
+                            <label class="form-label">Tìm khách</label>
                             <input type="text" class="form-control border-secondary" 
-                                   placeholder="Enter guest name" id="guestSearch">
+                                   placeholder="Nhập tên khách" id="guestSearch">
                         </div>
                         <div class="col-md-2 mb-3">
-                            <label class="form-label">Status</label>
+                            <label class="form-label">Trạng thái</label>
                             <select class="form-select border-secondary" id="statusFilter">
-                                <option value="">All</option>
-                                <option value="confirmed">Pending Check-in</option>
-                                <option value="checked_in">Checked In</option>
-                                <option value="checked_out">Checked Out</option>
-                                <option value="cancelled">Cancelled</option>
+                                <option value="">Tất cả</option>
+                                <option value="confirmed">Chờ nhận phòng</option>
+                                <option value="checked_in">Đã nhận phòng</option>
+                                <option value="checked_out">Đã trả phòng</option>
+                                <option value="cancelled">Đã hủy</option>
                             </select>
                         </div>
                         <div class="col-md-2 mb-3">
-                            <label class="form-label">From Date</label>
+                            <label class="form-label">Từ ngày</label>
                             <input type="date" class="form-control border-secondary" id="fromDate">
                         </div>
                         <div class="col-md-2 mb-3">
-                            <label class="form-label">To Date</label>
+                            <label class="form-label">Đến ngày</label>
                             <input type="date" class="form-control border-secondary" id="toDate">
                         </div>
                         <div class="col-md-3 mb-3">
                             <button class="btn-modern btn-success me-2" onclick="filterBookings()">
-                                <i class="bi bi-search"></i> Filter
+                                <i class="bi bi-search"></i> Lọc
                             </button>
                             <button class="btn-modern btn-primary" data-bs-toggle="modal" data-bs-target="#newBookingModal">
-                                <i class="bi bi-plus"></i>New Booking
+                                <i class="bi bi-plus"></i>Đặt phòng mới
                             </button>
                         </div>
                     </div>
@@ -165,14 +165,14 @@
                 <div class="card-modern">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5 class="mb-0">
-                            <i class="bi bi-table"></i> Booking List
+                            <i class="bi bi-table"></i> Danh sách đặt phòng
                         </h5>
                         <div class="d-flex gap-2">
                             <button class="btn btn-sm btn-outline-light" onclick="exportBookings()">
-                                <i class="bi bi-download"></i> Export Excel
+                                <i class="bi bi-download"></i> Xuất Excel
                             </button>
                             <button class="btn btn-sm btn-outline-light" onclick="refreshBookings()">
-                                <i class="bi bi-arrow-clockwise"></i> Refresh
+                                <i class="bi bi-arrow-clockwise"></i> Làm mới
                             </button>
                         </div>
                     </div>
@@ -181,16 +181,16 @@
                         <table class="table table-striped table-hover" id="bookingsTable">
                             <thead>
                                 <tr>
-                                    <th>Booking ID</th>
-                                    <th>Guest</th>
-                                    <th>Phone</th>
-                                    <th>Room</th>
-                                    <th>Check-in</th>
-                                    <th>Check-out</th>
-                                    <th>Nights</th>
-                                    <th>Total Amount</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
+                                    <th>Mã đặt phòng</th>
+                                    <th>Khách</th>
+                                    <th>Số điện thoại</th>
+                                    <th>Phòng</th>
+                                    <th>Nhận phòng</th>
+                                    <th>Trả phòng</th>
+                                    <th>Số đêm</th>
+                                    <th>Tổng tiền</th>
+                                    <th>Trạng thái</th>
+                                    <th>Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -225,16 +225,16 @@
                                         String statusIcon = "";
                                         
                                         if ("confirmed".equals(status)) {
-                                            statusText = "Pending Check-in";
+                                            statusText = "Chờ nhận phòng";
                                             statusIcon = "bi-clock";
                                         } else if ("checked_in".equals(status)) {
-                                            statusText = "Checked In";
+                                            statusText = "Đã nhận phòng";
                                             statusIcon = "bi-person-check";
                                         } else if ("checked_out".equals(status)) {
-                                            statusText = "Checked Out";
+                                            statusText = "Đã trả phòng";
                                             statusIcon = "bi-person-dash";
                                         } else if ("cancelled".equals(status)) {
-                                            statusText = "Cancelled";
+                                            statusText = "Đã hủy";
                                             statusIcon = "bi-x-circle";
                                         } else {
                                             statusText = status;
@@ -244,11 +244,15 @@
                                 <tr>
                                     <td><strong>BK<%= String.format("%03d", Integer.parseInt(bookingId)) %></strong></td>
                                     <td><%= guestName %></td>
-                                    <td><%= phone != null ? phone : "N/A" %></td>
-                                    <td><span class="badge bg-info">Room <%= roomNumber %></span></td>
+                                    <td>
+                                        <%= phone !=null ? phone : "Không có" %>
+                                    </td>
+                                    <td><span class="badge bg-info">Phòng <%= roomNumber %></span></td>
                                     <td><%= checkInDate %></td>
                                     <td><%= checkOutDate %></td>
-                                    <td><%= nights %> night(s)</td>
+                                    <td>
+                                        <%= nights %> đêm
+                                    </td>
                                     <td><strong><%= String.format("%,.0f", Double.parseDouble(totalAmount)) %> VNĐ</strong></td>
                                     <td>
                                         <span class="status-badge <%= statusClass %>">
@@ -257,19 +261,19 @@
                                     </td>
                                     <td>
                                         <div class="btn-group" role="group">
-                                            <button class="btn btn-sm btn-outline-primary" onclick="viewBookingDetails('<%= bookingId %>')" title="View Details">
+                                            <button class="btn btn-sm btn-outline-primary" onclick="viewBookingDetails('<%= bookingId %>')" title="Xem chi tiết">
                                                 <i class="bi bi-eye"></i>
                                             </button>
                                             <% if ("confirmed".equals(status)) { %>
-                                            <button class="btn btn-sm btn-outline-success" onclick="checkInBooking('<%= bookingId %>')" title="Check-in">
+                                            <button class="btn btn-sm btn-outline-success" onclick="checkInBooking('<%= bookingId %>')" title="Nhận phòng">
                                                 <i class="bi bi-person-plus"></i>
                                             </button>
                                             <% } else if ("checked_in".equals(status)) { %>
-                                            <button class="btn btn-sm btn-outline-warning" onclick="checkOutBooking('<%= bookingId %>')" title="Check-out">
+                                            <button class="btn btn-sm btn-outline-warning" onclick="checkOutBooking('<%= bookingId %>')" title="Trả phòng">
                                                 <i class="bi bi-person-dash"></i>
                                             </button>
                                             <% } %>
-                                            <button class="btn btn-sm btn-outline-danger" onclick="cancelBooking('<%= bookingId %>')" title="Cancel Booking">
+                                            <button class="btn btn-sm btn-outline-danger" onclick="cancelBooking('<%= bookingId %>')" title="Hủy đặt phòng">
                                                 <i class="bi bi-x-circle"></i>
                                             </button>
                                         </div>
@@ -282,7 +286,7 @@
                                 <tr>
                                     <td colspan="10" class="text-center text-muted py-4">
                                         <i class="bi bi-calendar-x" style="font-size: 2rem;"></i>
-                                        <br>No bookings found
+                                        <br>Không tìm thấy đặt phòng nào
                                     </td>
                                 </tr>
                                 <% } %>
@@ -300,7 +304,7 @@
             <div class="modal-content ">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        <i class="bi bi-calendar-plus"></i> New Booking
+                        <i class="bi bi-calendar-plus"></i> Đặt phòng mới
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
@@ -309,15 +313,15 @@
                         <input type="hidden" name="action" value="create">
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Guest Name</label>
+                                <label class="form-label">Tên khách</label>
                                 <input type="text" name="firstName" class="form-control  border-secondary" required>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Last Name</label>
+                                <label class="form-label">Họ</label>
                                 <input type="text" name="lastName" class="form-control  border-secondary" required>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Phone Number</label>
+                                <label class="form-label">Số điện thoại</label>
                                 <input type="tel" name="phone" class="form-control  border-secondary" required>
                             </div>
                             <div class="col-md-6 mb-3">
@@ -325,21 +329,21 @@
                                 <input type="email" name="email" class="form-control  border-secondary">
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">ID/Passport Number</label>
+                                <label class="form-label">Số CMND/CCCD/Hộ chiếu</label>
                                 <input type="text" name="idNumber" class="form-control  border-secondary" required>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Room</label>
+                                <label class="form-label">Phòng</label>
                                 <select name="roomId" class="form-select  border-secondary" required>
-                                    <option value="">Select Room</option>
+                                    <option value="">Chọn phòng</option>
                                     <% 
                                     List<Map<String, Object>> availableRooms = (List<Map<String, Object>>) request.getAttribute("availableRooms");
                                     if (availableRooms != null) {
                                         for (Map<String, Object> room : availableRooms) {
                                     %>
                                     <option value="<%= room.get("room_id") %>">
-                                        Room <%= room.get("room_number") %> - <%= room.get("type_name") %> 
-                                        (<%= String.format("%,d", ((java.math.BigDecimal) room.get("base_price")).longValue()) %> VND/night)
+                                        Phòng <%= room.get("room_number") %> - <%= room.get("type_name") %>
+                                                (<%= String.format("%,d", ((java.math.BigDecimal) room.get("base_price")).longValue()) %> VNĐ/đêm)
                                     </option>
                                     <% 
                                         }
@@ -348,27 +352,27 @@
                                 </select>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Check-in Date</label>
+                                <label class="form-label">Ngày nhận phòng</label>
                                 <input type="date" name="checkInDate" class="form-control  border-secondary" required>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Check-out Date</label>
+                                <label class="form-label">Ngày trả phòng</label>
                                 <input type="date" name="checkOutDate" class="form-control  border-secondary" required>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Adults</label>
+                                <label class="form-label">Người lớn</label>
                                 <input type="number" name="adults" class="form-control  border-secondary" value="1" min="1" required>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Children</label>
+                                <label class="form-label">Trẻ em</label>
                                 <input type="number" name="children" class="form-control  border-secondary" value="0" min="0">
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" form="newBookingForm" class="btn-hotel">Create Booking</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" form="newBookingForm" class="btn-hotel">Tạo đặt phòng</button>
                 </div>
             </div>
         </div>
@@ -380,7 +384,7 @@
             <div class="modal-content ">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        <i class="bi bi-calendar-check"></i> Booking Details
+                        <i class="bi bi-calendar-check"></i> Chi tiết đặt phòng
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
@@ -388,7 +392,7 @@
                     <!-- Content will be loaded dynamically -->
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                 </div>
             </div>
         </div>
@@ -447,7 +451,7 @@
             document.getElementById('bookingDetailsContent').innerHTML = `
                 <div class="text-center">
                     <i class="bi bi-hourglass-split" style="font-size: 3rem;"></i>
-                    <p class="mt-3">Loading booking information...</p>
+                    <p class="mt-3">Đang tải thông tin đặt phòng...</p>
                 </div>
             `;
             modal.show();
@@ -457,22 +461,22 @@
                 document.getElementById('bookingDetailsContent').innerHTML = `
                     <div class="row">
                         <div class="col-md-6">
-                            <h6>Guest Information</h6>
+                            <h6>Thông tin khách</h6>
                             <table class="table table-sm">
-                                <tr><td><strong>Booking ID:</strong></td><td>BK${bookingId.padStart(3, '0')}</td></tr>
-                                <tr><td><strong>Guest Name:</strong></td><td>John Doe</td></tr>
-                                <tr><td><strong>Phone:</strong></td><td>0123456789</td></tr>
+                                <tr><td><strong>Mã đặt phòng:</strong></td><td>BK${bookingId.padStart(3, '0')}</td></tr>
+                                <tr><td><strong>Tên khách:</strong></td><td>John Doe</td></tr>
+                                <tr><td><strong>Số điện thoại:</strong></td><td>0123456789</td></tr>
                                 <tr><td><strong>Email:</strong></td><td>guest@example.com</td></tr>
                             </table>
                         </div>
                         <div class="col-md-6">
-                            <h6>Room Information</h6>
+                            <h6>Thông tin phòng</h6>
                             <table class="table table-sm">
-                                <tr><td><strong>Room:</strong></td><td>102</td></tr>
-                                <tr><td><strong>Type:</strong></td><td>Standard</td></tr>
-                                <tr><td><strong>Check-in:</strong></td><td>2024-01-15</td></tr>
-                                <tr><td><strong>Check-out:</strong></td><td>2024-01-18</td></tr>
-                                <tr><td><strong>Total Amount:</strong></td><td>3,600,000 VND</td></tr>
+                                <tr><td><strong>Phòng:</strong></td><td>102</td></tr>
+                                <tr><td><strong>Loại:</strong></td><td>Standard</td></tr>
+                                <tr><td><strong>Nhận phòng:</strong></td><td>2024-01-15</td></tr>
+                                <tr><td><strong>Trả phòng:</strong></td><td>2024-01-18</td></tr>
+                                <tr><td><strong>Tổng tiền:</strong></td><td>3,600,000 VNĐ</td></tr>
                             </table>
                         </div>
                     </div>
@@ -482,7 +486,7 @@
         
         // Check-in booking
         function checkInBooking(bookingId) {
-            if (confirm('Confirm check-in for this booking?')) {
+            if (confirm('Xác nhận nhận phòng cho đặt phòng này?')) {
                 const form = document.createElement('form');
                 form.method = 'POST';
                 form.action = '<%= request.getContextPath() %>/bookings';
@@ -506,7 +510,7 @@
         
         // Check-out booking
         function checkOutBooking(bookingId) {
-            if (confirm('Confirm check-out for this booking?')) {
+            if (confirm('Xác nhận trả phòng cho đặt phòng này?')) {
                 const form = document.createElement('form');
                 form.method = 'POST';
                 form.action = '<%= request.getContextPath() %>/bookings';
@@ -530,7 +534,7 @@
         
         // Cancel booking
         function cancelBooking(bookingId) {
-            if (confirm('Are you sure you want to cancel this booking?')) {
+            if (confirm('Bạn có chắc chắn muốn hủy đặt phòng này không?')) {
                 const form = document.createElement('form');
                 form.method = 'POST';
                 form.action = '<%= request.getContextPath() %>/bookings';
@@ -554,7 +558,7 @@
         
         // Export bookings
         function exportBookings() {
-            alert('Excel export feature is under development!');
+            alert('Tính năng xuất Excel đang được phát triển!');
         }
         
         // Refresh bookings
@@ -564,7 +568,7 @@
         
         // Auto-refresh every 30 seconds
         setInterval(function() {
-            console.log('Auto-refreshing bookings...');
+            console.log('Tự động làm mới danh sách đặt phòng...');
         }, 30000);
         
         // Initialize date inputs with today's date

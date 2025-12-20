@@ -164,8 +164,8 @@ body {
 }
 
 .sidebar {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
+    background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
     border-radius: 15px;
     padding: 1.5rem;
     height: fit-content;
@@ -182,7 +182,7 @@ body {
 }
 
 .sidebar-menu a {
-    color: white;
+    color: var(--text-secondary);
     text-decoration: none;
     padding: 0.75rem 1rem;
     display: block;
@@ -191,12 +191,12 @@ body {
 }
 
 .sidebar-menu a:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
+    background: var(--bg-primary);
+        color: var(--text-primary);
 }
 
 .sidebar-menu a.active {
-    background: rgba(255, 255, 255, 0.2);
+    background: var(--bg-primary);
 }
 
 /* Loading animation */
@@ -258,14 +258,14 @@ transform: rotate(360deg);
 
 .form-control:focus,
 .form-select:focus {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.4);
-    color: white;
-    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.1);
+    background: var(--bg-secondary);
+        border-color: var(--primary-300);
+        color: var(--text-primary);
+        box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.15);
 }
 
 .form-control::placeholder {
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--text-tertiary);
 }
 
 .stats-card {

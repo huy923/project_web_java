@@ -211,4 +211,19 @@ public class PermissionDao {
             return ps.executeUpdate() > 0;
         }
     }
+
+    public boolean isUserInRole(int userId, String roleName) throws SQLException {
+        String sql = "SELECT COUNT(*) AS count FROM user_roles ur JOIN roles r ON ur.role_id = r.role_id WHERE ur.user_id = ? AND LOWER(r.role_name) = LOWER(?) AND r.is_active = TRUE";
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ps.setString(2, roleName);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("count") > 0;
+                }
+            }
+        }
+        return false;
+    }
 }

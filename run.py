@@ -34,9 +34,9 @@ def main():
         subprocess.call(["cargo", "run"])
     if args.all:
         subprocess.call(["cargo", "run"])
-        subprocess.call(["mvn", "tomcat7:run"])
+        subprocess.call(["mvn", "tomcat9:run"])
     if args.web:
-        subprocess.call(["mvn", "tomcat7:run"])
+        subprocess.call(["mvn", "tomcat9:run"])
 if __name__ == "__main__":
     check()
     main()

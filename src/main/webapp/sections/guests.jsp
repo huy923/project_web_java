@@ -5,6 +5,7 @@
 <%@ page import="java.text.NumberFormat" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.util.Locale" %>
+<%@ page import="util.PermissionUtil" %>
 <jsp:include page="/includes/header.jsp" />
     
     <div class="px-2 main-container">
@@ -20,9 +21,9 @@
                 <!-- Header -->
                 <div class="page-header">
                     <div class="page-title">
-                        <i class="bi bi-people"></i> Guest Management
+                        <i class="bi bi-people"></i> Quản lý khách
                     </div>
-                    <div class="page-subtitle">Manage guest information and booking history</div>
+                    <div class="page-subtitle">Quản lý thông tin khách và lịch sử đặt phòng</div>
                 </div>
 <!-- Messages -->
 <% String successMessage=(String) request.getAttribute("successMessage"); String errorMessage=(String)
@@ -30,7 +31,7 @@
     <% if (successMessage !=null) { %>
         <div class="alert-modern alert-success">
             <i class="bi bi-check-circle"></i>
-            <span><strong>Success!</strong>
+            <span><strong>Thành công!</strong>
                 <%= successMessage %>
             </span>
         </div>
@@ -38,7 +39,7 @@
             <% if (errorMessage !=null) { %>
                 <div class="alert-modern alert-danger">
                     <i class="bi bi-exclamation-circle"></i>
-                    <span><strong>Error!</strong>
+                    <span><strong>Lỗi!</strong>
                         <%= errorMessage %>
                     </span>
                 </div>
@@ -54,7 +55,7 @@
                             <%= totalGuests %>
                         </div>
                         <div class="stat-label">
-                            <i class="bi bi-people"></i> Total Guests
+                            <i class="bi bi-people"></i> Tổng số khách
                         </div>
                         </div>
                     <div class="stat-card">
@@ -69,7 +70,7 @@
                             <%= activeGuests %>
                         </div>
                         <div class="stat-label">
-                            <i class="bi bi-person-check"></i> Checked In
+                            <i class="bi bi-person-check"></i> Đang lưu trú
                         </div>
                         </div>
                     <div class="stat-card">
@@ -85,7 +86,7 @@
                             <%= vipGuests %>
                         </div>
                         <div class="stat-label">
-                            <i class="bi bi-star"></i> VIP Guests
+                            <i class="bi bi-star"></i> Khách VIP
                         </div>
                         </div>
                     <div class="stat-card">
@@ -101,7 +102,7 @@
                             <%= newGuests %>
                         </div>
                         <div class="stat-label">
-                            <i class="bi bi-person-plus"></i> New Guests
+                            <i class="bi bi-person-plus"></i> Khách mới
                         </div>
                     </div>
                 </div>
@@ -109,65 +110,69 @@
                 <!-- Add Guest Form -->
                 <div class="card-modern mb-4">
                     <h5 class="mb-3">
-                        <i class="bi bi-person-plus"></i> Add New Guest
+                        <i class="bi bi-person-plus"></i> Thêm khách mới
                     </h5>
-                    <form action="<%= request.getContextPath() %>/guest-management" method="post" class="row g-3">
+                    <% if (PermissionUtil.hasPermission(session, "guests.create" )) { %>
+                        <form action="<%= request.getContextPath() %>/guests" method="post" class="row g-3">
                         <input type="hidden" name="action" value="add">
                         <div class="col-md-3">
-                            <label class="form-label">First Name</label>
-                            <input type="text" name="firstName" class="form-control" placeholder="Enter first name" required>
+                            <label class="form-label">Tên</label>
+                            <input type="text" name="firstName" class="form-control" placeholder="Nhập tên" required>
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label">Last Name</label>
-                            <input type="text" name="lastName" class="form-control" placeholder="Enter last name" required>
+                            <label class="form-label">Họ</label>
+                            <input type="text" name="lastName" class="form-control" placeholder="Nhập họ" required>
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label">Phone Number</label>
-                            <input type="tel" name="phone" class="form-control" placeholder="Enter phone number" required>
+                            <label class="form-label">Số điện thoại</label>
+                            <input type="tel" name="phone" class="form-control" placeholder="Nhập số điện thoại" required>
                         </div>
                         <div class="col-md-5">
                             <label class="form-label">&nbsp;</label>
                             <button class="btn-modern btn-success" type="submit">
-                                <i class="bi bi-plus"></i> Add Guest
+                                <i class="bi bi-plus"></i> Thêm khách
                             </button>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Email</label>
-                            <input type="email" name="email" class="form-control" placeholder="Enter email">
+                            <input type="email" name="email" class="form-control" placeholder="Nhập email">
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label">ID/Passport Number</label>
-                            <input type="text" name="idNumber" class="form-control" placeholder="Enter ID/Passport number" required>
+                            <label class="form-label">Số CMND/CCCD/Hộ chiếu</label>
+                            <input type="text" name="idNumber" class="form-control" placeholder="Nhập số CMND/CCCD/Hộ chiếu" required>
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label">Nationality</label>
-                            <input type="text" name="nationality" class="form-control" placeholder="Enter nationality" value="Vietnam">
+                            <label class="form-label">Quốc tịch</label>
+                            <input type="text" name="nationality" class="form-control" placeholder="Nhập quốc tịch" value="Vietnam">
                         </div>
                     </form>
+                    <% } else { %>
+                        <div class="text-muted">Bạn không có quyền thêm khách.</div>
+                        <% } %>
                 </div>
 
                 <!-- Search and Filter -->
                 <div class="card-modern mb-4">
                     <h5 class="mb-3">
-                        <i class="bi bi-search"></i> Search and Filter
+                        <i class="bi bi-search"></i> Tìm kiếm và lọc
                     </h5>
                     <div class="row g-3">
                         <div class="col-md-4">
-                            <input type="text" class="form-control" placeholder="Search by name or phone" id="guestSearch">
+                            <input type="text" class="form-control" placeholder="Tìm theo tên hoặc số điện thoại" id="guestSearch">
                         </div>
                         <div class="col-md-3">
                             <select class="form-select" id="statusFilter">
-                                <option value="">All Status</option>
-                                <option value="active">Checked In</option>
-                                <option value="inactive">Not Checked In</option>
+                                <option value="">Tất cả trạng thái</option>
+                                <option value="active">Đang lưu trú</option>
+                                <option value="inactive">Chưa nhận phòng</option>
                             </select>
                         </div>
                         <div class="col-md-3 d-flex justify-content-center align-items-center">
                             <button class="btn btn-primary d-flex mx-2" onclick="filterGuests()">
-                                <i class="bi bi-funnel me-2"></i> Filter
+                                <i class="bi bi-funnel me-2"></i> Lọc
                             </button>
                             <button class="btn btn-outline-secondary d-flex ms-2" onclick="clearFilters()">
-                                <i class="bi bi-x-circle ms-2"></i> Clear Filters
+                                <i class="bi bi-x-circle ms-2"></i> Xóa bộ lọc
                             </button>
                         </div>
                     </div>
@@ -176,21 +181,21 @@
                 <!-- Guests Table -->
                 <div class="card-modern">
                     <h5 class="mb-3">
-                        <i class="bi bi-table"></i> Guest List
+                        <i class="bi bi-table"></i> Danh sách khách
                     </h5>
                     <div class="table-responsive overflow-x-auto">
-                        <table class="table table-dark table-striped table-hover" id="guestsTable">
+                        <table class="table table-striped table-hover" id="guestsTable">
                             <thead>
                                 <tr>
                                     <th><i class="bi bi-hash"></i> ID</th>
-                                    <th><i class="bi bi-person"></i> Full Name</th>
-                                    <th><i class="bi bi-card-text"></i> ID/Passport</th>
-                                    <th><i class="bi bi-telephone"></i> Phone</th>
+                                    <th><i class="bi bi-person"></i> Họ tên</th>
+                                    <th><i class="bi bi-card-text"></i> CMND/CCCD/Hộ chiếu</th>
+                                    <th><i class="bi bi-telephone"></i> Số điện thoại</th>
                                     <th><i class="bi bi-envelope"></i> Email</th>
-                                    <th><i class="bi bi-globe"></i> Nationality</th>
-                                    <th><i class="bi bi-door-open"></i> Current Room</th>
-                                    <th><i class="bi bi-flag"></i> Status</th>
-                                    <th><i class="bi bi-gear"></i> Actions</th>
+                                    <th><i class="bi bi-globe"></i> Quốc tịch</th>
+                                    <th><i class="bi bi-door-open"></i> Phòng hiện tại</th>
+                                    <th><i class="bi bi-flag"></i> Trạng thái</th>
+                                    <th><i class="bi bi-gear"></i> Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -207,18 +212,26 @@
                                         String bookingStatus = (String) guest.get("booking_status");
                                         
                                         String statusClass = bookingStatus != null ? "bg-success" : "bg-secondary";
-                                        String statusText = bookingStatus != null ? "Checked In" : "Not Checked In";
+                                        String statusText = bookingStatus != null ? "Đang lưu trú" : "Chưa nhận phòng";
                                 %>
                                 <tr>
                                     <td><strong>#<%= guestId %></strong></td>
                                     <td><%= fullName %></td>
-                                    <td><%= idNumber != null ? idNumber : "N/A" %></td>
-                                    <td><%= phone != null ? phone : "N/A" %></td>
-                                    <td><%= email != null ? email : "N/A" %></td>
-                                    <td><%= nationality != null ? nationality : "N/A" %></td>
+                                    <td>
+                                        <%= idNumber !=null ? idNumber : "Không có" %>
+                                    </td>
+                                    <td>
+                                        <%= phone !=null ? phone : "Không có" %>
+                                    </td>
+                                    <td>
+                                        <%= email !=null ? email : "Không có" %>
+                                    </td>
+                                    <td>
+                                        <%= nationality !=null ? nationality : "Không có" %>
+                                    </td>
                                     <td>
                                         <% if (roomNumber != null) { %>
-                                            <span class="badge bg-info">Room <%= roomNumber %></span>
+                                            <span class="badge bg-info">Phòng <%= roomNumber %></span>
                                         <% } else { %>
                                             <span class="text-muted">-</span>
                                         <% } %>
@@ -230,15 +243,19 @@
                                     </td>
                                     <td>
                                         <div class="btn-group" role="group">
-                                            <button class="btn btn-sm btn-hotel-outline" onclick="viewGuestDetails('<%= guestId %>')" title="View Details">
+                                            <button class="btn btn-sm btn-success" onclick="viewGuestDetails('<%= guestId %>')" title="Xem chi tiết">
                                                 <i class="bi bi-eye"></i>
                                             </button>
-                                            <button class="btn btn-sm btn-hotel-outline" onclick="editGuest('<%= guestId %>')" title="Edit Information">
+                                            <% if (PermissionUtil.hasPermission(session, "guests.edit" )) { %>
+                                                <button class="btn btn-sm btn-primary" onclick="editGuest('<%= guestId %>')" title="Chỉnh sửa thông tin">
                                                 <i class="bi bi-pencil"></i>
                                             </button>
-                                            <button class="btn btn-sm btn-hotel-outline" onclick="deleteGuest('<%= guestId %>')" title="Delete Guest">
+                                            <% } %>
+                                                <% if (PermissionUtil.hasPermission(session, "guests.delete" )) { %>
+                                                    <button class="btn btn-sm btn-danger" onclick="deleteGuest('<%= guestId %>')" title="Xóa khách">
                                                 <i class="bi bi-trash"></i>
                                             </button>
+                                            <% } %>
                                         </div>
                                     </td>
                                 </tr>
@@ -249,7 +266,7 @@
                                 <tr>
                                     <td colspan="9" class="text-center py-4">
                                         <i class="bi bi-inbox display-4 text-muted"></i>
-                                        <p class="text-muted mt-2">No guest data available</p>
+                                        <p class="text-muted mt-2">Không có dữ liệu khách</p>
                                     </td>
                                 </tr>
                                 <% } %>
@@ -267,7 +284,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        <i class="bi bi-person"></i> Guest Details
+                        <i class="bi bi-person"></i> Chi tiết khách
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
@@ -275,7 +292,7 @@
                     <!-- Content will be loaded here -->
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn-hotel-outline" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn-hotel-outline" data-bs-dismiss="modal">Đóng</button>
                 </div>
             </div>
         </div>
@@ -287,20 +304,20 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        <i class="bi bi-pencil"></i> Edit Guest Information
+                        <i class="bi bi-pencil"></i> Chỉnh sửa thông tin khách
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="<%= request.getContextPath() %>/guest-management" method="post" id="editGuestForm">
+                    <form action="<%= request.getContextPath() %>/guests" method="post" id="editGuestForm">
                         <input type="hidden" name="action" value="update">
                         <input type="hidden" name="guestId" id="editGuestId">
                         <div class="mb-3">
-                            <label class="form-label">First Name</label>
+                            <label class="form-label">Tên</label>
                             <input type="text" name="firstName" id="editFirstName" class="form-control" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Last Name</label>
+                            <label class="form-label">Họ</label>
                             <input type="text" name="lastName" id="editLastName" class="form-control" required>
                         </div>
                         <div class="mb-3">
@@ -308,22 +325,22 @@
                             <input type="email" name="email" id="editEmail" class="form-control">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Phone Number</label>
+                            <label class="form-label">Số điện thoại</label>
                             <input type="tel" name="phone" id="editPhone" class="form-control" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">ID/Passport Number</label>
+                            <label class="form-label">Số CMND/CCCD/Hộ chiếu</label>
                             <input type="text" name="idNumber" id="editIdNumber" class="form-control" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Nationality</label>
+                            <label class="form-label">Quốc tịch</label>
                             <input type="text" name="nationality" id="editNationality" class="form-control">
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn-hotel-outline" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" form="editGuestForm" class="btn-hotel">Update</button>
+                    <button type="button" class="btn-hotel-outline" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" form="editGuestForm" class="btn-hotel">Cập nhật</button>
                 </div>
             </div>
         </div>
@@ -350,9 +367,9 @@
                 }
                 
                 if (statusFilter) {
-                    if (statusFilter === 'active' && !status.includes('checked in')) {
+                    if (statusFilter === 'active' && !status.includes('đang lưu trú')) {
                         showRow = false;
-                    } else if (statusFilter === 'inactive' && !status.includes('not checked in')) {
+                    } else if (statusFilter === 'inactive' && !status.includes('chưa nhận phòng')) {
                         showRow = false;
                     }
                 }
@@ -372,7 +389,7 @@
             document.getElementById('guestDetailsContent').innerHTML = `
                 <div class="text-center">
                     <i class="bi bi-hourglass-split" style="font-size: 3rem;"></i>
-                    <p class="mt-3">Loading guest information...</p>
+                    <p class="mt-3">Đang tải thông tin khách...</p>
                 </div>
             `;
             modal.show();
@@ -381,21 +398,21 @@
                 document.getElementById('guestDetailsContent').innerHTML = `
                     <div class="row">
                         <div class="col-md-6">
-                            <h6>Personal Information</h6>
+                            <h6>Thông tin cá nhân</h6>
                             <table class="table table-dark table-sm">
-                                <tr><td><strong>ID:</strong></td><td>#${guestId}</td></tr>
-                                <tr><td><strong>Name:</strong></td><td>John Doe</td></tr>
-                                <tr><td><strong>Phone:</strong></td><td>0123456789</td></tr>
+                                <tr><td><strong>Mã:</strong></td><td>#${guestId}</td></tr>
+                                <tr><td><strong>Họ tên:</strong></td><td>John Doe</td></tr>
+                                <tr><td><strong>Số điện ng></td><td>0123456789</td></tr>
                                 <tr><td><strong>Email:</strong></td><td>guest@example.com</td></tr>
                             </table>
                         </div>
                         <div class="col-md-6">
-                            <h6>Booking History</h6>
+                            <h6>Lịch sử đặt phòng</h6>
                             <table class="table table-dark table-sm">
-                                <tr><td><strong>Total Bookings:</strong></td><td>3 times</td></tr>
-                                <tr><td><strong>Last Booking:</strong></td><td>2024-01-15</td></tr>
-                                <tr><td><strong>Current Room:</strong></td><td>102</td></tr>
-                                <tr><td><strong>Status:</strong></td><td>Checked In</td></tr>
+                                <tr><td><strong>Tổng đặt phòng:</strong></td><td>3 lần</td></tr>
+                                <tr><td><strong>Lần đặt gần nhất:</strong></td><td>2024-01-15</td></tr>
+                                <tr><td><strong>Phòng hiện tại:</strong></td><td>102</td></tr>
+                                <tr><td><strong>Trạng thái:</strong></td><td>Đang lưu trú</td></tr>
                             </table>
                         </div>
                     </div>
@@ -410,10 +427,10 @@
         }
         
         function deleteGuest(guestId) {
-            if (confirm('Are you sure you want to delete this guest?')) {
+            if (confirm('Bạn có chắc chắn muốn xóa khách này không?')) {
                 const form = document.createElement('form');
                 form.method = 'POST';
-                form.action = '<%= request.getContextPath() %>/guest-management';
+                form.action = '<%= request.getContextPath() %>/guests';
                 
                 const actionInput = document.createElement('input');
                 actionInput.type = 'hidden';
