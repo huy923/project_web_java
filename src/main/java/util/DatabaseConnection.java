@@ -5,9 +5,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnection {
-    private static final String URL = "jdbc:mysql://localhost:3306/hotel_management?useSSL=false&serverTimezone=UTC";
-    private static final String USER = "hotel_app"; // change to root if have error user
-    private static final String PASSWORD = "hotel_password"; // change your password
+    private static final String URL = " /hotel_management?useSSL=false&serverTimezone=UTC";
+    private static final String USER = System.getenv("MYSQL_USER") != null ? System.getenv("MYSQL_USER") : "root";
+    private static final String PASSWORD = System.getenv("MYSQL_PASSWORD") != null ? System.getenv("MYSQL_PASSWORD") : "";
 
     public DatabaseConnection() {
     }

@@ -7,8 +7,8 @@
 <div class="sidebar">
         <div class="d-flex justify-content-between align-items-center mb-4">
                 <h5 class="mb-0"><i class="bi bi-building"></i> Quản lý khách sạn</h5>
-                <button class="theme-toggle" title="Chuyển chế độ tối"><i class="bi bi-moon-fill"></i><span
-                                class="d-none d-lg-inline">Tối</span></button>
+                <button class="theme-toggle" title="Chuyển chế độ tối"><i class="bi bi-moon-fill"></i>
+                </button>
         </div>
         <!-- check admin -->
         <% boolean isAdmin = PermissionUtil.isAdmin(session); %>
@@ -18,6 +18,7 @@
                 <ul class="sidebar-menu">
                         <% if (PermissionUtil.hasPermission(session, "dashboard.view")) { %>
                                 <li><a href="<%= request.getContextPath() %>/dashboard" class="<%= request.getRequestURI().contains("/dashboard") ? "active" : "" %>"><i class="bi bi-speedometer2"></i> Bảng điều khiển</a></li>
+                                <li><a href="<%= request.getContextPath() %>/chatbot" class="<%= request.getRequestURI().contains("/chatbot") ? "active" : "" %>"><i class="bi bi-robot"></i> Chatbot</a></li>
                         <% } %>
                 </ul>
         </div>

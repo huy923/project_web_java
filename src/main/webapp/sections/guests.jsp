@@ -6,6 +6,155 @@
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.util.Locale" %>
 <%@ page import="util.PermissionUtil" %>
+<style>
+/* Gradient backgrounds */
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.bg-gradient-success {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+.bg-gradient-info {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.bg-gradient-secondary {
+    background: linear-gradient(135deg, #89898d 0%, #a8a8ab 100%);
+}
+
+/* Card styling */
+.card-modern {
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-modern:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15) !important;
+}
+
+.card-header {
+    border: none;
+}
+
+/* Table styling */
+.table {
+    font-size: 0.95rem;
+}
+
+.table thead th {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    border: none;
+    padding: 1rem;
+}
+
+.table tbody td {
+    padding: 1rem;
+    vertical-align: middle;
+    border-color: #f0f0f0;
+}
+
+.guest-row {
+    transition: all 0.3s ease;
+}
+
+.guest-row:hover {
+    background-color: #f8f9ff !important;
+    transform: scale(1.01);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* Avatar circle */
+.avatar-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+/* Badge enhancements */
+.badge {
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    transition: all 0.3s ease;
+}
+
+.badge:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* Button group styling */
+.btn-group .btn {
+    transition: all 0.3s ease;
+    border-width: 2px;
+}
+
+.btn-group .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.btn-outline-success:hover {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    border-color: #11998e;
+}
+
+.btn-outline-primary:hover {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: #667eea;
+}
+
+.btn-outline-danger:hover {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+    border-color: #ff6b6b;
+}
+
+/* Empty state */
+.empty-state {
+    padding: 2rem;
+}
+
+.empty-state i {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Link styling */
+a.text-decoration-none:hover {
+    text-decoration: underline !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .table {
+        font-size: 0.85rem;
+    }
+    
+    .btn-group .btn {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.85rem;
+    }
+    
+    .badge {
+        font-size: 0.75rem;
+        padding: 0.35rem 0.6rem !important;
+    }
+}
+</style>
 <jsp:include page="/includes/header.jsp" />
     
     <div class="px-2 main-container">
@@ -179,101 +328,152 @@
                 </div>
 
                 <!-- Guests Table -->
-                <div class="card-modern">
-                    <h5 class="mb-3">
-                        <i class="bi bi-table"></i> Danh sách khách
-                    </h5>
-                    <div class="table-responsive overflow-x-auto">
-                        <table class="table table-striped table-hover" id="guestsTable">
-                            <thead>
-                                <tr>
-                                    <th><i class="bi bi-hash"></i> ID</th>
-                                    <th><i class="bi bi-person"></i> Họ tên</th>
-                                    <th><i class="bi bi-card-text"></i> CMND/CCCD/Hộ chiếu</th>
-                                    <th><i class="bi bi-telephone"></i> Số điện thoại</th>
-                                    <th><i class="bi bi-envelope"></i> Email</th>
-                                    <th><i class="bi bi-globe"></i> Quốc tịch</th>
-                                    <th><i class="bi bi-door-open"></i> Phòng hiện tại</th>
-                                    <th><i class="bi bi-flag"></i> Trạng thái</th>
-                                    <th><i class="bi bi-gear"></i> Thao tác</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <% 
-                                if (guests != null && !guests.isEmpty()) {
-                                    for (Map<String, Object> guest : guests) {
-                                        String guestId = String.valueOf(guest.get("guest_id"));
-                                        String fullName = guest.get("first_name") + " " + guest.get("last_name");
-                                        String idNumber = (String) guest.get("id_number");
-                                        String phone = (String) guest.get("phone");
-                                        String email = (String) guest.get("email");
-                                        String nationality = (String) guest.get("nationality");
-                                        String roomNumber = (String) guest.get("room_number");
-                                        String bookingStatus = (String) guest.get("booking_status");
-                                        
-                                        String statusClass = bookingStatus != null ? "bg-success" : "bg-secondary";
-                                        String statusText = bookingStatus != null ? "Đang lưu trú" : "Chưa nhận phòng";
-                                %>
-                                <tr>
-                                    <td><strong>#<%= guestId %></strong></td>
-                                    <td><%= fullName %></td>
-                                    <td>
-                                        <%= idNumber !=null ? idNumber : "Không có" %>
-                                    </td>
-                                    <td>
-                                        <%= phone !=null ? phone : "Không có" %>
-                                    </td>
-                                    <td>
-                                        <%= email !=null ? email : "Không có" %>
-                                    </td>
-                                    <td>
-                                        <%= nationality !=null ? nationality : "Không có" %>
-                                    </td>
-                                    <td>
-                                        <% if (roomNumber != null) { %>
-                                            <span class="badge bg-info">Phòng <%= roomNumber %></span>
-                                        <% } else { %>
-                                            <span class="text-muted">-</span>
-                                        <% } %>
-                                    </td>
-                                    <td>
-                                        <span class="badge <%= statusClass %>">
-                                            <%= statusText %>
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <div class="btn-group" role="group">
-                                            <button class="btn btn-sm btn-success" onclick="viewGuestDetails('<%= guestId %>')" title="Xem chi tiết">
-                                                <i class="bi bi-eye"></i>
-                                            </button>
-                                            <% if (PermissionUtil.hasPermission(session, "guests.edit" )) { %>
-                                                <button class="btn btn-sm btn-primary" onclick="editGuest('<%= guestId %>')" title="Chỉnh sửa thông tin">
-                                                <i class="bi bi-pencil"></i>
-                                            </button>
-                                            <% } %>
-                                                <% if (PermissionUtil.hasPermission(session, "guests.delete" )) { %>
-                                                    <button class="btn btn-sm btn-danger" onclick="deleteGuest('<%= guestId %>')" title="Xóa khách">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                            <% } %>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <% 
-                                    }
-                                } else { 
-                                %>
-                                <tr>
-                                    <td colspan="9" class="text-center py-4">
-                                        <i class="bi bi-inbox display-4 text-muted"></i>
-                                        <p class="text-muted mt-2">Không có dữ liệu khách</p>
-                                    </td>
-                                </tr>
+                <div class="card-modern shadow-lg border-0">
+    <div class="card-header bg-gradient-primary text-white py-4">
+        <h5 class="mb-0 d-flex align-items-center ">
+            <i class="bi bi-people-fill me-2 fs-4"></i> 
+            <span class="fw-bold " >Danh sách khách hàng</span>
+        </h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0" id="guestsTable">
+                <thead class="table-da">
+                    <tr class="table-dak">
+                        <th class="text-center"><i class="bi bi-hash me-1"></i> ID</th>
+                        <th><i class="bi bi-person-circle me-1"></i> Họ tên</th>
+                        <th><i class="bi bi-card-text me-1"></i> CMND/CCCD</th>
+                        <th><i class="bi bi-telephone-fill me-1"></i> Điện thoại</th>
+                        <th><i class="bi bi-envelope-fill me-1"></i> Email</th>
+                        <th><i class="bi bi-globe-americas me-1"></i> Quốc tịch</th>
+                        <th class="text-center"><i class="bi bi-door-open-fill me-1"></i> Phòng</th>
+                        <th class="text-center"><i class="bi bi-flag-fill me-1"></i> Trạng thái</th>
+                        <th class="text-center"><i class="bi bi-gear-fill me-1"></i> Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody >
+                    <% 
+                    if (guests != null && !guests.isEmpty()) {
+                        for (Map<String, Object> guest : guests) {
+                            String guestId = String.valueOf(guest.get("guest_id"));
+                            String fullName = guest.get("first_name") + " " + guest.get("last_name");
+                            String idNumber = (String) guest.get("id_number");
+                            String phone = (String) guest.get("phone");
+                            String email = (String) guest.get("email");
+                            String nationality = (String) guest.get("nationality");
+                            String roomNumber = (String) guest.get("room_number");
+                            String bookingStatus = (String) guest.get("booking_status");
+                            
+                            String statusClass = bookingStatus != null ? "bg-gradient-success" : "bg-gradient-secondary";
+                            String statusText = bookingStatus != null ? "Đang lưu trú" : "Chưa nhận phòng";
+                            String statusIcon = bookingStatus != null ? "bi-check-circle-fill" : "bi-clock-fill";
+                    %>
+                    <tr class="guest-row">
+                        <td class="text-center">
+                            <span class="badge bg-primary rounded-pill px-3 py-2">
+                                <strong>#<%= guestId %></strong>
+                            </span>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="avatar-circle bg-gradient-info me-2">
+                                    <i class="bi bi-person-fill text-white"></i>
+                                </div>
+                                <strong class="text-dark"><%= fullName %></strong>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="text-secondary">
+                                <i class="bi bi-credit-card-2-front me-1 text-primary"></i>
+                                <%= idNumber != null ? idNumber : "<span class='text-muted'>Không có</span>" %>
+                            </span>
+                        </td>
+                        <td>
+                            <% if (phone != null) { %>
+                                <a href="tel:<%= phone %>" class="text-decoration-none text-success">
+                                    <i class="bi bi-phone-vibrate me-1"></i><%= phone %>
+                                </a>
+                            <% } else { %>
+                                <span class="text-muted">Không có</span>
+                            <% } %>
+                        </td>
+                        <td>
+                            <% if (email != null) { %>
+                                <a href="mailto:<%= email %>" class="text-decoration-none text-info">
+                                    <i class="bi bi-envelope-at me-1"></i><%= email %>
+                                </a>
+                            <% } else { %>
+                                <span class="text-muted">Không có</span>
+                            <% } %>
+                        </td>
+                        <td>
+                            <span class="badge bg-light text-dark border">
+                                <i class="bi bi-flag me-1 text-danger"></i>
+                                <%= nationality != null ? nationality : "N/A" %>
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <% if (roomNumber != null) { %>
+                                <span class="badge bg-gradient-info px-3 py-2 fs-6">
+                                    <i class="bi bi-door-closed-fill me-1"></i>
+                                    Phòng <%= roomNumber %>
+                                </span>
+                            <% } else { %>
+                                <span class="text-muted">-</span>
+                            <% } %>
+                        </td>
+                        <td class="text-center">
+                            <span class="badge <%= statusClass %> px-3 py-2">
+                                <i class="bi <%= statusIcon %> me-1"></i>
+                                <%= statusText %>
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <div class="btn-group" role="group">
+                                <button class="btn btn-sm btn-outline-success" 
+                                        onclick="viewGuestDetails('<%= guestId %>')" 
+                                        title="Xem chi tiết"
+                                        data-bs-toggle="tooltip">
+                                    <i class="bi bi-eye-fill"></i>
+                                </button>
+                                <% if (PermissionUtil.hasPermission(session, "guests.edit")) { %>
+                                    <button class="btn btn-sm btn-outline-primary" 
+                                            onclick="editGuest('<%= guestId %>')" 
+                                            title="Chỉnh sửa"
+                                            data-bs-toggle="tooltip">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
                                 <% } %>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                                <% if (PermissionUtil.hasPermission(session, "guests.delete")) { %>
+                                    <button class="btn btn-sm btn-outline-danger" 
+                                            onclick="deleteGuest('<%= guestId %>')" 
+                                            title="Xóa"
+                                            data-bs-toggle="tooltip">
+                                        <i class="bi bi-trash3-fill"></i>
+                                    </button>
+                                <% } %>
+                            </div>
+                        </td>
+                    </tr>
+                    <% 
+                        }
+                    } else { 
+                    %>
+                    <tr>
+                        <td colspan="9" class="text-center py-5">
+                            <div class="empty-state">
+                                <i class="bi bi-inbox display-1 text-primary opacity-25"></i>
+                                <h5 class="text-muted mt-3 mb-2">Không có dữ liệu khách</h5>
+                                <p class="text-muted small">Danh sách khách hiện đang trống</p>
+                            </div>
+                        </td>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
             </div>
         </div>
     </div>
@@ -292,7 +492,7 @@
                     <!-- Content will be loaded here -->
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn-hotel-outline" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal" >Đóng</button>
                 </div>
             </div>
         </div>
@@ -399,7 +599,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <h6>Thông tin cá nhân</h6>
-                            <table class="table table-dark table-sm">
+                            <table class="table table-sm">
                                 <tr><td><strong>Mã:</strong></td><td>#${guestId}</td></tr>
                                 <tr><td><strong>Họ tên:</strong></td><td>John Doe</td></tr>
                                 <tr><td><strong>Số điện ng></td><td>0123456789</td></tr>
@@ -408,7 +608,7 @@
                         </div>
                         <div class="col-md-6">
                             <h6>Lịch sử đặt phòng</h6>
-                            <table class="table table-dark table-sm">
+                            <table class="table table-sm">
                                 <tr><td><strong>Tổng đặt phòng:</strong></td><td>3 lần</td></tr>
                                 <tr><td><strong>Lần đặt gần nhất:</strong></td><td>2024-01-15</td></tr>
                                 <tr><td><strong>Phòng hiện tại:</strong></td><td>102</td></tr>

@@ -168,10 +168,10 @@
                             <i class="bi bi-table"></i> Danh sách đặt phòng
                         </h5>
                         <div class="d-flex gap-2">
-                            <button class="btn btn-sm btn-outline-light" onclick="exportBookings()">
+                            <button class="btn-modern btn-success" onclick="exportBookings()">
                                 <i class="bi bi-download"></i> Xuất Excel
                             </button>
-                            <button class="btn btn-sm btn-outline-light" onclick="refreshBookings()">
+                            <button class="btn-modern btn-primary" onclick="refreshBookings()">
                                 <i class="bi bi-arrow-clockwise"></i> Làm mới
                             </button>
                         </div>
@@ -179,7 +179,7 @@
                     
                     <div class="table-responsive overflow-x-auto" style="max-height: 500px;">
                         <table class="table table-striped table-hover" id="bookingsTable">
-                            <thead>
+                            <thead class="">
                                 <tr>
                                     <th>Mã đặt phòng</th>
                                     <th>Khách</th>

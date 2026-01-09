@@ -82,12 +82,12 @@
                             <form method="POST" action="<%= request.getContextPath() %>/payments" class="row g-3">
                                 <input type="hidden" name="action" value="add_payment">
                                 <div class="col-md-2">
-                                <label class="form-label">Mã đặt phòng</label>
+                                   <label class="form-label">Mã đặt phòng</label>
                                 <input type="number" name="booking_id" class="form-control" placeholder="Nhập mã đặt phòng" required>
                                 </div>
                                 <div class="col-md-2">
-                                <label class="form-label">Số tiền</label>
-                                <input type="number" name="amount" class="form-control" placeholder="Nhập số tiền" step="0.01" required>
+                                    <label class="form-label">Số tiền</label>
+                                    <input type="number" name="amount" class="form-control" placeholder="Nhập số tiền" step="0.01" required>
                                 </div>
                                 <div class="col-md-2">
                                 <label class="form-label">Hình thức</label>
@@ -128,8 +128,8 @@
                             <thead>
                                 <tr>
                                     <th><i class="bi bi-hash"></i> Mã thanh toán</th>
-                                    <th><i class="bi bi-calendar-check"></i> Mã đặt phòng</th>
                                     <th><i class="bi bi-person"></i> Khách</th>
+                                    <th><i class="bi bi-telephone"></i> SĐT</th>
                                     <th><i class="bi bi-door-open"></i> Phòng</th>
                                     <th><i class="bi bi-credit-card"></i> Hình thức</th>
                                     <th><i class="bi bi-flag"></i> Trạng thái</th>
@@ -153,14 +153,11 @@
                                                     <%= paymentId %>
                                                         </td>
                                                         <td>
-                                                            <%= payment.get("booking_id") %>
-                                                        </td>
-                                                        <td>
                                                             <%= payment.get("first_name") %>
-                                                                <%= payment.get("last_name") %><br>
-                                                                    <small class="text-muted">
-                                                                        <%= payment.get("phone") %>
-                                                                    </small>
+                                                                <%= payment.get("last_name") %>
+                                                            </td>
+                                                        <td>
+                                                                <%= payment.get("phone") %>
                                                         </td>
                                                         <td>
                                                             <%= payment.get("room_number") %><br>
@@ -227,12 +224,12 @@
                                     </td>
                                     <td>
                                         <div class="btn-group" role="group">
-                                            <button class="btn btn-sm btn-hotel-outline" onclick="showPaymentDetails(<%= paymentId %>)">
+                                            <button class="btn-modern btn-primary" onclick="showPaymentDetails(<%= paymentId %>)">
                                                 <i class="bi bi-eye"></i> Chi tiết
                                             </button>
                                             <% if (PermissionUtil.canEdit(session, "payments" ) && !"completed".equals(status) && !"refunded".equals(status)) { %>
                                                 <div class="dropdown">
-                                                    <button class="btn btn-sm btn-hotel-outline dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                                    <button class="btn-success dropdown-toggle btn-modern" type="button" data-bs-toggle="dropdown">
                                                     <i class="bi bi-pencil"></i> Cập nhật
                                                     </button>
                                                     <ul class="dropdown-menu">
@@ -249,18 +246,18 @@
                                                         </div>
                                                         <% } %>
                                                             </div>
-                                                            </td>
-                                                            </tr>
+                                                        </td>
+                                                    </tr>
                                 <% } } else { %>
                                     <tr>
                                         <td colspan="10" class="text-center py-4">
                                             <i class="bi bi-inbox display-4 text-muted"></i>
                                             <p class="text-muted mt-2">Không có dữ liệu thanh toán</p>
-                                            </td>
-                                            </tr>
+                                        </td>
+                                    </tr>
                                 <% } %>
                                     </tbody>
-                                    </table>
+                                </table>
                     </div>
                 </div>
             </div>
@@ -282,11 +279,12 @@
                         <!-- Content will be loaded here -->
                     </div>
                     <div class="modal-footer">
-                <button type="button" class="btn-hotel-outline" data-bs-dismiss="modal">Đóng</button>
+                        <button type="button" class="btn-hotel-outline" data-bs-dismiss="modal">Đóng</button>
+                    </div>
                 </div>
-                </div>
-                </div>
-                </div>
+            </div>
+        </div>
+    </div>
 
 <!-- Hidden form for status updates -->
 <form id="statusUpdateForm" method="POST" action="<%= request.getContextPath() %>/payments" style="display: none;">
@@ -307,14 +305,14 @@
         modal.show();
     }
 
-        function updateStatus(paymentId, newStatus) {
-                                                if (confirm('Bạn có chắc chắn muốn cập nhật trạng thái thanh toán này không?')) {
-                                                    document.getElementById('updatePaymentId').value = paymentId;
-                                                    document.getElementById('updateNewStatus').value = newStatus;
-                                                    document.getElementById('statusUpdateForm').submit();
-                                                }
-                                            }
-                                        </script>
+    function updateStatus(paymentId, newStatus) {
+        if (confirm('Bạn có chắc chắn muốn cập nhật trạng thái thanh toán này không?')) {
+            document.getElementById('updatePaymentId').value = paymentId;
+            document.getElementById('updateNewStatus').value = newStatus;
+            document.getElementById('statusUpdateForm').submit();
+        }
+    }
+</script>
 </body>
 
 </html>

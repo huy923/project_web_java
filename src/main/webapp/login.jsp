@@ -6,8 +6,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý khách sạn - Đăng nhập</title>
-    <link href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/webjars/bootstrap-icons/1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -67,20 +65,9 @@
             max-width: 420px;
             padding: 20px;
         }
-        .btn-ghost {
-    background: transparent;
-    color: var(--text-primary);
-    border: 1px solid var(--border);
-}
-
-.btn-ghost:hover {
-    background: var(--light);
-    border-color: var(--primary);
-    color: var(--primary);
-}
 
         .login-card {
-            /* background: rgba(255, 255, 255, 0.95); */
+            background: white; /* Fully opaque white */
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             padding: 50px 40px;
@@ -119,11 +106,15 @@
             box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
         }
 
-        .login-header h1 {
+       .login-header h1 {
             font-size: 28px;
             font-weight: 700;
             color: #333;
             margin-bottom: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .login-header p {
@@ -149,19 +140,20 @@
             padding: 12px 16px;
             font-size: 14px;
             transition: all 0.3s ease;
-            /* background: #f8f9fa; */
+            background: #f8f9fa;
+            width: 100%;
         }
 
         .form-control:focus {
             border-color: #667eea;
-            /* background: white; */
+            background: white;
             box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.1);
             outline: none;
         }
 
-        /* .form-control::placeholder {
+        .form-control::placeholder {
             color: #999;
-        } */
+        }
 
         .input-group-text {
             background: transparent;
@@ -232,17 +224,49 @@
             color: #667eea;
             margin-right: 5px;
         }
+        .btn-demo {
+            background: #f5f5f5;
+            color: #333;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-demo:hover {
+            background: #e8e8e8;
+            color: #333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .demo-section {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .demo-section p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .btn-group-demo {
+            display: flex;
+            gap: 10px;
+            justify-content: space-between;
+        }
     </style>
 </head>
 
 <body>
-    <div class="login-container">
         <div class="login-card">
             <div class="login-header">
                 <div class="login-icon">
                     <i class="bi bi-building"></i>
                 </div>
-                <h1>Chào mừng bạn quay lại</h1>
+                <h1 >Chào mừng bạn quay lại</h1>
                 <p>Hệ thống quản lý khách sạn</p>
             </div>
 
@@ -270,16 +294,30 @@
                         <i class="bi bi-box-arrow-in-right"></i> Đăng nhập
                     </button>
             </form>
-            <hr>
-            <!-- demo acc -->
-            <div style="text-align: center; color: #666;">
+            <br>
+            <hr style="background-color: rgb(99, 99, 99); height: 2px; border: none;">            <!-- demo acc -->
+            <div style="text-align: center; color: #666;" class="border-top">
                 <p>Tài khoản demo</p>
             </div>
-            <button type="button" class="btn btn-ghost">dsfa</button>
+            <div style="display: flex; justify-content: center; gap: 10px; margin-top: 10px;">
+             <button type="button" class="btn btn-demo" onclick="accadmin()">
+                <strong>Admin</strong><br>
+            </button>
+        <button type="button" class="btn btn-demo" onclick="accreception()">
+            <strong>Reception</strong><br>
+        </button>
         </div>
-    </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function accadmin() {
+            document.getElementById("username").value = "admin";
+            document.getElementById("password").value = "password";
+        }
+        function accreception() {
+            document.getElementById("username").value = "reception";
+            document.getElementById("password").value = "password";
+        }
+    </script>
 </body>
 
 </html>

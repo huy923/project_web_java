@@ -613,7 +613,7 @@ body {
 }
 
 .navbar-brand {
-    color: var(--primary-600);
+    /* color: var(--primary-600); */
     font-weight: 700;
     font-size: 20px;
 }

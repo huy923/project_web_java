@@ -78,7 +78,7 @@ public class PaymentsServlet extends BaseServlet {
                 boolean success = paymentDao.updatePaymentStatus(paymentId, newStatus);
                 
                 if (success) {
-                    req.setAttribute("successMessage", "Payment status updated successfully!");
+                    req.setAttribute("successMessage", "");
                 } else {
                     req.setAttribute("errorMessage", "Failed to update payment status!");
                 }

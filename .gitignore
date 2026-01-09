@@ -31,3 +31,7 @@ test.html
 log.txt
 test.sql
 index.jsp
+.env
+__pycache__
+.venv
+test.py

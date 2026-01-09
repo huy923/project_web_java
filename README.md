@@ -59,6 +59,7 @@ If you have some error mysql is not found you just copy all code in file `hotel_
 
 ```bash
 # Clean and compile
+openssl rand -hex 32
 mvn clean compile
 
 # Start the server

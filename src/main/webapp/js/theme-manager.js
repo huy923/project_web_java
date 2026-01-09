@@ -77,14 +77,10 @@ class ThemeManager {
         const buttons = document.querySelectorAll('.theme-toggle');
         buttons.forEach(btn => {
             const icon = btn.querySelector('i');
-            const text = btn.querySelector('span');
-            
             if (theme === this.THEME_DARK) {
                 if (icon) icon.className = 'bi bi-sun-fill';
-                if (text) text.textContent = 'Light';
             } else {
                 if (icon) icon.className = 'bi bi-moon-fill';
-                if (text) text.textContent = 'Dark';
             }
         });
     }
