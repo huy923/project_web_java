@@ -28,7 +28,7 @@ def main():
     print(args) 
 
     if args.all:
-        subprocess.call(["uvicorn", "api:app", "--reload", "--host", "0.0.0.0", "--port", "8000", ])
+        subprocess.call(["uvicorn", "api:app", "--reload", "--host", "0.0.0.0", "--port", "8000"])
         subprocess.call(["mvn", "tomcat9:run"])
     if args.web:
         subprocess.call(["mvn", "tomcat9:run"])
