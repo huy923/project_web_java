@@ -46,27 +46,19 @@ git clone https://github.com/huy923/project_web_java.git
 cd project_web_java
 ```
 
-### 2️⃣ Database Setup
+### 2️⃣ Run the Application
 
 ```bash
-# Install the database schema
-mysql -u root -p < hotel_database_mysql.sql
-```
+cp .env.example .env 
 
-If you have some error mysql is not found you just copy all code in file `hotel_database_mysql.sql` and then open xampp and then click on tap `sql` 
-
-### 3️⃣ Run the Application
-
-```bash
-# Clean and compile
 openssl rand -hex 32
-mvn clean compile
+# and then copy output and past in paste in file .env
+mvn clean package 
+docker compose up -d --build
 
-# Start the server
-mvn tomcat9:run
 ```
 
-### 4️⃣ Access the System
+### 3️⃣ Access the System
 
 🌐 Open your browser and navigate to: **http://localhost:8082/**
 
