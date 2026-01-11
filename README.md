@@ -177,7 +177,7 @@ Add to your `pom.xml`:
 ```properties
 # Database Configuration
 driver=com.mysql.cj.jdbc.Driver
-url=jdbc:mysql://localhost:3306/hotel_management
+url=jdbc:mysql://localhost:3307/hotel_management
 username=hotel_app
 password=hotel_password
 ```

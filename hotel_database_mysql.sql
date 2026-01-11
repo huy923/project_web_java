@@ -1,4 +1,4 @@
--- Active: 1759497781450@@127.0.0.1@3306@hotel_management
+-- Active: 1759497781450@@127.0.0.1@3307@hotel_management
 -- =====================================================
 -- Hotel Management System Database Schema (MySQL Compatible)
 -- =====================================================
@@ -1344,11 +1344,6 @@ CREATE INDEX idx_resource_permissions_role ON resource_permissions (role_id);
 CREATE INDEX idx_resource_permissions_user ON resource_permissions (user_id);
 
 
--- =====================================================
--- FINAL SETUP
--- =====================================================
-
--- Create a user for the application (change password in production!)
 CREATE USER IF NOT EXISTS 'hotel_app'@'localhost' 
 IDENTIFIED BY 'hotel_password';
 

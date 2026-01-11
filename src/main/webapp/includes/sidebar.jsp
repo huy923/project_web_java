@@ -3,7 +3,9 @@
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="../css/modern-ui.css">
 <link rel="stylesheet" href="../css/page-template.css">
-<link rel="stylesheet" href="../css/theme.css">
+<link rel="stylesheet" href="../css/theme.css"> 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 <div class="sidebar">
         <div class="d-flex justify-content-between align-items-center mb-4">
                 <h5 class="mb-0"><i class="bi bi-building"></i> Quản lý khách sạn</h5>
@@ -16,10 +18,10 @@
         <div class="sidebar-section">
                 <h6 class="sidebar-section-title">Chính</h6>
                 <ul class="sidebar-menu">
-                        <% if (PermissionUtil.hasPermission(session, "dashboard.view")) { %>
-                                <li><a href="<%= request.getContextPath() %>/dashboard" class="<%= request.getRequestURI().contains("/dashboard") ? "active" : "" %>"><i class="bi bi-speedometer2"></i> Bảng điều khiển</a></li>
-                                <li><a href="<%= request.getContextPath() %>/chatbot" class="<%= request.getRequestURI().contains("/chatbot") ? "active" : "" %>"><i class="bi bi-robot"></i> Chatbot</a></li>
-                        <% } %>
+                        <li><a href="<%= request.getContextPath() %>/dashboard" class="<%= request.getRequestURI().contains("/dashboard") ? "active" : "" %>"><i class="bi bi-speedometer2"></i> Bảng điều khiển</a></li>
+                        <li><a href="<%= request.getContextPath() %>/chatbot" class="<%= request.getRequestURI().contains("/chatbot") ? "active" : "" %>"><i class="bi bi-robot"></i> Chatbot</a></li>
+                        <!-- <% if (PermissionUtil.hasPermission(session, "dashboard.view")) { %>
+                        <% } %> -->
                 </ul>
         </div>
         

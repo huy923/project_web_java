@@ -35,3 +35,4 @@ index.jsp
 __pycache__
 .venv
 test.py
+n8n_data/

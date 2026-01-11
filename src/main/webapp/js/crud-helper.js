@@ -205,8 +205,8 @@ function printElement(elementId) {
 
     const printWindow = window.open('', '', 'height=600,width=800');
     printWindow.document.write('<html><head><title>Print</title>');
-    printWindow.document.write('<link href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">');
-    printWindow.document.write('<link rel="stylesheet" href="/my-web-app/css/modern-ui.css">');
+    printWindow.document.write('<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">');
+    printWindow.document.write('<link rel="stylesheet" href="../css/modern-ui.css">');
     printWindow.document.write('</head><body>');
     printWindow.document.write(element.innerHTML);
     printWindow.document.write('</body></html>');

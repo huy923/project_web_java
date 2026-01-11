@@ -7,7 +7,7 @@ dataset = []
 with open('rules.txt', 'r', encoding='utf-8') as file:
     dataset.extend(file.readlines())
 
-print(f'Loaded {len(dataset)} entries')
+print(f'Loaded {len(dataset)} entries') 
 
 os.makedirs("vector_db", exist_ok=True)
 # Implement the retrieval system
